@@ -3,13 +3,10 @@
 
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-	<link rel="icon" href="./docs/hearthwell.png">
+	<link rel="icon" href="hearthwell.png">
 	<link href="stylesheet.css" rel="stylesheet">
 	<title>Hearth Well</title>
 	<style>
-		img {
-			/* border: solid 1px black; */
-		}
 
 		.main {
 			text-align: center;
@@ -25,19 +22,6 @@
 			width: 30%;
 		}
 	</style>
-	<script>
-		function changeTab(evt, name) {
-			var i, tab, tablinks;
-			tab = document.getElementsByClassName("tab");
-			for (i = 0; i < tab.length; i++) { tab[i].style.display = "none"; }
-			tablinks = document.getElementsByClassName("tablink");
-			for (i = 0; i < tablinks.length; i++) {
-				tablinks[i].className = tablinks[i].className.replace(" active", "");
-			}
-			document.getElementById(name).style.display = "block";
-			evt.currentTarget.className += " active";
-		}
-	</script>
 </head>
 
 <body>
