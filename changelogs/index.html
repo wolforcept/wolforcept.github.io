@@ -1,24 +1,23 @@
-<html><head><meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
-<meta http-equiv="Content-Language" content="en-gb">
-<link href="../stylesheet.css" rel="stylesheet">
-<link rel="icon" href="../docs/hearthwell.png">
-<title>Hearth Well Changelogs</title></head>
-<body>
-<object style="border:0;padding:0;width: 100%" type="text/html" data="../navbar.html"></object>
-<hr>
-<h1>Patch History</h1>
-<pre><code id="main">{0.6}
-<<<<<<< HEAD
-discstart???????????????????????? of ???????, 2020
+<html>
 
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
+	<meta http-equiv="Content-Language" content="en-gb">
+	<link href="../stylesheet.css" rel="stylesheet">
+	<link rel="icon" href="../docs/hearthwell.png">
+	<title>Hearth Well Changelogs</title>
+</head>
+
+<body>
+	<object style="border:0;padding:0;width: 100%;height: 32px;" type="text/html" data="../navbar.html"></object>
+	<object class="patron" type="text/html" data="patron.html"></object>
+	<hr>
+	<h1>Patch History</h1>
+	<pre><code id="main">{0.6}
+discstartsoon&trade;<br/>
 First update of 2020! Hearth Well is now One Year Old, and it is still such a baby.
 Hearth Well now depends on Mechanics, which is a library that also adds a couple of... well... mechanics.
-Useful for Modpack Makers! Check it out at <a href="../mechanics/">/Mechanics</a>.discend
-=======
-discstartsoon&trade;
-
-Big update with changes to the power system.discend
->>>>>>> c61b51c9eb218d1030f2f230c5e79f7383dceea7
+Useful for Modpack Makers! Check it out at <a href="../mechanics/">Mechanics</a>.discend
 
 [ NEW STUFF ]
 Changed recipe of Mysterious Fertilizer to craft only two.
@@ -354,29 +353,30 @@ Fixed core blocks not accepting consumable blocks from all 6 directions
   </code>
 </pre>
 
-<script>
-	var doc = document.getElementById("main");
-	var inner = doc.innerHTML;
+	<script>
+		var doc = document.getElementById("main");
+		var inner = doc.innerHTML;
 
-	inner = inner.replace(/(Update:|Hearth Well| - )/g, '<span class="bolden">$1</span>');
-	inner = inner.replace(/(Added)/g, '<span class="ddd">$1</span>');
-	inner = inner.replace(/(Balanced)/g, '<span class="chg">$1</span>');
-	inner = inner.replace(/(Changed)/g, '<span class="chg">$1</span>');
-	inner = inner.replace(/(Renamed)/g, '<span class="chg">$1</span>');
-	inner = inner.replace(/(Increased)/g, '<span class="chg">$1</span>');
-	inner = inner.replace(/(Decreased)/g, '<span class="chg">$1</span>');
-	inner = inner.replace(/(Removed)/g, '<span class="rmv">$1</span>');
-	inner = inner.replace(/(Fixed)/g, '<span class="fxd">$1</span>');
-	
-	inner = inner.replace(/(\[)/g, '<span class="title2">['); 
-	inner = inner.replace(/(\])/g, ']</span>');
-	inner = inner.replace(/(\{([A-Z\. a-z0-9])+\})+/g, '<span class="title">$1</span>');
-	inner = inner.replace(/discstart/g, '<span class="discord">'); 
-	inner = inner.replace(/discend/g, '</span>');
-	
-	doc.innerHTML = inner;
-</script>
+		inner = inner.replace(/(Update:|Hearth Well| - )/g, '<span class="bolden">$1</span>');
+		inner = inner.replace(/(Added)/g, '<span class="ddd">$1</span>');
+		inner = inner.replace(/(Balanced)/g, '<span class="chg">$1</span>');
+		inner = inner.replace(/(Changed)/g, '<span class="chg">$1</span>');
+		inner = inner.replace(/(Renamed)/g, '<span class="chg">$1</span>');
+		inner = inner.replace(/(Increased)/g, '<span class="chg">$1</span>');
+		inner = inner.replace(/(Decreased)/g, '<span class="chg">$1</span>');
+		inner = inner.replace(/(Removed)/g, '<span class="rmv">$1</span>');
+		inner = inner.replace(/(Fixed)/g, '<span class="fxd">$1</span>');
+
+		inner = inner.replace(/(\[)/g, '<span class="title2">[');
+		inner = inner.replace(/(\])/g, ']</span>');
+		inner = inner.replace(/(\{([A-Z\. a-z0-9])+\})+/g, '<span class="title">$1</span>');
+		inner = inner.replace(/discstart/g, '<span class="discord">');
+		inner = inner.replace(/discend/g, '</span>');
+
+		doc.innerHTML = inner;
+	</script>
 </body>
+
 </html>
 
 <!--
