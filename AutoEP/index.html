@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="">
+
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>AutoEP</title>
+	<link rel="shortcut icon" href="imgs/logo1.ico" type="image/x-icon">
+	<link rel="stylesheet" type="text/css" href="index.css">
+	<link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
+
+	<script src="lib/jquery.min.js"></script>
+	<script src="lib/p5.min.js"></script>
+	<!-- <script src="lib/p5.sound.min.js"></script> -->
+
+	<script src="lib/ace/ace.js" type="text/javascript" charset="utf-8"></script>
+	<script src="lib/ace/theme-nord_dark.js" type="text/javascript" charset="utf-8"></script>
+	<script src="lib/ace/mode-groovy.js" type="text/javascript" charset="utf-8"></script>
+
+	<script src="src/cookies.js"></script>
+	<script src="src/editing.js"></script>
+	<script src="src/socket.js"></script>
+	<script src="src/canvas.js"></script>
+	<script src="src/init.js"></script>
+
+</head>
+
+<body>
+	<div id="login_screen">
+		<div class="header">
+			AUTOEP
+		</div>
+		<div class="header sub">
+			Autonomous Entertainment Platform
+		</div>
+		<input class="login_screen_input" type="text" id="server_address" name="server_address" placeholder="server address">
+		<br />
+		<input class="login_screen_input" type="text" id="username" name="username" placeholder="username">
+		<br />
+		<input class="login_screen_input" type="password" id="password" name="password" placeholder="private key">
+		<br>
+		<div class="centered">
+			<div id="autoconnect" onclick="toggleAutoConnect()"></div><br />
+			<div id="login_button" onclick="login()">Dive in!</div>
+			<div id="login_text" >Connecting...</div>
+			<div id="login_text_failed" >Failed to connect!</div>
+		</div>
+	</div>
+
+	<div id="game_screen">
+		<div id="editing" style="position: absolute; top: 16px; left: 16px; width: 90%;">
+			<div id="editing_top">
+				<div id="editor_title"></div>
+
+				<div id="editor_menu">
+					<div>
+						<div class="menu_item">File</div>
+						<div id="file_submenu" class="sub_menu"></div>
+					</div>
+					<!-- <div>
+					<div class="menu_item">Edit</div>
+					<div id="edit_submenu" class="sub_menu"></div>
+				</div>
+				<div>
+					<div class="menu_item">View</div>
+					<div id="view_submenu" class="sub_menu"></div>
+				</div> -->
+					<div>
+						<div id="globals_submenu_item" class="menu_item">Global Events</div>
+						<div id="globals_submenu" class="sub_menu"></div>
+					</div>
+					<div>
+						<div id="events_submenu_item" class="menu_item">Events</div>
+						<div id="events_submenu" class="sub_menu"></div>
+					</div>
+				</div>
+
+				<div id="editor_shortcuts">
+				</div>
+			</div>
+
+			<div id="editor_wrapper" style="position: relative; width: 100%; height: 600px;">
+				<div id="editor" style="position: relative; width: 100%; height: 100%;"></div>
+			</div>
+
+		</div>
+
+		<div id='p5container'></div>
+
+		<div id="prompt">
+			<div id="message_box">
+				<div class="message">Are you sure you want to exit without saving?</div>
+				<div id="answers">
+					<div class="button" onclick="editing_prompt_yes()">Yes</div>
+					<div class="button" onclick="editing_prompt_no()">No</div>
+					<div id="cancel" class="button" onclick="editing_prompt_cancel()">Cancel</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div style="
+	position: absolute; 
+	top: 0; left: 100%;
+	transform: translateX(-20px);
+	cursor: pointer;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+	" onclick="window.open(window.location.href, '_blank');">↗</div>
+</body>
+
+</html>

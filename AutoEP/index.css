@@ -1,0 +1,311 @@
+/*
+ _____ _____ _____ _____ _____ _____ 
+|     |     |     |     |     |   | |
+|   --|  |  | | | | | | |  |  | | | |
+|_____|_____|_|_|_|_|_|_|_____|_|___|
+*/
+
+body {
+    padding: 0;
+    margin: 0;
+    color: white;
+    background-color: #000022;
+    font-family: 'Open-Sans', sans-serif;
+}
+
+input:focus, select:focus, textarea:focus, button:focus {
+    outline: none;
+}
+
+input {
+    color: white;
+    font-weight: bold;
+    font-size: large;
+    border: 0;
+    background-color: rgba(0, 0, 0, 0);
+}
+
+/*
+ __    _____ _____ _____ _____    _____ _____ _____ _____ _____ _____ 
+|  |  |     |   __|     |   | |  |   __|     | __  |   __|   __|   | |
+|  |__|  |  |  |  |-   -| | | |  |__   |   --|    -|   __|   __| | | |
+|_____|_____|_____|_____|_|___|  |_____|_____|__|__|_____|_____|_|___|
+*/
+
+#game_screen {
+    display: none;
+}
+
+#login_screen {
+    text-align: center;
+}
+
+#login_screen .header {
+    margin-top: 10%;
+    font-weight: bold;
+    font-size: 84px;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+}
+
+#login_screen .header.sub {
+    font-size: 20px;
+    margin: 5px 0 20px 0;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+}
+
+#login_screen .login_screen_input {
+    text-align: center;
+    width: 100%;
+    border: 0;
+    margin: 4px 0;
+    padding: 4px 0;
+    font-weight: bold;
+    font-size: large;
+    background: linear-gradient(90deg, /**/
+    #1c82d600 0%, /**/
+    #1c82d6FF 40%, /**/
+    #1c82d6AA 60%, /**/
+    #1c82d600 100%/**/
+    );
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+}
+
+::placeholder {
+    color: #000;
+    opacity: 1;
+    /* Firefox */
+}
+
+:-ms-input-placeholder {
+    /* Internet Explorer 10-11 */
+    color: #000;
+}
+
+::-ms-input-placeholder {
+    /* Microsoft Edge */
+    color: #000;
+}
+
+.centered {
+    width: 100%;
+}
+
+#login_text, #autoconnect, #login_text_failed {
+    display: inline-block;
+    color: white;
+    font-weight: bold;
+    font-size: large;
+    width: 256px;
+    border: 0;
+    padding: 4px;
+    /* transition: display 0s linear 0.33s, opacity 0.33s linear; */
+}
+
+#login_text, #login_text_failed {
+    display: none;
+}
+
+#login_text_failed {
+    color: rgb(214, 28, 28);
+}
+
+#login_button {
+    display: inline-block;
+    color: white;
+    font-weight: bold;
+    font-size: large;
+    width: 128px;
+    border: 0;
+    padding: 4px;
+    cursor: pointer;
+}
+
+#login_button:hover {
+    color: #0000;
+    /* color: #1c82d600; */
+    /* color: #FFFFFFAA; */
+    /* text-shadow: 0 0 3px #1c82d6FF, 0 0 5px #1c82d6FF; */
+    text-shadow: 0 0 5px #1c82d6FF;
+}
+
+/*
+ _____ _____ _____ _____    _____ _____ _____ _____ _____ _____ 
+|   __|  _  |     |   __|  |   __|     | __  |   __|   __|   | |
+|  |  |     | | | |   __|  |__   |   --|    -|   __|   __| | | |
+|_____|__|__|_|_|_|_____|  |_____|_____|__|__|_____|_____|_|___|
+                                                                
+*/
+
+#game_screen {
+    user-select: none;
+}
+
+#p5container {
+    margin: 4px 0 0 4px;
+}
+
+#editing {
+    border: solid 4px #272b33;
+}
+
+#editing_top {
+    width: 100%;
+    height: 26px;
+    font-family: 'Arial', sans-serif;
+    font-size: 0;
+    background-color: #39404f;
+    color: #bbc2d3;
+    border-bottom: solid 2px #272b33;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+#editor_title {
+    position: absolute;
+    padding-top: 4px;
+    width: 100%;
+    font-family: 'Arial', sans-serif;
+    font-size: 16px;
+    text-align: center;
+    color: #bbc2d3;
+    pointer-events: none;
+}
+
+#editor_shortcuts {
+    float: right;
+    text-align: right;
+    width: 100%;
+    font-family: 'Arial', sans-serif;
+    /* background-color: #39404f; */
+    color: #bbc2d3;
+}
+
+#editor_shortcuts .button {
+    display: inline-block;
+    font-size: 16px;
+    padding: 2px 4px 2px 4px;
+    margin: 2px 2px 2px 0;
+    background-color: #2d313b;
+    cursor: pointer;
+}
+
+#editor_shortcuts .button:hover {
+    background-color: #272b33;
+}
+
+#editor_menu {
+    position: absolute;
+    float: left;
+}
+
+#editor_menu div {
+    display: inline-block;
+}
+
+#editor_menu .menu_item {
+    display: inline-block;
+    font-size: 16px;
+    cursor: pointer;
+    height: 100%;
+    padding: 4px 8px 4px 4px;
+}
+
+#editor_menu .menu_item:hover {
+    background-color: #2d313b;
+}
+
+#editor_menu .sub_menu {
+    position: absolute;
+    display: none;
+    background-color: #39404f;
+    border: solid 2px #272b33;
+    z-index: 10;
+}
+
+#editor_menu .menu_item:hover+.sub_menu {
+    display: block;
+}
+
+#editor_menu .sub_menu:hover {
+    display: block;
+}
+
+#editor_menu .sub_menu .sub_menu_item {
+    display: block;
+    cursor: pointer;
+    padding: 4px;
+    font-size: 16px;
+}
+
+#editor_menu .sub_menu .sub_menu_item:first-child {
+    margin: 0;
+}
+
+#editor_menu .sub_menu .sub_menu_item:hover {
+    background-color: #2d313b;
+}
+
+#editor {
+    z-index: 0;
+}
+
+#prompt {
+    display: none;
+    position: absolute;
+    background-color: #171a22a1;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    overflow: hidden;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+#prompt #message_box {
+    font-family: 'Arial', sans-serif;
+    text-align: center;
+    width: 300px;
+    height: 100px;
+    left: 50%;
+    top: 40%;
+    position: absolute;
+    transform: translate(-50%, -100px);
+    background-color: #39404f;
+    padding: 16px;
+    border: solid #272b33 4px;
+}
+
+#prompt #message_box .message {
+    display: inline-block;
+    width: 200;
+}
+
+#prompt #message_box #answers {
+    position: absolute;
+    width: 300px;
+    bottom: 16px;
+    align-items: center;
+}
+
+#prompt #message_box #answers .button {
+    display: inline-block;
+    padding: 6px;
+    width: 64px;
+    background-color: #2d313b;
+    cursor: pointer;
+}
+
+#prompt #cancel {
+    display: none;
+}
