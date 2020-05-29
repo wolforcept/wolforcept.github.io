@@ -47,13 +47,29 @@ function updateAutoConnect() {
     ));
 }
 
-function onFailedConnect() {
+var isToReset = -1;
+function onDisconnect() {
+    // top part
     $("#login_text").hide();
+    $("#login_button").css("display", "inline-block");
+    // bottom part
+    $("#login_text_failed").html(disconnectReason);
     $("#login_text_failed").css("display", "inline-block");
+    $("#login_text_failed").css("cursor", "auto");
+    let resetId = Math.random();
+    isToReset = resetId;
     setTimeout(function () {
-        $("#login_text_failed").hide();
-        $("#login_button").css("display", "inline-block");
-    }, 1500);
+        if (isToReset == resetId)
+            resetTextFailed();
+    }, 10000);
+
+    $("#login_screen").show();
+    $("#game_screen").hide();
+}
+function resetTextFailed() {
+    isToReset = -1;
+    $("#login_text_failed").html("");
+    $("#login_text_failed").css("cursor", "pointer");
 }
 
 function onConnected() {

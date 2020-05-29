@@ -107,7 +107,7 @@ input {
     /* transition: display 0s linear 0.33s, opacity 0.33s linear; */
 }
 
-#login_text, #login_text_failed {
+#login_text {
     display: none;
 }
 
@@ -308,4 +308,24 @@ input {
 
 #prompt #cancel {
     display: none;
+}
+
+#newtab_arrow, #newtab_text {
+    position: absolute;
+    top: 0;
+    right: 0;
+    transform: translateX(-20px);
+    cursor: pointer;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+}
+
+#newtab_text {
+    padding: 4px 14px 0 0;
+    display: none;
+}
+
+#newtab_text:hover, #newtab_arrow:hover+#newtab_text {
+    display: block;
 }

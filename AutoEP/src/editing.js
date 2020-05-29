@@ -1,3 +1,10 @@
+$(window).keypress(function(event) {
+    if (!(event.which == 115 && event.ctrlKey) && !(event.which == 19)) return true;
+    editing_save();
+    event.preventDefault();
+    return false;
+});
+
 var editor;
 var JavaScriptMode;
 

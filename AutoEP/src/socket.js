@@ -1,11 +1,13 @@
 var socket;
+var disconnectReason;
 
 function connect(address, username, password) {
 
     try {
+        disconnectReason = "Failed to connect!";
         socket = new WebSocket("ws://" + address + "/" + username);
-    } catch {
-        onFailedConnect();
+    } catch (ex) {
+        onDisconnect();
     }
 
     // console.log(socket);
@@ -15,7 +17,8 @@ function connect(address, username, password) {
     };
 
     socket.onclose = function (event) {
-        onFailedConnect();
+        disconnectReason = "Server went down!";
+        onDisconnect();
     };
 
     socket.onmessage = function (event) {
@@ -33,6 +36,7 @@ function connect(address, username, password) {
             switch (message.type) {
                 case "gamestate": {
                     gamestate = payload;
+                    // console.log(message);
                     break;
                 }
                 case "type": {

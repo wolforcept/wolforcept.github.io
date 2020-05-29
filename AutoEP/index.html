@@ -33,7 +33,8 @@
 		<div class="header sub">
 			Autonomous Entertainment Platform
 		</div>
-		<input class="login_screen_input" type="text" id="server_address" name="server_address" placeholder="server address">
+		<input class="login_screen_input" type="text" id="server_address" name="server_address"
+			placeholder="server address">
 		<br />
 		<input class="login_screen_input" type="text" id="username" name="username" placeholder="username">
 		<br />
@@ -42,9 +43,15 @@
 		<div class="centered">
 			<div id="autoconnect" onclick="toggleAutoConnect()"></div><br />
 			<div id="login_button" onclick="login()">Dive in!</div>
-			<div id="login_text" >Connecting...</div>
-			<div id="login_text_failed" >Failed to connect!</div>
+			<div id="login_text">Connecting...</div>
+			<br />
+			<div id="login_text_failed" onclick="resetTextFailed()"></div>
 		</div>
+
+		<div id="newtab_arrow" onclick="window.open(window.location.href, '_blank');">↗</div>
+		<div id="newtab_text" onclick="window.open(window.location.href, '_blank');">Open on a new tab with no history
+			to avoid pressing 'back' and deleting code.</div>
+
 	</div>
 
 	<div id="game_screen">
@@ -99,15 +106,6 @@
 		</div>
 	</div>
 
-	<div style="
-	position: absolute; 
-	top: 0; left: 100%;
-	transform: translateX(-20px);
-	cursor: pointer;
-    -webkit-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
-	" onclick="window.open(window.location.href, '_blank');">↗</div>
 </body>
 
 </html>
