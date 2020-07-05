@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<launch4jConfig>
+  <dontWrapJar>false</dontWrapJar>
+  <headerType>gui</headerType>
+  <jar>C:\agames\wolforcept.github.io\AutoEP\dist\autoep_server.jar</jar>
+  <outfile>C:\agames\wolforcept.github.io\AutoEP\dist\autoep_server.exe</outfile>
+  <errTitle></errTitle>
+  <cmdLine></cmdLine>
+  <chdir>.</chdir>
+  <priority>normal</priority>
+  <downloadUrl>http://java.com/download</downloadUrl>
+  <supportUrl></supportUrl>
+  <stayAlive>false</stayAlive>
+  <restartOnCrash>false</restartOnCrash>
+  <manifest></manifest>
+  <icon></icon>
+  <jre>
+    <path>C:\Program Files\java\jdk-14.0.1</path>
+    <bundledJre64Bit>true</bundledJre64Bit>
+    <bundledJreAsFallback>true</bundledJreAsFallback>
+    <minVersion></minVersion>
+    <maxVersion></maxVersion>
+    <jdkPreference>preferJre</jdkPreference>
+    <runtimeBits>64/32</runtimeBits>
+  </jre>
+  <versionInfo>
+    <fileVersion>1.0.0.0</fileVersion>
+    <txtFileVersion>a</txtFileVersion>
+    <fileDescription>AutoEP Server</fileDescription>
+    <copyright>wolforce 2020</copyright>
+    <productVersion>1.0.0.0</productVersion>
+    <txtProductVersion>a</txtProductVersion>
+    <productName>AutoEP Server</productName>
+    <companyName></companyName>
+    <internalName>autoep_server</internalName>
+    <originalFilename>autoep_server.exe</originalFilename>
+    <trademarks></trademarks>
+    <language>ENGLISH_US</language>
+  </versionInfo>
+</launch4jConfig>

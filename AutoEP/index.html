@@ -9,18 +9,19 @@
 	<link rel="stylesheet" type="text/css" href="index.css">
 	<link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
 
-	<script src="lib/jquery.min.js"></script>
-	<script src="lib/p5.min.js"></script>
+	<script src="../lib/jquery.min.js"></script>
+	<script src="../lib/p5.min.js"></script>
 	<!-- <script src="lib/p5.sound.min.js"></script> -->
 
-	<script src="lib/ace/ace.js" type="text/javascript" charset="utf-8"></script>
-	<script src="lib/ace/theme-nord_dark.js" type="text/javascript" charset="utf-8"></script>
-	<script src="lib/ace/mode-groovy.js" type="text/javascript" charset="utf-8"></script>
+	<script src="../lib/ace/ace.js" type="text/javascript" charset="utf-8"></script>
+	<script src="../lib/ace/theme-nord_dark.js" type="text/javascript" charset="utf-8"></script>
+	<script src="../lib/ace/mode-groovy.js" type="text/javascript" charset="utf-8"></script>
 
 	<script src="src/cookies.js"></script>
 	<script src="src/editing.js"></script>
 	<script src="src/socket.js"></script>
 	<script src="src/canvas.js"></script>
+	<script src="src/assets.js"></script>
 	<script src="src/init.js"></script>
 
 </head>
@@ -46,6 +47,7 @@
 			<div id="login_text">Connecting...</div>
 			<br />
 			<div id="login_text_failed" onclick="resetTextFailed()"></div>
+			<div><a href="dist/autoep_server.jar">Download Server</a></div>
 		</div>
 
 		<div id="newtab_arrow" onclick="window.open(window.location.href, '_blank');">↗</div>
@@ -55,10 +57,8 @@
 	</div>
 
 	<div id="game_screen">
-		<div id="editing" style="position: absolute; top: 16px; left: 16px; width: 90%;">
+		<div id="editing">
 			<div id="editing_top">
-				<div id="editor_title"></div>
-
 				<div id="editor_menu">
 					<div>
 						<div class="menu_item">File</div>
@@ -73,22 +73,27 @@
 					<div id="view_submenu" class="sub_menu"></div>
 				</div> -->
 					<div>
-						<div id="globals_submenu_item" class="menu_item">Global Events</div>
-						<div id="globals_submenu" class="sub_menu"></div>
+						<div id="global_events_submenu_item" class="menu_item">Global Events</div>
+						<div id="global_events_submenu" class="sub_menu"></div>
 					</div>
 					<div>
 						<div id="events_submenu_item" class="menu_item">Events</div>
 						<div id="events_submenu" class="sub_menu"></div>
 					</div>
 				</div>
+				<div id="editor_shortcuts"></div>
+				<div id="editor_title"></div>
+			</div>
 
-				<div id="editor_shortcuts">
+			<div style="background-color: #272b33; height: calc(100% - 28px); font-size: 0;">
+				<div id="editor_wrapper" style="display: inline-block; width: calc(100% - 150px); height: 100%; vertical-align: top; background-color: #20232b; 
+					overflow-x: auto; overflow-y: scroll;">
+					<div id="editor" style="position: relative; width: 100%; height: 100%;"></div>
 				</div>
-			</div>
 
-			<div id="editor_wrapper" style="position: relative; width: 100%; height: 600px;">
-				<div id="editor" style="position: relative; width: 100%; height: 100%;"></div>
+				<div id="type_list"></div>
 			</div>
+			<div id="editing_corner"></div>
 
 		</div>
 
@@ -102,6 +107,23 @@
 					<div class="button" onclick="editing_prompt_no()">No</div>
 					<div id="cancel" class="button" onclick="editing_prompt_cancel()">Cancel</div>
 				</div>
+			</div>
+		</div>
+
+		<div id="sidebar_button" onclick="openSidebar();">🔨</div>
+		<!-- 🎮 💻 🔧 -->
+		<div id="sidebar">
+			<div id="close_button" onclick="closeSidebar();">✖</div>
+			<div id="infoline1" class="infoline"></div>
+			<div id="infoline2" class="infoline"></div>
+			<div class="button" onclick="socket.close();">Disconnect</div>
+			<div
+				style="position: absolute; bottom: 0; margin-bottom: 16px; width: 300px; transform: translateX(-24px);">
+				<!-- <hr style="margin: 10px; 0"> -->
+				<div style="border: solid 1px #272b33; margin: 10px 0;"></div>
+				<div class="text">OP Only:</div>
+				<div class="button" onclick="edit();" style="margin-right: 10px;">Open Editor</div>
+				<div class="button" onclick="restart();">Restart Game</div><br>
 			</div>
 		</div>
 	</div>

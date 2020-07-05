@@ -5,6 +5,8 @@ function connect(address, username, password) {
 
     try {
         disconnectReason = "Failed to connect!";
+        if (!address.includes(":"))
+            address += ":64047";
         socket = new WebSocket("ws://" + address + "/" + username);
     } catch (ex) {
         onDisconnect();
@@ -22,37 +24,36 @@ function connect(address, username, password) {
     };
 
     socket.onmessage = function (event) {
-        try {
-            let message = JSON.parse(event.data);
-            let payload = JSON.parse(message.payload);
-            if (message.type != "gamestate")
-                console.log("Message received: " + message.type);
-            if (message.type.startsWith("global:")) {
-                let event = message.type;
-                let globalType = {};
-                globalType[event] = payload;
-                startEditing(globalType, event, true);
+        let message = JSON.parse(event.data);
+        if (message.type != "gamestate")
+            console.log("Message received: " + message.type);
+
+        switch (message.type) {
+            case "gamestate": {
+                gamestate = JSON.parse(message.payload);
+                break;
             }
-            switch (message.type) {
-                case "gamestate": {
-                    gamestate = payload;
-                    // console.log(message);
-                    break;
-                }
-                case "type": {
-                    startEditing(payload);
-                    break;
-                }
-                case "chat": {
-                    console.log(payload);
-                    chatbox.chatMessageReceived(payload);
-                }
+            case "type": {
+                // console.log(message);
+                startEditing(JSON.parse(message.payload));
+                break;
             }
-        } catch{ }
+            case "chat": {
+                console.log(message.payload);
+                chatbox.chatMessageReceived(message.payload);
+                break;
+            }
+            case "asset": {
+                console.log(message.payload)
+                loadAsset(message.payload, message.raw);
+                break;
+            }
+        }
     };
 
 }
 
 function sendMessage(type, message) {
+    console.log(message);
     socket.send(JSON.stringify({ "type": type, "payload": JSON.stringify(message) }));
 }

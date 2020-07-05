@@ -1,4 +1,6 @@
 var autoconnect;
+var address;
+var username;
 
 $(document).ready(async function () {
     // await new Promise(resolve => setTimeout(resolve, 1000));
@@ -12,13 +14,43 @@ $(document).ready(async function () {
     if (autoconnect == "true")
         login();
 
+    createMenuItem("file_submenu", "Save", editingSave);
+    createMenuItem("file_submenu", "Close", editing_close);
 
+    // events
+    [
+        "Create:create",
+        "Step:step",
+        "Collision:collision"
+    ].forEach(element => {
+        let args = element.split(":");
+        createMenuItem("events_submenu", args[0], function () { findOrCreateMethod(args[1], args[2], args[3]); });
+    });
+
+    // static events
+    [
+        "Game Start:globalGameStarted:: static",
+        "Player Joined:globalPlayerJoined: username : static",
+        "Key Pressed:globalKeyPressed: username, keyCode : static",
+        "Key Released:globalKeyReleased: username, keyCode : static",
+        "Mouse Button Pressed:globalMousePressed: username, mx, my, button : static",
+        "Mouse Button Released:globalMouseReleased: username, mx, my, button : static"
+    ].forEach(element => {
+        let args = element.split(":");
+        createMenuItem("global_events_submenu", args[0], function () { findOrCreateMethod(args[1], args[2], args[3]); });
+    });
+
+    toggleShortcut("Save");
+
+    reloadShortcuts();
+
+    // closeSidebar();
 });
 
 function login() {
 
-    let address = $("#server_address")[0].value;
-    let username = $("#username")[0].value;
+    address = $("#server_address")[0].value;
+    username = $("#username")[0].value;
     let password = $("#password")[0].value;
 
     if (username && password) {
@@ -65,6 +97,8 @@ function onDisconnect() {
 
     $("#login_screen").show();
     $("#game_screen").hide();
+    if (p5object)
+        p5object.remove();
 }
 function resetTextFailed() {
     isToReset = -1;
@@ -74,28 +108,27 @@ function resetTextFailed() {
 
 function onConnected() {
 
-    // sendMessage("chat", "/g");
-
     new p5(p5instance, 'p5container');
 
-    createMenuItem("file_submenu", "Save", editing_save);
-    createMenuItem("file_submenu", "Close", editing_close);
-
-    createMenuItem("globals_submenu", "player_create", editing_global("player_create"));
-
-    createMenuItem("events_submenu", ":create", editing_edit("create"));
-    createMenuItem("events_submenu", ":step", editing_edit("step"));
-
-    toggleShortcut("Save");
-    toggleShortcut("Base");
-
-    reloadShortcuts();
+    reloadTypes();
 
     initEditor();
 
     $("#login_screen").hide();
     $("#game_screen").show();
 
-    sendMessage("chat", "/type edit Base");
+    $("#infoline1").html("Connected to: " + address);
+    $("#infoline2").html("Username: " + username);
 
+    saved = true;
+
+    // edit();
+}
+
+function edit() {
+    sendMessage("chat", "/edit");
+}
+
+function restart() {
+    sendMessage("chat", "/restart");
 }

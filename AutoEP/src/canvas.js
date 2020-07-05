@@ -12,12 +12,50 @@ var sentMessages = [];
 var sentMessagesIndex = -1;
 var gamestate = {};
 var chatbox = {};
+var p5object;
+var canvas;
+var screenx, screeny;
 
 var p5instance = function (p) {
-    p.setup = function () {
 
+    p.chatReceived = function (chat, originalText) {
+
+        let words = originalText.split(" ");
+        let okwords = words.shift() + " " + words.shift();
+        let len = p.textWidth(okwords);
+        let first = false;
+        while (words.length > 0) {
+            if (first) {
+                first = false;
+                okwords += words.shift();
+            } else { okwords += " " + words.shift(); }
+            if (words.length > 0 && p.textWidth(okwords + " " + words[0]) > 380) {
+                chat.unshift(okwords);
+                okwords = "";
+                first = true;
+            }
+        }
+        chat.unshift(okwords);
+        chatbox.timer = chatbox.maxTimer;
+    }
+
+    p.setup = function () {
+        p5object = p;
         let doc = $(document);
-        p.createCanvas(doc.width() - 8, doc.height() - 8);
+        canvas = p.createCanvas(doc.width(), doc.height());
+        screenx = p.width / 2;
+        screeny = p.height / 2;
+        canvas.mousePressed(function () {
+            // if (editingType)
+            //     return;
+            sendMessage("input_mouseReleased", { "mx": p.mouseX - screenx, "my": p.mouseY - screeny, "button": p.mouseButton });
+            return true;
+        })
+        canvas.elt.oncontextmenu = function (e) {
+            e.preventDefault();
+            return false;
+        }
+        // $(canvas.elt).css("border", "solid 1px #FFFFFF44")
 
         chatbox = p.createInput("teste");
         chatbox.size(380, 30);
@@ -27,23 +65,11 @@ var p5instance = function (p) {
         chatbox.maxTimer = 60 * 10;
         chatbox.chat = [];
         chatbox.chatMessageReceived = function (payload) {
-            let words = payload.split(" ");
-            let okwords = words.shift() + " " + words.shift();
-            let len = p.textWidth(okwords);
-            let first = false;
-            while (words.length > 0) {
-                if (first) {
-                    first = false;
-                    okwords += words.shift();
-                } else { okwords += " " + words.shift(); }
-                if (words.length > 0 && p.textWidth(okwords + " " + words[0]) > 380) {
-                    this.chat.unshift(okwords);
-                    okwords = "";
-                    first = true;
-                }
-            }
-            this.chat.unshift(okwords);
-            chatbox.timer = chatbox.maxTimer;
+            payload.split("\n").forEach(text => {
+                if (text)
+                    p.chatReceived(chatbox.chat, text);
+            });
+
         }
         $(chatbox.elt).hide();
     }
@@ -58,7 +84,7 @@ var p5instance = function (p) {
                 p.stroke(hitboxColor);
                 p.strokeWeight(01);
                 p.noFill();
-                p.rect(obj.x - obj.w / 2, obj.y - obj.h / 2, obj.w, obj.h)
+                p.rect(screenx + obj.x - obj.w / 2, screeny + obj.y - obj.h / 2, obj.w, obj.h)
             });
         }
         if (chatbox.isVisible || chatbox.timer > 0) {
@@ -82,53 +108,12 @@ var p5instance = function (p) {
         }
     }
 
-    p.keyReleased = function (key) {
-        if (editingType)
+    p.keyPressed = function (key) {
+        if (editor.isFocused())
             return;
         // console.log(key);
-        if (key.code == "ArrowUp") {
-            if (chatbox.isVisible && sentMessages.length > 0) {
-                sentMessagesIndex--;
-                if (sentMessagesIndex == -1) {
-                    chatbox.elt.value = "";
-                }
-                if (sentMessagesIndex < -1) {
-                    sentMessagesIndex = sentMessages.length - 1;
-                }
-                if (sentMessages[sentMessagesIndex])
-                    chatbox.elt.value = sentMessages[sentMessagesIndex];
-            }
-        }
-        if (key.code == "ArrowDown") {
-            if (chatbox.isVisible && sentMessages.length > 0) {
-                if (sentMessagesIndex >= 0) {
-                    sentMessagesIndex++;
-                    if (sentMessages[sentMessagesIndex])
-                        chatbox.elt.value = sentMessages[sentMessagesIndex];
-                    if (sentMessagesIndex >= sentMessages.length) {
-                        sentMessagesIndex = -1;
-                        chatbox.elt.value = "";
-                    }
-                }
-            }
-        }
-        if (key.key == "/") {
-            if (!chatbox.isVisible) {
-                chatbox.elt.value = "/";
-                let elt = $(chatbox.elt);
-                elt.show();
-                elt.focus();
-                chatbox.isVisible = true;
-            }
-        }
-        if (key.code == "Enter") {
-            if (!chatbox.isVisible) {
-                chatbox.elt.value = "";
-                let elt = $(chatbox.elt);
-                elt.show();
-                elt.focus();
-                chatbox.isVisible = true;
-            } else {
+        if (chatbox.isVisible) {
+            if (key.code == "Enter") {
                 let chatMessage = chatbox.elt.value;
                 if (chatMessage && chatMessage.length > 0) {
                     sentMessages.push(chatMessage);
@@ -138,16 +123,57 @@ var p5instance = function (p) {
                 $(chatbox.elt).hide();
                 chatbox.isVisible = false;
                 chatbox.timer = chatbox.maxTimer;
+                return false;
             }
+            if (key.code == "ArrowUp") {
+                if (sentMessages.length > 0) {
+                    sentMessagesIndex--;
+                    if (sentMessagesIndex == -1) {
+                        chatbox.elt.value = "";
+                    }
+                    if (sentMessagesIndex < -1) {
+                        sentMessagesIndex = sentMessages.length - 1;
+                    }
+                    if (sentMessages[sentMessagesIndex])
+                        chatbox.elt.value = sentMessages[sentMessagesIndex];
+                }
+                return false;
+            }
+            if (key.code == "ArrowDown") {
+                if (sentMessages.length > 0) {
+                    sentMessagesIndex++;
+                    if (sentMessages[sentMessagesIndex])
+                        chatbox.elt.value = sentMessages[sentMessagesIndex];
+                    if (sentMessagesIndex >= sentMessages.length) {
+                        sentMessagesIndex = -1;
+                        chatbox.elt.value = "";
+                    }
+                }
+                return false;
+            }
+            return true;
         }
-        // uncomment to prevent any default behavior
-        // return false;
-    }
 
-    p.mouseReleased = function () {
-        if (editingType)
+        if (key.key == "/") {
+            if (!chatbox.isVisible) {
+                chatbox.elt.value = "";
+                let elt = $(chatbox.elt);
+                elt.show();
+                elt.focus();
+                chatbox.isVisible = true;
+            }
             return;
-        sendMessage("input_mouseReleased", { "mx": p.mouseX, "my": p.mouseY });
+        }
+        if (key.code == "Enter") {
+            chatbox.elt.value = "";
+            let elt = $(chatbox.elt);
+            elt.show();
+            elt.focus();
+            chatbox.isVisible = true;
+            return;
+        }
+        sendMessage("input_keyPressed", key.code);
+        return false;
     }
 
 };

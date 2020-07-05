@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="">
+
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>AutoEP</title>
+	<!-- <link rel="shortcut icon" href="" type="image/x-icon"> -->
+	<link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
+	<style>
+		body {
+			background-color: #121F30;
+		}
+	</style>
+	<script src="../lib/jquery.min.js"></script>
+	<script src="../lib/p5.min.js"></script>
+	<script src="../lib/snippets.js"></script>
+	<script>
+		var width = 100;
+		var height = 100;
+
+		function setup() {
+
+			var canvas = createCanvas(100, 100);
+			canvas.parent('sketch-holder');
+			noLoop();
+
+			redraw();
+		}
+
+		function draw() {
+			background(0, 0, 0, 0);
+			loadPixels();
+			var color = '#c7d92c'; // A nice shade of green.
+			var r = parseInt(color.substr(1, 2), 16); // Grab the hex representation of red (chars 1-2) and convert to decimal (base 10).
+			var g = parseInt(color.substr(3, 2), 16);
+			var b = parseInt(color.substr(5, 2), 16);
+			for (let x = 0; x < width; x++) {
+				pixels[x] = x * 10;
+				console.log(pixels[x]);
+			}
+			updatePixels();
+		}
+
+		
+	</script>
+</head>
+
+<body>
+	<div id="sketch-holder">
+	</div>
+</body>
+
+</html>
