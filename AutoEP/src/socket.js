@@ -6,8 +6,9 @@ function connect(address, username, password) {
     try {
         disconnectReason = "Failed to connect!";
         if (!address.includes(":"))
-            address += ":64047";
-        socket = new WebSocket("ws://" + address + "/" + username);
+            address += ":443";
+        let serveraddress = "ws://" + address + "/" + username;
+        socket = new WebSocket(serveraddress);
     } catch (ex) {
         onDisconnect();
     }
