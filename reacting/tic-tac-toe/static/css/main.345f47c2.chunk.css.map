@@ -1,0 +1,1 @@
+{"version":3,"sources":["webpack://src/index.css"],"names":[],"mappings":"AAAA,WACI,YACJ,CACA,QACI,QAAS,CACT,UAAW,CACX,WACJ","file":"main.345f47c2.chunk.css","sourcesContent":[".board-row{\r\n    display: flex;\r\n}\r\n.square{\r\n    margin: 0;\r\n    width: 32px;\r\n    height: 32px;\r\n}"]}
