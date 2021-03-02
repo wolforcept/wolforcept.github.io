@@ -1,2 +1,4 @@
 AutoEP/dist/making_dist
 external
+bege/node_modules/*
+bege/dist.bat
