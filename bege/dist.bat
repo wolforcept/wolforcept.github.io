@@ -1,0 +1,1 @@
+uglifyjs .\src\*.js > .\dist\bege.js
