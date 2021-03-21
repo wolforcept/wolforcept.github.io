@@ -1,15 +1,61 @@
 <html>
-    <head>
-    </head>
 
-    <body>
-        <img src="game1/1.gif">
-        <img src="game1/2.gif">
-        <img src="game1/3.gif">
-        <img src="game1/4.gif">
-        <img src="game1/5.gif">
-        <img src="game1/6.gif">
-        <img src="game1/7.gif">
-        <img src="game1/8.gif">
-    </body>
+<head>
+    <title>GarticFun</title>
+
+    <script src="../lib/jquery.min.js"></script>
+
+    <script>
+        var games = [
+            { nImgs: 8, description: `20 Mar 2021<br>O Perna de Pau era o rafa, o chulé era o sá, e o "coolnickname" achamos que é o Gui.` },
+            { nImgs: 6, description: `20 Mar 2021<br>Convencemos todas as pessoas a meter um nome perceptível kekw. O pedro fugiu.` }
+        ];
+
+        $(() => {
+            let body = $("body");
+            games.forEach((game, _i) => {
+                let i = _i + 1;
+                body.append($(`<button onclick="buttonclick(${i})">Game ${i}</button>`));
+            });
+
+            body.append($(`<br><br>`));
+
+            games.forEach(({ nImgs, description }, _i) => {
+                let i = _i + 1;
+                let gamesDiv = $(`<div id="game${i}" class="game" style="display: none;">`);
+                body.append(gamesDiv);
+                gamesDiv.append($(`<p>${description}</p>`));
+
+                for (let j = 1; j <= nImgs; j++) {
+                    gamesDiv.append(`<img src="game${i}/${j}.gif"><br>`);
+                }
+            })
+
+        });
+
+        function buttonclick(id) {
+
+            [1, 2].forEach(i => {
+                if (i != id)
+                    $("#game" + i).hide();
+            });
+            $("#game" + id).show();
+        }
+    </script>
+
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Lato&display=swap');
+
+        * {
+            font-family: 'Lato', sans-serif;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Gartic Fun</h1>
+
+
+</body>
+
 </html>
