@@ -1,6 +1,7 @@
 var autoconnect;
 var address;
 var username;
+var p5realinstance;
 
 $(document).ready(async function () {
     // await new Promise(resolve => setTimeout(resolve, 1000));
@@ -108,7 +109,7 @@ function resetTextFailed() {
 
 function onConnected() {
 
-    new p5(p5instance, 'p5container');
+    p5realinstance = new p5(p5instance, 'p5container');
 
     reloadTypes();
 

@@ -80,11 +80,16 @@ var p5instance = function (p) {
         if (gamestate.objs) {
             gamestate.objs.forEach(obj => {
                 // p.color(obj.color ? obj.color : p.color(255, 255, 255))
-
-                p.stroke(hitboxColor);
-                p.strokeWeight(01);
-                p.noFill();
-                p.rect(screenx + obj.x - obj.w / 2, screeny + obj.y - obj.h / 2, obj.w, obj.h)
+                let xx = screenx + obj.x - obj.w / 2;
+                let yy = screeny + obj.y - obj.h / 2;
+                if (obj.img && assets[obj.img]) {
+                    p.image(assets[obj.img], xx, yy, obj.w, obj.h)
+                } else {
+                    p.stroke(hitboxColor);
+                    p.strokeWeight(01);
+                    p.noFill();
+                    p.rect(xx, yy, obj.w, obj.h)
+                }
             });
         }
         if (chatbox.isVisible || chatbox.timer > 0) {
