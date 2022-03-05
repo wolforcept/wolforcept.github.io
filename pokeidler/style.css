@@ -1,0 +1,140 @@
+@font-face {
+    font-family: pokemon_pixel_font;
+    src: url('pokemon_pixel_font.otf');
+}
+
+* {
+    font-family: pokemon_pixel_font;
+    -webkit-user-select: none !important;
+    -moz-user-select: none !important;
+    -ms-user-select: none !important;
+    user-select: none !important;
+    -webkit-touch-callout: none !important;
+}
+
+img {
+    image-rendering: -webkit-optimize-contrast;
+    image-rendering: optimizeSpeed;
+    image-rendering: -moz-crisp-edges;
+    image-rendering: -webkit-optimize-contrast;
+    image-rendering: -o-crisp-edges;
+    image-rendering: pixelated;
+    -ms-interpolation-mode: nearest-neighbor;
+}
+
+.container {
+    max-width: 100%;
+}
+
+.alert {
+    font-size: 1.5em;
+    position: fixed;
+    z-index: 100;
+    top: 16px;
+    right: 16px;
+}
+
+#sidebar a {
+    font-size: 24px !important;
+}
+
+#sidebar h3 {
+    font-size: 32px !important;
+}
+
+#sidebar h3 img {
+    width: 32px;
+    transform: translateY(-2px);
+}
+
+#sidebar ul li a {
+    margin: 0;
+    padding: 8px;
+}
+
+#sidebar li {
+    cursor: pointer;
+}
+
+#sidebar li img {
+    width: 32px;
+    margin-right: 16px;
+}
+
+#content {
+    background-color: #4b535c;
+    /* padding: 10px; */
+}
+
+.TeamView .card-deck {
+    margin: 20px 0 0 0;
+    width: 100%;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+}
+
+.TeamView .row {
+    margin-bottom: 20px;
+}
+
+.TeamView #HeldPokemon {
+    position: fixed;
+    top: 0;
+    left: 0;
+    background-image: url(../img/reflection.png);
+    background-repeat: no-repeat;
+    width: 195px;
+    pointer-events: none;
+    left: -1000px;
+    top: -1000px;
+}
+
+.PokemonView {
+    border-radius: 16px;
+    background-color: #a9b1b3;
+    background-color: rgba(255, 255, 255, 0.781);
+    padding: 0;
+    box-sizing: content-box;
+    width: 200px;
+    max-width: 200px;
+    min-width: 200px;
+}
+
+.PokemonView h4 {
+    font-size: 24px;
+    text-align: center;
+    margin: 0;
+}
+
+.PokemonView .tab {
+    padding: 0 10px;
+    margin: 0 2px;
+}
+
+.PokemonView .card-body {
+    padding: 10px;
+}
+
+.HealthBar {
+    height: 16px;
+    border-radius: 10px;
+    overflow: hidden;
+    padding: 0;
+    border: #00000077 solid 1px;
+    box-sizing: content-box;
+}
+
+.HealthBar .bar {
+    color: white;
+    display: inline;
+    float: left;
+    transform: translateY(-6px);
+    padding-left: 6px;
+    font-size: 16px;
+    text-align: left;
+    text-shadow: -1px 1px 0 rgba(0, 0, 0, 0.2),
+        1px 1px 0 rgba(0, 0, 0, 0.2),
+        1px -1px 0 rgba(0, 0, 0, 0.2),
+        -1px -1px 0 rgba(0, 0, 0, 0.2);
+}
