@@ -12,6 +12,30 @@
     -webkit-touch-callout: none !important;
 }
 
+body {
+    background-image: url("background.png");
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+
+    image-rendering: -webkit-optimize-contrast;
+    image-rendering: optimizeSpeed;
+    image-rendering: -moz-crisp-edges;
+    image-rendering: -webkit-optimize-contrast;
+    image-rendering: -o-crisp-edges;
+    image-rendering: pixelated;
+    -ms-interpolation-mode: nearest-neighbor;
+}
+
+header {
+    text-align: center;
+}
+
+h1 {
+    color: white;
+    background-color: #00000060;
+}
+
 img {
     image-rendering: -webkit-optimize-contrast;
     image-rendering: optimizeSpeed;
@@ -20,6 +44,39 @@ img {
     image-rendering: -o-crisp-edges;
     image-rendering: pixelated;
     -ms-interpolation-mode: nearest-neighbor;
+}
+
+canvas {
+    image-rendering: -webkit-optimize-contrast;
+    image-rendering: optimizeSpeed;
+    image-rendering: -moz-crisp-edges;
+    image-rendering: -webkit-optimize-contrast;
+    image-rendering: -o-crisp-edges;
+    image-rendering: pixelated;
+    -ms-interpolation-mode: nearest-neighbor;
+
+    /* border: black solid 3px  ; */
+    border-radius: 15px;
+    margin: auto;
+}
+
+input {
+    background-color: #b2b7be !important;
+    color: #35373a !important;
+    font-size: 24px !important;
+}
+
+::placeholder {
+    color: #878b90 !important;
+    opacity: 1;
+}
+
+:-ms-input-placeholder {
+    color: #878b90 !important;
+}
+
+::-ms-input-placeholder {
+    color: #878b90 !important;
 }
 
 .container {
@@ -34,6 +91,36 @@ img {
     right: 16px;
 }
 
+.btn {
+    border-radius: 16px;
+    padding: 0 10px;
+}
+
+.dropdown.btn-primary {
+    display: inline-block;
+    border-radius: 4px;
+    padding: 0;
+}
+
+.dropdown.btn-primary button {
+    color: white !important;
+    padding: 0 16px 0 4px;
+}
+
+.dropdown.btn-primary ::after{
+    margin-right: 4px;
+}
+
+#sidebar #sidebarCollapse {
+    background-color: #a9b1b3;
+    border: 0;
+    border-radius: 10px;
+    padding: 0 8 0 0;
+    line-height: 32px;
+    width: 32px;
+    height: 32px;
+}
+
 #sidebar a {
     font-size: 24px !important;
 }
@@ -43,7 +130,6 @@ img {
 }
 
 #sidebar h3 img {
-    width: 32px;
     transform: translateY(-2px);
 }
 
@@ -57,17 +143,16 @@ img {
 }
 
 #sidebar li img {
-    width: 32px;
     margin-right: 16px;
 }
 
-#content {
-    background-color: #4b535c;
-    /* padding: 10px; */
+#sidebar .active {
+    background-color: #4b535c !important;
 }
 
-.TeamView .card-deck {
-    margin: 20px 0 0 0;
+.card-deck {
+    margin: 0;
+    padding: 20px 0 0 0;
     width: 100%;
     text-align: center;
     display: flex;
@@ -92,13 +177,42 @@ img {
 
 .PokemonView {
     border-radius: 16px;
-    background-color: #a9b1b3;
     background-color: rgba(255, 255, 255, 0.781);
-    padding: 0;
     box-sizing: content-box;
+    padding: 0;
     width: 200px;
     max-width: 200px;
     min-width: 200px;
+}
+
+.PokemonView img{
+   width: 192px;
+   margin: auto;
+}
+
+.PokemonView .card-body{
+    padding: 0 10px 10px 10px;
+ }
+ 
+.PokemonView ::-webkit-scrollbar {
+    width: 4px;
+}
+
+/* Track */
+.PokemonView ::-webkit-scrollbar-track {
+    box-shadow: inset 0 0 4px #555555; 
+    border-radius: 10px;
+}
+
+/* Handle */
+.PokemonView ::-webkit-scrollbar-thumb {
+    background: #555555; 
+    border-radius: 10px;
+}
+
+/* Handle on hover */
+.PokemonView ::-webkit-scrollbar-thumb:hover {
+    background: white; 
 }
 
 .PokemonView h4 {
@@ -108,12 +222,14 @@ img {
 }
 
 .PokemonView .tab {
-    padding: 0 10px;
+    padding: 0 5px;
     margin: 0 2px;
+    border: 0;
 }
 
-.PokemonView .card-body {
-    padding: 10px;
+.PokemonView .scroll-list {
+    scrollbar-color: rgb(99, 87, 112) rgb(40, 131, 40);
+    scrollbar-width: thin;
 }
 
 .HealthBar {
@@ -126,15 +242,131 @@ img {
 }
 
 .HealthBar .bar {
-    color: white;
     display: inline;
     float: left;
+}
+
+.HealthBar .text {
+    position: absolute;
+    font-size: 16px;
     transform: translateY(-6px);
     padding-left: 6px;
-    font-size: 16px;
+    color: white;
     text-align: left;
     text-shadow: -1px 1px 0 rgba(0, 0, 0, 0.2),
         1px 1px 0 rgba(0, 0, 0, 0.2),
         1px -1px 0 rgba(0, 0, 0, 0.2),
         -1px -1px 0 rgba(0, 0, 0, 0.2);
+}
+
+.RenameModal {
+    position: fixed;
+    left: 0;
+    top: 0;
+    z-index: 10;
+    width: 100%;
+    height: 100%;
+}
+
+.RenameModal {
+    background-color: rgba(0, 0, 0, 0.5);
+    color: white;
+    font-size: 2em;
+}
+
+.RenameModal .modal-dialog {
+    left: 0;
+}
+
+.RenameModal .modal-content {
+    border-radius: 16px;
+}
+
+.RenameModal .modal-header {
+    padding: 0 0 0 16px;
+}
+
+.RenameModal h5 {
+    font-size: 32px;
+    padding: 0;
+    color: white;
+}
+
+.RenameModal .close {
+    margin: -5px 0 0 0;
+}
+
+.RenameModal input {
+    font-size: 32px;
+}
+
+.GymSlotView {
+    margin-bottom: 32px;
+}
+
+.GymSlotView h4{
+    margin: 12px 0 0 0;
+}
+
+.GymSlotView .card {
+    background-color:  rgba(255, 255, 255, 0.781);
+    border-radius: 16px;
+}
+
+.AllSpritesView img{
+    background-color: rgba(255, 255, 255, 0.7);
+    border-radius: 1000px;
+    margin: 5px;
+}
+
+.MapHoverViewWrapper{
+    position: relative;
+}
+
+.MapHoverView {
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 10;
+    color: white;
+    font-size: 20px;
+    background-color: rgba(0, 0, 0, 0.5);
+    padding: 5px 20px;
+    pointer-events:none;
+    margin-bottom: 10px;
+    border-radius: 16px;
+    transform: translateY(-100%);
+}
+
+.EncounterView {
+    background-color: white;
+    padding: 0px 0px;
+    border-radius: 16px;
+    width: 90px;
+    height: 90px;
+    position: relative;
+    margin-bottom: 10px;
+
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+}
+
+.EncounterView img {
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+.EncounterView img.sil {
+    filter: contrast(0%) brightness(0%);
+}
+
+.EncounterView p {
+    width: 100%;
+    font-size: 20px;
+    text-align: center;
+    padding: 10px 0 0 0;
+    color: black;
 }
