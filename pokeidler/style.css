@@ -177,7 +177,7 @@ input {
 
 .PokemonView {
     border-radius: 16px;
-    background-color: rgba(255, 255, 255, 0.781);
+    background-color: #FFFFFFAA;
     box-sizing: content-box;
     padding: 0;
     width: 200px;
@@ -228,7 +228,7 @@ input {
 }
 
 .PokemonView .scroll-list {
-    scrollbar-color: rgb(99, 87, 112) rgb(40, 131, 40);
+    scrollbar-color: rgb(99, 87, 112) rgb(0, 0, 0);
     scrollbar-width: thin;
 }
 
@@ -309,7 +309,7 @@ input {
 }
 
 .GymSlotView .card {
-    background-color:  rgba(255, 255, 255, 0.781);
+    background-color:  #FFFFFFAA;
     border-radius: 16px;
 }
 
@@ -330,7 +330,7 @@ input {
     z-index: 10;
     color: white;
     font-size: 20px;
-    background-color: rgba(0, 0, 0, 0.5);
+    background-color: #000000AA;
     padding: 5px 20px;
     pointer-events:none;
     margin-bottom: 10px;
@@ -339,7 +339,7 @@ input {
 }
 
 .EncounterView {
-    background-color: white;
+    background-color: #FFFFFF77;
     padding: 0px 0px;
     border-radius: 16px;
     width: 90px;

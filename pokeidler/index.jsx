@@ -23,6 +23,7 @@ document.addEventListener('contextmenu', event => event.preventDefault());
 const IMG_LOGO = "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/poke-ball.png"
 const IMG_RENAME = "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/key-to-room-1.png"
 const IMG_RELEASE = "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/destiny-knot.png"
+
 const PAGES = [
     { name: "team", title: "Party", img: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/rare-candy.png" },
     { name: "gym", title: "Gym", img: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/lucky-punch.png" },
@@ -30,101 +31,51 @@ const PAGES = [
     { name: "allsprites", title: "All Sprites", img: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/ghost-memory.png" },
     { name: "settings", title: "Settings", img: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/scanner.png" },
 ]
+
 const ALL_SPRITES = [
     "ability-capsule.png", "ability-urge.png", "abomasite.png", "absolite.png", "absorb-bulb.png", "acro-bike.png", "adamant-orb.png", "adrenaline-orb.png", "adventure-rules.png", "aerodactylite.png", "aggronite.png", "aguav-berry.png", "air-balloon.png", "air-mail.png", "alakazite.png", "aloraichium-z--bag.png", "aloraichium-z--held.png", "altarianite.png", "amaze-mulch.png", "ampharosite.png", "amulet-coin.png", "antidote.png", "apicot-berry.png", "apricorn-box.png", "aqua-suit.png", "armor-fossil.png", "aspear-berry.png", "assault-vest.png", "audinite.png", "auroraticket.png", "awakening.png", "azure-flute.png", "babiri-berry.png", "balm-mushroom.png", "banettite.png", "basement-key--goldenrod.png", "basement-key--new-mauville.png", "basement-key.png", "bead-mail.png", "beast-ball.png", "beedrillite.png", "belue-berry.png", "berry-juice.png", "berry-pots.png", "berry-pouch.png", "bicycle-turquoise.png", "bicycle-yellow.png", "bicycle.png", "big-malasada.png", "big-mushroom.png", "big-nugget.png", "big-pearl.png", "big-root.png", "bike--green.png", "bike--yellow.png", "bike-voucher.png", "binding-band.png", "black-apricorn.png", "black-belt.png", "black-flute.png", "black-glasses.png", "black-sludge.png", "blastoisinite.png", "blazikenite.png", "bloom-mail.png", "blue-apricorn.png", "blue-card.png", "blue-flute.png", "blue-orb.png", "blue-petal.png", "blue-scarf.png", "blue-shard.png", "bluk-berry.png", "boost-mulch.png", "bottle-cap.png", "brick-mail.png", "bridge-mail-d.png", "bridge-mail-m.png", "bridge-mail-s.png", "bridge-mail-t.png", "bridge-mail-v.png", "bright-powder.png", "bubble-mail.png", "bug-gem.png", "bug-memory.png", "buginium-z--bag.png", "buginium-z--held.png", "burn-drive.png", "burn-heal.png", "calcium.png", "cameruptite.png", "carbos.png", "card-key.png", "casteliacone.png", "cell-battery.png", "charcoal.png", "charizardite-x.png", "charizardite-y.png", "charti-berry.png", "cheri-berry.png", "cherish-ball.png", "chesto-berry.png", "chilan-berry.png", "chill-drive.png", "choice-band.png", "choice-scarf.png", "choice-specs.png", "chople-berry.png", "claw-fossil.png", "cleanse-tag.png", "clear-bell.png", "clever-wing.png", "coba-berry.png", "coin-case.png", "colbur-berry.png", "colress-machine.png", "comet-shard.png", "common-stone.png", "contest-costume--dress.png", "contest-costume--jacket.png", "contest-pass.png", "cornn-berry.png", "coupon-1.png", "coupon-2.png", "coupon-3.png", "cover-fossil.png", "custap-berry.png", "damp-mulch.png", "damp-rock.png", "dark-gem.png", "dark-memory.png", "dark-stone.png", "darkinium-z--bag.png", "darkinium-z--held.png", "data-card-01.png", "data-card-02.png", "data-card-03.png", "data-card-04.png", "data-card-05.png", "data-card-06.png", "data-card-07.png", "data-card-08.png", "data-card-09.png", "data-card-10.png", "data-card-11.png", "data-card-12.png", "data-card-13.png", "data-card-14.png", "data-card-15.png", "data-card-16.png", "data-card-17.png", "data-card-18.png", "data-card-19.png", "data-card-20.png", "data-card-21.png", "data-card-22.png", "data-card-23.png", "data-card-24.png", "data-card-25.png", "data-card-26.png", "data-card-27.png", "data-card.png", "dawn-stone.png", "decidium-z--bag.png", "decidium-z--held.png", "deep-sea-scale.png", "deep-sea-tooth.png", "destiny-knot.png", "devon-goods.png", "devon-parts.png", "devon-scope.png", "devon-scuba-gear.png", "diancite.png", "dire-hit-2.png", "dire-hit-3.png", "dire-hit.png", "discount-coupon.png", "dive-ball.png", "dna-splicers--merge.png", "dna-splicers--split.png", "dna-splicers.png", "dome-fossil.png", "douse-drive.png", "dowsing-machine.png", "draco-plate.png", "dragon-fang.png", "dragon-gem.png", "dragon-memory.png", "dragon-scale.png", "dragon-skull.png", "dragonium-z--bag.png", "dragonium-z--held.png", "dread-plate.png", "dream-ball.png", "dream-mail.png", "dropped-item--red.png", "dropped-item--yellow.png", "dropped-item-red.png", "dropped-item-yellow.png", "dropped-item.png", "dubious-disc.png", "durin-berry.png", "dusk-ball.png", "dusk-stone.png", "earth-plate.png", "eevium-z--bag.png", "eevium-z--held.png", "eject-button.png", "electirizer.png", "electric-gem.png", "electric-memory.png", "electric-seed.png", "electrium-z--bag.png", "electrium-z--held.png", "elevator-key.png", "elixir.png", "energy-powder.png", "energy-root.png", "enigma-berry.png", "enigma-stone.png", "enigmatic-card.png", "eon-flute.png", "eon-ticket.png", "escape-rope.png", "ether.png", "everstone.png", "eviolite.png", "exp-share.png", "expert-belt.png", "explorer-kit.png", "fab-mail.png", "fairium-z--bag.png", "fairium-z--held.png", "fairy-gem.png", "fairy-memory.png", "fame-checker.png", "fashion-case.png", "fast-ball.png", "favored-mail.png", "festival-ticket.png", "fighting-gem.png", "fighting-memory.png", "fightinium-z--bag.png", "fightinium-z--held.png", "figy-berry.png", "fire-gem.png", "fire-memory.png", "fire-stone.png", "firium-z--bag.png", "firium-z--held.png", "fishing-rod.png", "fist-plate.png", "flame-mail.png", "flame-orb.png", "flame-plate.png", "float-stone.png", "fluffy-tail.png", "flying-gem.png", "flying-memory.png", "flyinium-z--bag.png", "flyinium-z--held.png", "focus-band.png", "focus-sash.png", "forage-bag.png", "fresh-water.png", "friend-ball.png", "full-heal.png", "full-incense.png", "full-restore.png", "galactic-key.png", "galladite.png", "ganlon-berry.png", "garchompite.png", "gardevoirite.png", "gb-sounds.png", "gengarite.png", "genius-wing.png", "ghost-gem.png", "ghost-memory.png", "ghostium-z--bag.png", "ghostium-z--held.png", "glalitite.png", "glitter-mail.png", "go-goggles.png", "god-stone.png", "gold-bottle-cap.png", "gold-teeth.png", "good-rod.png", "gooey-mulch.png", "gracidea.png", "gram-1.png", "gram-2.png", "gram-3.png", "grass-gem.png", "grass-mail.png", "grass-memory.png", "grassium-z--bag.png", "grassium-z--held.png", "grassy-seed.png", "great-ball.png", "green-apricorn.png", "green-petal.png", "green-scarf.png", "green-shard.png", "greet-mail.png", "grepa-berry.png", "grip-claw.png", "griseous-orb.png", "ground-gem.png", "ground-memory.png", "groundium-z--bag.png", "groundium-z--held.png", "growth-mulch.png", "grubby-hanky.png", "guard-spec.png", "gyaradosite.png", "haban-berry.png", "harbor-mail.png", "hard-stone.png", "heal-ball.png", "heal-powder.png", "health-wing.png", "heart-mail.png", "heart-scale.png", "heat-rock.png", "heavy-ball.png", "helix-fossil.png", "heracronite.png", "hm-fighting.png", "hm-flying.png", "hm-normal.png", "hm-water.png", "hm01.png", "hm02.png", "hm03.png", "hm04.png", "hm05.png", "hm06.png", "hm07.png", "holo-caster--green.png", "holo-caster--red.png", "holo-caster-green.png", "holo-caster-red.png", "holo-caster.png", "hondew-berry.png", "honey.png", "honor-of-kalos.png", "houndoominite.png", "hp-up.png", "hyper-potion.png", "iapapa-berry.png", "ice-gem.png", "ice-heal.png", "ice-memory.png", "ice-stone.png", "icicle-plate.png", "icium-z--bag.png", "icium-z--held.png", "icy-rock.png", "ilimas-normalium-z.png", "incinium-z--bag.png", "incinium-z--held.png", "inquiry-mail.png", "insect-plate.png", "intriguing-stone.png", "iron-ball.png", "iron-plate.png", "iron.png", "item-drop.png", "item-urge.png", "jaboca-berry.png", "jade-orb.png", "jaw-fossil.png", "journal.png", "kangaskhanite.png", "kasib-berry.png", "kebia-berry.png", "kee-berry.png", "kelpsy-berry.png", "key-stone.png", "key-to-room-1.png", "key-to-room-2.png", "key-to-room-4.png", "key-to-room-6.png", "kings-rock.png", "kommonium-z--bag.png", "kommonium-z--held.png", "lagging-tail.png", "lansat-berry.png", "latiasite.png", "latiosite.png", "lava-cookie.png", "lax-incense.png", "leaf-stone.png", "left-poke-ball.png", "leftovers.png", "lemonade.png", "lens-case.png", "leppa-berry.png", "letter.png", "level-ball.png", "liberty-pass.png", "liechi-berry.png", "life-orb.png", "lift-key.png", "light-ball.png", "light-clay.png", "light-stone.png", "like-mail.png", "lock-capsule.png", "looker-ticket.png", "loot-sack.png", "lopunnite.png", "lost-item.png", "love-ball.png", "lucarionite.png", "luck-incense.png", "lucky-egg.png", "lucky-punch.png", "lum-berry.png", "luminous-moss.png", "lumiose-galette.png", "lunalium-z--bag.png", "lunalium-z--held.png", "lunar-wing.png", "lure-ball.png", "lustrous-orb.png", "luxury-ball.png", "lycanium-z--bag.png", "lycanium-z--held.png", "mach-bike.png", "machine-part.png", "macho-brace.png", "magma-emblem.png", "magma-stone.png", "magma-suit.png", "magmarizer.png", "magnet.png", "mago-berry.png", "magost-berry.png", "makeup-bag.png", "manectite.png", "maranga-berry.png", "marshadium-z--bag.png", "marshadium-z--held.png", "master-ball.png", "mawilite.png", "max-elixir.png", "max-ether.png", "max-potion.png", "max-repel.png", "max-revive.png", "meadow-plate.png", "mech-mail.png", "medal-box.png", "medichamite.png", "mega-anchor.png", "mega-anklet.png", "mega-bracelet.png", "mega-charm.png", "mega-cuff.png", "mega-glasses.png", "mega-glove.png", "mega-pendant.png", "mega-ring.png", "mega-stickpin.png", "mega-tiara.png", "member-card.png", "mental-herb.png", "metagrossite.png", "metal-coat.png", "metal-powder.png", "meteorite--2.png", "meteorite--3.png", "meteorite--4.png", "meteorite-shard.png", "meteorite.png", "metronome.png", "mewnium-z--bag.png", "mewnium-z--held.png", "mewtwonite-x.png", "mewtwonite-y.png", "micle-berry.png", "mimikium-z--bag.png", "mimikium-z--held.png", "mind-plate.png", "miracle-seed.png", "misty-seed.png", "moomoo-milk.png", "moon-ball.png", "moon-flute.png", "moon-stone.png", "mosaic-mail.png", "muscle-band.png", "muscle-wing.png", "mystery-egg.png", "mystic-water.png", "mysticticket.png", "n-lunarizer--merge.png", "n-lunarizer--split.png", "n-solarizer--merge.png", "n-solarizer--split.png", "nanab-berry.png", "nest-ball.png", "net-ball.png", "never-melt-ice.png", "nomel-berry.png", "normal-gem.png", "normalium-z--bag.png", "normalium-z--held.png", "nugget.png", "oaks-letter.png", "oaks-parcel.png", "occa-berry.png", "odd-incense.png", "odd-keystone.png", "old-amber.png", "old-charm.png", "old-gateau.png", "old-rod.png", "old-sea-map.png", "oran-berry.png", "orange-mail.png", "orange-petal.png", "oval-charm.png", "oval-stone.png", "pair-of-tickets.png", "pal-pad.png", "pamtre-berry.png", "paralyze-heal.png", "parcel.png", "park-ball.png", "pass-orb.png", "pass.png", "passho-berry.png", "payapa-berry.png", "pearl-string.png", "pearl.png", "pecha-berry.png", "permit.png", "persim-berry.png", "petaya-berry.png", "photo-album.png", "pidgeotite.png", "pikanium-z--bag.png", "pikanium-z--held.png", "pikashunium-z--bag.png", "pikashunium-z--held.png", "pinap-berry.png", "pink-apricorn.png", "pink-nectar.png", "pink-petal.png", "pink-scarf.png", "pinsirite.png", "pixie-plate.png", "plasma-card.png", "plume-fossil.png", "poffin-case.png", "point-card.png", "poison-barb.png", "poison-gem.png", "poison-memory.png", "poisonium-z--bag.png", "poisonium-z--held.png", "poke-ball.png", "poke-doll.png", "poke-flute.png", "poke-radar.png", "poke-toy.png", "pokeblock-case.png", "pokeblock-kit.png", "pomeg-berry.png", "potion.png", "powder-jar.png", "power-anklet.png", "power-band.png", "power-belt.png", "power-bracer.png", "power-herb.png", "power-lens.png", "power-plant-pass.png", "power-weight.png", "pp-max.png", "pp-up.png", "premier-ball.png", "pretty-wing.png", "primarium-z--bag.png", "primarium-z--held.png", "prism-scale.png", "prison-bottle.png", "professors-mask.png", "profs-letter.png", "prop-case.png", "protective-pads.png", "protector.png", "protein.png", "psychic-gem.png", "psychic-memory.png", "psychic-seed.png", "psychium-z--bag.png", "psychium-z--held.png", "pure-incense.png", "purple-nectar.png", "purple-petal.png", "qualot-berry.png", "quick-ball.png", "quick-claw.png", "quick-powder.png", "rabuta-berry.png", "rage-candy-bar.png", "rainbow-flower.png", "rainbow-pass.png", "rainbow-wing.png", "rare-bone.png", "rare-candy.png", "rawst-berry.png", "razor-claw.png", "razor-fang.png", "razz-berry.png", "reaper-cloth.png", "red-apricorn.png", "red-card.png", "red-chain.png", "red-flute.png", "red-nectar.png", "red-orb.png", "red-petal.png", "red-scale.png", "red-scarf.png", "red-shard.png", "relic-band.png", "relic-copper.png", "relic-crown.png", "relic-gold.png", "relic-silver.png", "relic-statue.png", "relic-vase.png", "repeat-ball.png", "repel.png", "reply-mail.png", "reset-urge.png", "resist-wing.png", "retro-mail.png", "reveal-glass.png", "revival-herb.png", "revive.png", "rich-mulch.png", "ride-pager.png", "rindo-berry.png", "ring-target.png", "rm-1-key.png", "rm-2-key.png", "rm-4-key.png", "rm-6-key.png", "rock-gem.png", "rock-incense.png", "rock-memory.png", "rockium-z--bag.png", "rockium-z--held.png", "rocky-helmet.png", "roller-skates.png", "root-fossil.png", "rose-incense.png", "roseli-berry.png", "roto-bargain.png", "roto-boost.png", "roto-catch.png", "roto-encounter.png", "roto-exp-points.png", "roto-friendship.png", "roto-hatch.png", "roto-hp-restore.png", "roto-pp-restore.png", "roto-prize-money.png", "roto-stealth.png", "rowap-berry.png", "rsvp-mail.png", "ruby.png", "rule-book.png", "sablenite.png", "sachet.png", "sacred-ash.png", "safari-ball.png", "safety-goggles.png", "sail-fossil.png", "salac-berry.png", "salamencite.png", "sapphire.png", "scanner.png", "sceptilite.png", "scizorite.png", "scope-lens.png", "sea-incense.png", "seal-bag.png", "seal-case.png", "secret-key.png", "secret-potion.png", "shadow-mail.png", "shalour-sable.png", "sharp-beak.png", "sharpedonite.png", "shed-shell.png", "shell-bell.png", "shiny-charm.png", "shiny-stone.png", "shoal-salt.png", "shoal-shell.png", "shock-drive.png", "shuca-berry.png", "silk-scarf.png", "silph-scope.png", "silver-powder.png", "silver-wing.png", "sitrus-berry.png", "skull-fossil.png", "sky-plate.png", "slowbronite.png", "slowpoke-tail.png", "smoke-ball.png", "smooth-rock.png", "snorlium-z--bag.png", "snorlium-z--held.png", "snow-mail.png", "snowball.png", "soda-pop.png", "soft-sand.png", "solganium-z--bag.png", "solganium-z--held.png", "soot-sack.png", "soothe-bell.png", "soul-dew.png", "space-mail.png", "sparkling-stone.png", "spell-tag.png", "spelon-berry.png", "splash-plate.png", "spooky-plate.png", "sport-ball.png", "sprayduck.png", "sprinklotad.png", "squirt-bottle.png", "ss-ticket--hoenn.png", "ss-ticket.png", "stable-mulch.png", "star-piece.png", "stardust.png", "starf-berry.png", "steel-gem.png", "steel-mail.png", "steel-memory.png", "steelium-z--bag.png", "steelium-z--held.png", "steelixite.png", "stick.png", "sticky-barb.png", "stone-plate.png", "storage-key--galactic-warehouse.png", "storage-key--sea-mauville.png", "storage-key.png", "strange-souvenir.png", "suite-key.png", "sun-flute.png", "sun-stone.png", "super-potion.png", "super-repel.png", "super-rod.png", "surge-badge.png", "surprise-mulch.png", "swampertite.png", "sweet-heart.png", "swift-wing.png", "tamato-berry.png", "tanga-berry.png", "tapunium-z--bag.png", "tapunium-z--held.png", "tea.png", "teachy-tv.png", "terrain-extender.png", "thanks-mail.png", "thick-club.png", "thunder-stone.png", "tidal-bell.png", "timer-ball.png", "tiny-mushroom.png", "tm-bug.png", "tm-case.png", "tm-dark.png", "tm-dragon.png", "tm-electric.png", "tm-fairy.png", "tm-fighting.png", "tm-fire.png", "tm-flying.png", "tm-ghost.png", "tm-grass.png", "tm-ground.png", "tm-ice.png", "tm-normal.png", "tm-poison.png", "tm-psychic.png", "tm-rock.png", "tm-steel.png", "tm-water.png", "tmv-pass.png", "town-map.png", "toxic-orb.png", "toxic-plate.png", "travel-trunk-gold.png", "travel-trunk-silver.png", "travel-trunk.png", "tri-pass.png", "tropic-mail.png", "tunnel-mail.png", "twisted-spoon.png", "tyranitarite.png", "ultra-ball.png", "ultranecrozium-z--bag.png", "ultranecrozium-z--held.png", "unknown.png", "unown-report.png", "up-grade.png", "venusaurite.png", "vs-recorder.png", "vs-seeker.png", "wacan-berry.png", "wailmer-pail.png", "water-gem.png", "water-memory.png", "water-stone.png", "waterium-z--bag.png", "waterium-z--held.png", "watmel-berry.png", "wave-incense.png", "wave-mail.png", "weakness-policy.png", "wepear-berry.png", "whipped-dream.png", "white-apricorn.png", "white-flute.png", "white-herb.png", "wide-lens.png", "wiki-berry.png", "wise-glasses.png", "wood-mail.png", "works-key.png", "x-accuracy-2.png", "x-accuracy-3.png", "x-accuracy-6.png", "x-accuracy.png", "x-attack-2.png", "x-attack-3.png", "x-attack-6.png", "x-attack.png", "x-defense-2.png", "x-defense-3.png", "x-defense-6.png", "x-defense.png", "x-sp-atk-2.png", "x-sp-atk-3.png", "x-sp-atk-6.png", "x-sp-atk.png", "x-sp-def-2.png", "x-sp-def-3.png", "x-sp-def-6.png", "x-sp-def.png", "x-speed-2.png", "x-speed-3.png", "x-speed-6.png", "x-speed.png", "xtranceiver--red.png", "xtranceiver--yellow.png", "xtransceiver-red.png", "xtransceiver-yellow.png", "xtransceiver.png", "yache-berry.png", "yellow-apricorn.png", "yellow-flute.png", "yellow-nectar.png", "yellow-petal.png", "yellow-scarf.png", "yellow-shard.png", "z-power-ring.png", "z-ring.png", "zap-plate.png", "zinc.png", "zoom-lens.png", "zygarde-cube.png"
 ]
 
-class Region {
-
-    x
-    y
-    w
-    h
-    name
-
-    loaded
-
-    constructor(x, y, w, h, name) {
-        this.x = x
-        this.y = y
-        this.w = w
-        this.h = h
-        this.name = name
-    }
-
-    async load() {
-        console.log("Loading location data from loadstring: \"" + this.name + "\" ")
-        const location = await (await CACHE.fetch('https://pokeapi.co/api/v2/location/' + this.name)).json()
-        const areas = await Promise.all(
-            location.areas.map((_area) =>
-                (
-                    async function () {
-                        const area = await (await CACHE.fetch(_area.url)).json()
-                        delete area.game_indices
-                        return area
-                    }
-                )()
-            )
-        )
-        let encounters = []
-        areas.forEach(area => {
-            area.pokemon_encounters.forEach(encounter => {
-                encounters.push(encounter)
-            })
-        })
-        encounters = await Promise.all(
-            encounters.map((_enc) =>
-                (
-                    async function () {
-                        const pokemon = await (await CACHE.fetch(_enc.pokemon.url)).json()
-                        delete pokemon.abilities
-                        delete pokemon.game_indices
-                        delete pokemon.moves
-                        const species = await (await CACHE.fetch(pokemon.species.url)).json()
-                        return { ..._enc, pokemon: { ...pokemon, species } }
-                    }
-                )()
-            )
-        )
-        this.loaded = { location, areas, encounters }
-    }
-
-    getTitle() {
-        if (!this.loaded) return null
-        return this.loaded.location.names.find(x => x.language.name == 'en').name
-    }
-
-    getEncounters() {
-        if (!this.loaded) return []
-        return this.loaded.encounters
-    }
-}
-
 const REGIONS = [
     // kanto
     new Region(1816, 1660, 32, 32, "pallet-town"),
-    new Region(1816, 1600, 32, 55, "kanto-route-1"),
-    new Region(1816, 1490, 32, 72, "kanto-route-2"),
-    new Region(1816, 1438, 32, 49, "viridian-forest"),
     new Region(1816, 1565, 32, 32, "viridian-city"),
     new Region(1816, 1403, 32, 32, "pewter-city"),
-    new Region(1850, 1405, 157, 32, "kanto-route-3"),
-    new Region(1976, 1372, 32, 32, "mt-moon"),
-    new Region(2010, 1373, 93, 31, "kanto-route-4"),
+    new Region(2168, 1469, 64, 64, "saffron-city"),
+    new Region(2168, 1596, 32, 32, "vermilion-city"),
+    new Region(2016, 1499, 64, 32, "celadon-city"),
+    new Region(2264, 1500, 33, 32, "lavender-town"),
+    new Region(2072, 1723, 32, 32, "fuchsia-city"),
     new Region(2104, 1340, 64, 64, "cerulean-city"),
+    new Region(1816, 1787, 32, 32, "cinnabar-island"),
+    new Region(1816, 1438, 32, 49, "viridian-forest"),
+    new Region(1976, 1372, 32, 32, "mt-moon"),
+    new Region(2264, 1405, 32, 32, "rock-tunnel"),
+    new Region(1816, 1600, 32, 55, "kanto-route-1"),
+    new Region(1816, 1490, 32, 72, "kanto-route-2"),
+    new Region(1850, 1405, 157, 32, "kanto-route-3"),
+    new Region(2010, 1373, 93, 32, "kanto-route-4"),
+    new Region(2169, 1404, 32, 64, "kanto-route-5"),
+    new Region(2168, 1533, 32, 64, "kanto-route-6"),
+    new Region(2082, 1499, 84, 32, "kanto-route-7"),
+    new Region(2233, 1501, 32, 32, "kanto-route-8"),
+    new Region(2212, 1373, 84, 32, "kanto-route-9"),
+    new Region(2264, 1437, 32, 64, "kanto-route-10"),
+    new Region(2201, 1597, 66, 32, "kanto-route-11"),
+    // new Region(, "kanto-route-12"),
+    // new Region(, "kanto-route-13"),
+    // new Region(, "kanto-route-14"),
+    // new Region(, "kanto-route-15"),
+    // new Region(, "kanto-route-16"),
+    // new Region(, "kanto-route-17"),
+    // new Region(, "kanto-route-18"),
+    // new Region(, "kanto-route-19"),
+    // new Region(, "kanto-route-20"),
+    // new Region(, "kanto-route-21"),
+    // new Region(, "kanto-route-22"),
+    // new Region(, "kanto-route-23"),
     new Region(2137, 1309, 32, 32, "kanto-route-24"),
     new Region(2172, 1309, 59, 31, "kanto-route-25"),
-    // new Region(0, 0, 0, 0, ""),
-    // new Region(0, 0, 0, 0, ""),
-    // new Region(0, 0, 0, 0, ""),
-    // new Region(0, 0, 0, 0, ""),
-    // new Region(0, 0, 0, 0, ""),
-    // new Region(0, 0, 0, 0, ""),
-    // new Region(0, 0, 0, 0, ""),
-    // new Region(0, 0, 0, 0, ""),
-    // new Region(0, 0, 0, 0, ""),
-    // new Region(0, 0, 0, 0, ""),
-    // new Region(0, 0, 0, 0, ""),
     // new Region(0, 0, 0, 0, ""),
     new Region(1787, 1565, 25, 30, "kanto-route-22"),
     // johto
@@ -132,260 +83,6 @@ const REGIONS = [
 ]
 REGIONS.forEach(r => r.load())
 
-class Pokemon {
-
-    name
-    loadString
-
-    level = 0
-    health = 0
-    maxHealth = 0
-    energy = 100
-    maxEnergy = 100
-    xp = 0
-    maxXp = 0
-
-    isInGym = false
-    currentMoveName
-    masteries = []
-
-    shiny
-    female
-
-    /** argument can be a load string or another pokemon's data */
-    constructor(loadData) {
-        if (loadData.loadString) {
-            this.loadString = loadData.loadString
-            Object.keys(this).forEach(key => this[key] = loadData[key])
-        } else {
-            this.loadString = loadData
-            this.levelUp()
-        }
-    }
-
-    async load() {
-
-        console.log("Loading pokemon data from loadstring \"" + this.loadString + "\"")
-        const pokemon = await (await CACHE.fetch('https://pokeapi.co/api/v2/pokemon/' + this.loadString)).json()
-        if (!pokemon)
-            throw `error: pokemon ${this.loadString} not found`
-        const moves = await Promise.all(
-            pokemon.moves.map((_move) =>
-                (
-                    async function () {
-                        const move = await (await CACHE.fetch(_move.move.url)).json()
-                        delete move.learned_by_pokemon
-                        move.level = _move.version_group_details[0].level_learned_at
-                        return move
-                    }
-                )()
-            )
-        )
-        const species = await (await CACHE.fetch(pokemon.species.url)).json()
-        const evolutions = await (await CACHE.fetch(species.evolution_chain.url)).json()
-
-        this.loaded = { pokemon, moves, species, evolutions }
-    }
-    getCachedPokemon() { return this.loaded.pokemon }
-    getCachedMoves() { return this.loaded.moves }
-    getCachedSpecies() { return this.loaded.species }
-    getCachedEvolutions() { return this.loaded.evolutions }
-
-    levelUp() {
-        // TODO
-        this.level++
-        this.xp = 0
-        this.maxXp = parseInt(89.37 + .2445 * this.level * this.level, 10)
-        this.maxHealth = parseInt(1247.2 - 274675 / (this.level + 222.373), 10)
-        this.health = this.maxHealth
-    }
-
-    getId() {
-        return this.getCachedPokemon().id
-    }
-
-    getName() {
-        if (this.name)
-            return this.name
-        const species = this.getCachedSpecies()
-        const name = !species ? null : species.names.find(x => x.language.name === "en")
-        return name ? name.name : cap(this.getCachedPokemon().name)
-    }
-
-    setName(name) {
-        this.name = name
-    }
-
-    getTitle() {
-        return `#${this.getId()} ${this.getName()}`
-    }
-
-    getFlavorText() {
-        return this.getCachedSpecies().flavor_text_entries.find(
-            (t) => t.language.name == "en"
-        ).flavor_text.replaceAll('', ' ')
-    }
-
-    getImageSrc(back) {
-        const pokemon = this.getCachedPokemon()
-        const s = (back ? "back" : "front") + (this.shiny ? "_shiny" : "_default") + (this.female ? "_female" : "")
-        return pokemon.sprites[s] ? pokemon.sprites[s] : pokemon.sprites.front_default
-    }
-
-    getMoveList() {
-        return this.getCachedMoves()
-            .sort((a, b) => {
-                if (a.level === b.level)
-                    return a.name > b.name ? 1 : -1
-                return a.level - b.level
-            })
-            .map(x => x.name + ": lv " + x.level)
-    }
-
-    getMoves() {
-        const pokemon = this.getCachedPokemon()
-        const moves = this.getCachedMoves()
-        return pokemon.moves.filter(
-            pkmnMove => pkmnMove.version_group_details.find(_ => true).move_learn_method.name === "level-up"
-                && pkmnMove.version_group_details.find(_ => true).level_learned_at <= this.level
-        ).map(
-            pkmnMove => {
-                return moves.find(move => move.name === pkmnMove.move.name)
-            }
-        ).filter(
-            move => move.power
-        )
-    }
-
-    getCurrentMoveStats() {
-        return this.getMoveStats(this.getCurrentMove())
-    }
-
-    getMoveStats(move) {
-        const accMod = move && move.accuracy ? (100 - move.accuracy) : 1
-        const powMod = move ? move.power / 10 : 1
-        const mastery = this.masteries.find(mastery => mastery.name == move.name)
-        const masteryMod = mastery ? mastery.value : 1
-        return {
-            name: move ? move.name : null,
-            energy: move ? parseInt(move.power / 10, 10) : 1,
-            time: parseInt(accMod * this.level * 1.753, 10),
-            xp: parseInt(1 + masteryMod / 100.0 * powMod * 7.28, 10),
-            mastery: mastery ? mastery.value : 0
-        }
-    }
-
-    getCurrentMove() {
-        return this.getMoves().find(x => x.name && x.name === this.currentMoveName)
-    }
-
-    setCurrentMove(moveName) {
-        console.log("current move: " + moveName)
-        this.currentMoveName = moveName
-        console.log(this.getCurrentMove())
-        DATA.update()
-    }
-
-    gainXp(n) {
-        this.xp += n
-        if (this.xp >= this.maxXp) {
-            const diff = this.xp - this.maxXp
-            this.levelUp()
-            this.gainXp(diff)
-        }
-    }
-
-    canTrain() {
-        return this.energy >= this.getCurrentMoveStats().energy
-    }
-
-    train() {
-        const stats = this.getCurrentMoveStats()
-        if (stats.name) {
-            const mastery = this.masteries.find(x => x.name == stats.name)
-            if (mastery) {
-                if (mastery.value < 100)
-                    mastery.value++
-            } else
-                this.masteries.push({ name: stats.name, value: 1 })
-        }
-        this.gainXp(stats.xp)
-        this.energy -= stats.energy
-        DATA.update()
-    }
-
-    step() {
-        if (this.energy < this.maxEnergy)
-            this.energy++
-        DATA.update()
-    }
-
-}
-
-class Data {
-
-    name = CACHE_NAME
-    team = []
-    regions = []
-    gymSlots = 10
-    seen = []
-
-    clock = setInterval(() => {
-        this.team.forEach(pokemon => pokemon.step());
-    }, 1000)
-
-    async unwrite() {
-        localStorage.setItem(this.name, "");
-    }
-
-    async write() {
-        const dataToSave = JSON.parse(JSON.stringify(this));
-        dataToSave.team.forEach(pokemon => {
-            delete pokemon.loaded
-        });
-        localStorage.setItem(this.name, JSON.stringify(dataToSave));
-        console.log(`Data Saved. nr of pokemons: ${dataToSave.team.length}`)
-    }
-
-    async read() {
-
-        try {
-            console.log("Loading data...")
-            const loadedData = JSON.parse(localStorage.getItem(this.name))
-            if (loadedData) {
-                console.log("Loading pokemons...")
-                this.team = loadedData.team.map(loadedPokemon => new Pokemon(loadedPokemon))
-                await Promise.all(this.team.map(pokemon => pokemon.load()))
-                console.log("Loading other data...")
-                Object.keys(loadedData).forEach(key => {
-                    if (key != 'team' && key != 'clock')
-                        this[key] = loadedData[key]
-                })
-                console.log("Loading done.")
-                return
-            }
-        } catch (e) {
-            console.log('Unable to load data.')
-            console.log(e)
-        }
-
-        console.log('No data loaded.');
-        this.team = [new Pokemon(25)]
-        await this.team[0].load()
-        this.write()
-        console.log('New data created.');
-
-    }
-
-    releasePokemon(pokemon) {
-        this.team.splice(this.team.indexOf(pokemon), 1)
-    }
-
-    update() {
-        console.log("Nothing to update.")
-    }
-
-};
 var DATA = new Data()
 
 const DropdownButton = ({ text, options, style }) => {
@@ -959,7 +656,8 @@ const RegionMapView = ({ }) => {
                 <img id="imgPlayer" src="player.png" style={{ display: "none" }} />
             </div>
             <div className="col" >
-                {currentRegion && currentRegion.getEncounters().map(enc => <EncounterView encounter={enc} />)}
+                {currentRegion && currentRegion.getEncounters().filter(x => x.version_details.find(x => x.encounter_details.find(x => x.method.name == 'walk')))
+                    .map(enc => <EncounterView encounter={enc} />)}
             </div>
         </div>
     </div>
