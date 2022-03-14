@@ -4,7 +4,8 @@ class Data {
     team = []
     regions = []
     gymSlots = 10
-    seen = []
+    seenPokemon = []
+    finishedQuests = []
 
     clock = setInterval(() => {
         this.team.forEach(pokemon => pokemon.step());
@@ -26,7 +27,7 @@ class Data {
     async read() {
 
         try {
-            console.log("Loading data...")
+            console.log("Loading player data...")
             const loadedData = JSON.parse(localStorage.getItem(this.name))
             if (loadedData) {
                 console.log("Loading pokemons...")
@@ -37,20 +38,25 @@ class Data {
                     if (key != 'team' && key != 'clock')
                         this[key] = loadedData[key]
                 })
-                console.log("Loading done.")
                 return
             }
         } catch (e) {
-            console.log('Unable to load data.')
+            console.log('Unable to load player data.')
             console.log(e)
         }
 
-        console.log('No data loaded.');
-        this.team = [new Pokemon(25)]
-        await this.team[0].load()
+        console.log('No player data loaded.');
+        // this.team = [new Pokemon(25)]
+        // await this.team[0].load()
         this.write()
-        console.log('New data created.');
+        console.log('New player data created.');
 
+    }
+
+    async addToParty(loadstring) {
+        let pokemon = new Pokemon(loadstring)
+        await pokemon.load()
+        this.team.push(pokemon)
     }
 
     releasePokemon(pokemon) {
@@ -59,6 +65,14 @@ class Data {
 
     update() {
         console.log("Nothing to update.")
+    }
+
+    finishQuest(id) {
+        this.finishedQuests.push(id)
+    }
+
+    isQuestFinished(id) {
+        return this.finishedQuests.includes(id)
     }
 
 }

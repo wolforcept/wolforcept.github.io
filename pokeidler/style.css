@@ -84,11 +84,12 @@ input {
 }
 
 .alert {
-    font-size: 1.5em;
+    font-size: 32px;
     position: fixed;
     z-index: 100;
     top: 16px;
     right: 16px;
+    background-color: #FFFFFFAA;
 }
 
 .btn {
@@ -122,7 +123,7 @@ input {
 }
 
 #sidebar a {
-    font-size: 24px !important;
+    font-size: 32px !important;
 }
 
 #sidebar h3 {
@@ -216,7 +217,7 @@ input {
 }
 
 .PokemonView h4 {
-    font-size: 24px;
+    font-size: 32px;
     text-align: center;
     margin: 0;
 }
@@ -271,7 +272,7 @@ input {
 .RenameModal {
     background-color: rgba(0, 0, 0, 0.5);
     color: white;
-    font-size: 2em;
+    font-size: 20px;
 }
 
 .RenameModal .modal-dialog {
@@ -313,6 +314,17 @@ input {
     border-radius: 16px;
 }
 
+.AllSpritesView h3{
+    font-size: 32px;
+    padding: 8px 8px 8px 32px;
+    margin: 16px auto 16px 16px;
+    background-color: #FFFFFF77;
+}
+
+.AllSpritesView button{
+    margin: 8px
+}
+
 .AllSpritesView img{
     background-color: rgba(255, 255, 255, 0.7);
     border-radius: 1000px;
@@ -339,18 +351,17 @@ input {
 }
 
 .EncounterView {
+    position: relative;
     background-color: #FFFFFF77;
     padding: 0px 0px;
     border-radius: 16px;
-    width: 90px;
-    height: 90px;
-    position: relative;
-    margin-bottom: 10px;
-
-    -webkit-background-size: cover;
-    -moz-background-size: cover;
-    -o-background-size: cover;
-    background-size: cover;
+    margin: 8px;
+    width: 192px;
+    min-width: 192px;
+    max-width: 192px;
+    height: 192px;
+    min-height: 192px;
+    max-height: 192px;
 }
 
 .EncounterView img {
@@ -369,4 +380,27 @@ input {
     text-align: center;
     padding: 10px 0 0 0;
     color: black;
+}
+
+.QuestView {
+    background-color: #FFFFFF77;
+    padding: 0px 0px;
+    border-radius: 16px;
+    margin: 8px;
+}
+
+.QuestView p {
+    color: black;
+    font-size: 20px;
+}
+
+.PokemonChoiceButton {
+    color: black;
+    font-size: 20px;
+}
+.PokemonChoiceButton img{
+    border-radius: 1000px;
+}
+.PokemonChoiceButton :hover {
+    background-color: #FFFFFFAA;
 }

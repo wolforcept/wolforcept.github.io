@@ -1,4 +1,3 @@
-
 class Region {
 
     x
@@ -6,15 +5,17 @@ class Region {
     w
     h
     name
+    quests
 
     loaded
 
-    constructor(x, y, w, h, name) {
+    constructor(x, y, w, h, name, quests = []) {
         this.x = x
         this.y = y
         this.w = w
         this.h = h
         this.name = name
+        this.quests = quests
     }
 
     async load() {
@@ -62,5 +63,9 @@ class Region {
     getEncounters() {
         if (!this.loaded) return []
         return this.loaded.encounters
+    }
+
+    getQuests() {
+        return this.quests.filter(q => !DATA.isQuestFinished(q.id))
     }
 }
