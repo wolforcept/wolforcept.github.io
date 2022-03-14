@@ -4,7 +4,8 @@ CACHE.fetch = async (request) => {
     if (!CACHE.cache) {
         return fetch(request)
     }
-    return await CACHE.cache.add(request)
+    //return await CACHE.cache.add(request)
+    return fetch(request)
 }
 async function initCache() {
     return (async () => {
