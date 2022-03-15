@@ -684,7 +684,8 @@ const RegionMapView = ({ }) => {
         }
 
         ctx.drawImage(IMGS[IMG_PLAYER],
-            currentRegion.x + mapPos.x - 15, currentRegion.y + mapPos.y - 32, 64, 64);
+            currentRegion.x + currentRegion.w / 2 - 16 + mapPos.x - 15,
+            currentRegion.y + currentRegion.h / 2 - 16 + mapPos.y - 32, 64, 64);
 
     }
 
