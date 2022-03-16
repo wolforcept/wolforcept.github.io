@@ -8,7 +8,7 @@ async function init() {
     console.log("Loading done.")
 }
 
-var DEBUG = false
+var DEBUG = true
 var CACHE_NAME = "pokeidler"
 var CACHE = {}
 CACHE.fetch = async (request) => {
@@ -133,18 +133,15 @@ const REGIONS = [
 
 var DATA = new Data()
 
-const DropdownButton = ({ text, options, style }) => {
-    return (
-        <div className="dropdown btn-primary">
-            <button className="btn dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style={style}>{text}</button>
-            <div className="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                {options.map(
-                    (option) => <a className="dropdown-item" href="#"
-                        onClick={(e) => { option.onClick(); e.preventDefault() }}>{cap(option.text)}</a>
-                )}
-            </div>
-        </div>
-    )
+const DropdownButton = ({ text, options }) => {
+    return (<div className="DropdownButton">
+        <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">{text}</button>
+        <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+            {options.map(
+                (option) => <li><a className="dropdown-item" onClick={(e) => { option.onClick(); e.preventDefault() }}>{cap(option.text)}</a></li>
+            )}
+        </ul>
+    </div>)
 }
 
 const Alert = ({ alertMessage, setAlertMessage }) => {
@@ -262,7 +259,6 @@ const PokemonView = ({ pokemon, i, heldPokemon, swapHeldPokemon, setModal, setAl
             saveText: "Save",
             initialPayload: pokemon.name,
             content: ({ payload, setPayload }) => {
-                const [text, setText] = React.useState(false)
                 const searchInput = React.useRef(null)
                 React.useEffect(() => {
                     searchInput.current.focus();
@@ -343,9 +339,9 @@ const PokemonView = ({ pokemon, i, heldPokemon, swapHeldPokemon, setModal, setAl
                         </p>
                     }
                 </div>
-                <a href="#" className="btn btn-primary tab" onClick={setCurrTab(1)}>Stats</a>
-                <a href="#" className="btn btn-primary tab" onClick={setCurrTab(2)}>Moves</a>
-                <a href="#" className="btn btn-primary tab" onClick={setCurrTab(3)}>Descr</a>
+                <a className="btn btn-primary tab" onClick={setCurrTab(1)}>Stats</a>
+                <a className="btn btn-primary tab" onClick={setCurrTab(2)}>Moves</a>
+                <a className="btn btn-primary tab" onClick={setCurrTab(3)}>Descr</a>
                 <DropdownButton text="opts" options={[
                     { text: pokemon.isInGym ? "Remove to Gym" : "Send to Gym", onClick: sendToGym },
                     { text: "Rename", onClick: rename },
@@ -694,6 +690,20 @@ const RegionMapView = ({ }) => {
     return <div className="RegionMapView" >
         <div className="d-flex align-items-start">
             <div className="col" style={{ maxWidth: canvasSize.w + 32 }} >
+                <div className="title">
+                    <h3>Current Location: {currentRegion.getTitle()}</h3>
+                    {!DATA.isSearching && <button href="#" className="btn btn-primary"
+                        onClick={() => { DATA.isSearching = true; DATA.update() }}>Search for Pokemon</button>}
+                    {DATA.isSearching && <button href="#" className="btn btn-primary"
+                        onClick={() => { DATA.isSearching = false; DATA.update() }}>Stop searching</button>}
+                    <DropdownButton
+                        style={{ width: 160 }}
+                        text={"Walking"}
+                        options={[
+                            { text: "Walking", onClick: () => { } }
+                        ]}
+                    />
+                </div>
                 <div className="MapHoverViewWrapper">
                     {mapHoveredRegion && <MapHoverView region={mapHoveredRegion} />}
                     <canvas ref={canvas} id="mapCanvas" width={canvasSize.w} height={canvasSize.h} onMouseDown={onMouseDown} onMouseMove={onMouseMove} onMouseUp={onMouseUp} onMouseLeave={onMouseLeave} />

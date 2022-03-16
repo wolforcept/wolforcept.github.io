@@ -6,6 +6,7 @@ class Data {
     gymSlots = 10
     seenPokemon = []
     finishedQuests = []
+    isSearching = false
 
     clock = setInterval(() => {
         this.team.forEach(pokemon => pokemon.step());
