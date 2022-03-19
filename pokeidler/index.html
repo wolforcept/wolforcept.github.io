@@ -6,8 +6,10 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
-    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
 
     <script type="application/javascript" src="https://unpkg.com/react@17.0.2/umd/react.production.min.js"></script>
     <script type="application/javascript" src="https://unpkg.com/react-dom@17.0.2/umd/react-dom.production.min.js"></script>
@@ -16,6 +18,7 @@
     <script type="application/javascript" src="../lib/util.js"></script>
 
     <link rel="stylesheet" href="style.css">
+
     <script type="text/babel" src="classes/Pokemon.js"></script>
     <script type="text/babel" src="classes/Region.js"></script>
     <script type="text/babel" src="classes/Type.js"></script>
@@ -24,14 +27,35 @@
 
 <body>
 
+    <script type="text/babel" src="jsx/common.jsx"></script>
+    <script type="text/babel" src="jsx/all-sprites.jsx"></script>
+    <script type="text/babel" src="jsx/gym.jsx"></script>
+    <script type="text/babel" src="jsx/map.jsx"></script>
+    <script type="text/babel" src="jsx/party.jsx"></script>
+    <script type="text/babel" src="jsx/settings.jsx"></script>
     <script type="text/babel" src="index.jsx"></script>
+    <!-- <script type="text/babel" src="jsx/"></script> -->
     <div id="root" style="color: white; font-size: 32px">&nbsp;&nbsp;&nbsp;&nbsp;Loading...</div>
-    <script type="text/babel"> init().then(() => ReactDOM.render(<App />, document.getElementById('root'))) </script>
 
-    <script src="js/jquery.min.js"></script>
-    <script src="js/popper.js"></script>
-    <script src="js/bootstrap.min.js"></script>
-    <script src="js/main.js"></script>
+    <script type="text/babel">
+        init().then(() => ReactDOM.render(<App />, document.getElementById('root')))
+    </script>
+
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+        crossorigin="anonymous">
+        </script>
+
+    <!-- Popper -->
+    <script src=" https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+        integrity=" sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous">
+        </script>
+
+    <!-- Latest compiled and minified Bootstrap JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+        integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous">
+        </script>
+
 </body>
 
 </html>

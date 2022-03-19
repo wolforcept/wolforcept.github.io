@@ -1,19 +1,28 @@
 @font-face {
     font-family: pokemon_pixel_font;
-    src: url('pokemon_pixel_font.otf');
+    src: url('assets/pokemon_pixel_font.otf');
 }
+
+/*
+█▄█ ▀█▀ █▄ ▄█ █   
+█ █  █  █ ▀ █ █▄▄ 
+*/
 
 * {
     font-family: pokemon_pixel_font;
-    -webkit-user-select: none !important;
-    -moz-user-select: none !important;
-    -ms-user-select: none !important;
-    user-select: none !important;
-    -webkit-touch-callout: none !important;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    -webkit-touch-callout: none;
 }
 
 body {
-    background-image: url("background.png");
+
+    padding: 0;
+    margin: 0;
+    
+    background-image: url("assets/background.png");
     background-size: cover;
     background-repeat: no-repeat;
     background-attachment: fixed;
@@ -33,7 +42,32 @@ header {
 
 h1 {
     color: white;
+    font-size: 42px;
+    width: 100%;
+    margin: 0;
+    padding: 10px;
+    text-align: center;
     background-color: #00000060;
+    margin-bottom: 16px;
+}
+
+h2 {
+    color: black;
+    font-size: 32px;
+    width: 100%;
+    padding: 10px;
+    margin: 0;
+    text-align: center;
+    background-color: #FFFFFF77;
+    border-radius: 16px;
+}
+
+h3 {
+    color: black;
+    font-size: 24px;
+    width: 100%;
+    padding: 4px;
+    margin: 0;
 }
 
 img {
@@ -61,23 +95,32 @@ canvas {
 }
 
 input {
-    background-color: #b2b7be !important;
-    color: #35373a !important;
-    font-size: 24px !important;
+    background-color: #b2b7be;
+    color: #35373a;
+    font-size: 24px;
+}
+
+button:focus { 
+    outline: none;
 }
 
 ::placeholder {
-    color: #878b90 !important;
+    color: #878b90;
     opacity: 1;
 }
 
 :-ms-input-placeholder {
-    color: #878b90 !important;
+    color: #878b90;
 }
 
 ::-ms-input-placeholder {
-    color: #878b90 !important;
+    color: #878b90;
 }
+
+/*
+▄▀▀ █   ▄▀▄ ▄▀▀ ▄▀▀ ██▀ ▄▀▀ 
+▀▄▄ █▄▄ █▀█ ▄█▀ ▄█▀ █▄▄ ▄█▀ 
+*/
 
 .container {
     max-width: 100%;
@@ -87,8 +130,7 @@ input {
     font-size: 32px;
     position: fixed;
     z-index: 100;
-    top: 16px;
-    right: 16px;
+    margin: 16px;
     background-color: #FFFFFFAA;
 }
 
@@ -96,13 +138,180 @@ input {
     border-radius: 16px;
     padding: 0 8px;
     margin: 4px;
-    border-bottom: 2px solid #1111BB !important; 
+    border-bottom: 2px solid #1111BB; 
 }
 
 .btn:hover{
     margin-top: 6px;
-    border-bottom: 0 !important;
+    border-bottom: 0;
 }
+
+.card-deck {
+    margin: 0;
+    /* padding: 20px 0 0 0; */
+    width: 100%;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+}
+
+.scroller {
+    overflow-y: "scroll";
+    flex: 1 1 auto;
+}
+
+.pokeTab{
+    position: relative;
+    width: 100%;
+}
+
+.tabContent {
+    width: 100%;
+    position: absolute;
+    top: 85px;
+    left: 0;
+    height: calc(100%-626px);
+    max-height: calc(100%-626px);
+    padding: 0 16px 0 16px;
+}
+
+.pokeHeader {
+    color: white;
+    font-size: 42px;
+    width: 100%;
+    margin: 0 0 16px 0;
+    padding: 10px;
+    text-align: center;
+    background-color: #00000060;
+}
+
+/* 
+▄▀▄ █▀▄ █▀▄ 
+█▀█ █▀  █▀   */
+
+.App {
+    position: absolute;
+    height: 100%;
+    width: 100%;
+}
+
+#appContent {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+}
+
+#appContent.sidebarActive{
+    left: 300px;
+    width: calc(100% - 300px);
+}
+
+@media screen and (max-width: 800px) and (orientation: portrait) { 
+    #appContent{
+        position: relative;
+        left: 0px;
+        width: 100%;
+    }
+    
+    #appContent.sidebarActive{
+        position: relative;
+        left: 0px;
+        width: 100%;
+    }
+}
+
+/*
+▄▀▀ █ █▀▄ ██▀ ██▄ ▄▀▄ █▀▄ 
+▄█▀ █ █▄▀ █▄▄ █▄█ █▀█ █▀▄ 
+*/
+
+#sidebarButton {
+    position: absolute;
+    left: 0;
+    top: 0;
+    background-color: #00000000;
+    border: 0 !important;
+    padding: 0;
+    z-index: 10000;
+}
+
+#sidebarButton.buttonOff {
+    left: 300px;
+}
+
+#sidebar {
+    border: 0;
+    border-radius: 0;
+    height: 100%;
+    width: 300px;
+    background-color: #2c2e31;
+}
+
+#sidebar .logo{
+    top: 0;
+    text-align: center;
+    padding: 5px 0;
+}
+
+#sidebar a {
+    font-size: 32px;
+}
+
+#sidebar img {
+    transform: translateY(-2px);
+}
+
+#sidebar ul li a {
+    margin: 0;
+    padding: 8px;
+}
+
+#sidebar li {
+    cursor: pointer;
+    padding: 8px 4px;
+}
+
+#sidebar li img {
+    margin-right: 16px;
+}
+
+#sidebar li.active {
+    background-color: #4b535c;
+}
+
+#sidebar li:hover {
+    background-color: #00000022;
+}
+
+#sidebar li.active:hover {
+    background-color: #404549;
+}
+
+#sidebar li a {
+    color: #FFFFFFAA;
+}
+
+#sidebar li:hover a {
+    text-decoration: none;
+    color: #FFFFFFFF;
+}
+
+
+@media screen and (max-width: 800px) and (orientation: portrait) { 
+    #sidebar {
+        width: 100%;
+    }
+    #sidebarButton {
+        display: none;
+    }
+}
+
+
+/*
+█ █ █ ██▀ █   █ ▄▀▀ 
+▀▄▀ █ █▄▄ ▀▄▀▄▀ ▄█▀ 
+*/
 
 .DropdownButton {
     display: inline-block;
@@ -113,7 +322,7 @@ input {
 
 .DropdownButton .btn {
     padding: 0 20px 0 8px;
-    border-bottom: 2px solid #1111BB !important;
+    border-bottom: 2px solid #1111BB;
 }
 
 .DropdownButton .btn:hover ::after {
@@ -126,54 +335,6 @@ input {
 
 .DropdownButton.dropdown.btn-primary ::after{
     margin-right: 4px;
-}
-
-#sidebar #sidebarCollapse {
-    background-color: #a9b1b3;
-    border: 0;
-    border-radius: 10px;
-    padding: 0 8 0 0;
-    line-height: 32px;
-    width: 32px;
-    height: 32px;
-}
-
-#sidebar a {
-    font-size: 32px !important;
-}
-
-#sidebar h3 {
-    font-size: 32px !important;
-}
-
-#sidebar h3 img {
-    transform: translateY(-2px);
-}
-
-#sidebar ul li a {
-    margin: 0;
-    padding: 8px;
-}
-
-#sidebar li {
-    cursor: pointer;
-}
-
-#sidebar li img {
-    margin-right: 16px;
-}
-
-#sidebar .active {
-    background-color: #4b535c !important;
-}
-
-.card-deck {
-    margin: 0;
-    padding: 20px 0 0 0;
-    width: 100%;
-    text-align: center;
-    display: flex;
-    justify-content: center;
 }
 
 .TeamView .row {
@@ -216,24 +377,24 @@ input {
     padding: 0 10px 10px 10px;
  }
 
-.PokemonView ::-webkit-scrollbar {
+::-webkit-scrollbar {
     width: 4px;
 }
 
 /* Track */
-.PokemonView ::-webkit-scrollbar-track {
+:-webkit-scrollbar-track {
     box-shadow: inset 0 0 4px #555555; 
     border-radius: 10px;
 }
 
 /* Handle */
-.PokemonView ::-webkit-scrollbar-thumb {
+::-webkit-scrollbar-thumb {
     background: #555555; 
     border-radius: 10px;
 }
 
 /* Handle on hover */
-.PokemonView ::-webkit-scrollbar-thumb:hover {
+::-webkit-scrollbar-thumb:hover {
     background: white; 
 }
 
@@ -241,11 +402,6 @@ input {
     font-size: 32px;
     text-align: center;
     margin: 0;
-}
-
-.PokemonView .scroll-list {
-    scrollbar-color: rgb(99, 87, 112) rgb(0, 0, 0);
-    scrollbar-width: thin;
 }
 
 .HealthBar {
@@ -346,33 +502,37 @@ input {
     margin: 5px;
 }
 
-.MapHoverViewWrapper{
-    position: relative;
+/* 
+█▄ ▄█ ▄▀▄ █▀▄ 
+█ ▀ █ █▀█ █▀   */
+
+canvas {
+    z-index: 10;
 }
 
-.RegionMapView .title {
-    background-color: #FFFFFFAA;
-    margin-top: 24px;
-    margin-bottom: 16px;
-    border-radius: 16px;
-    padding: 0 16px;
+.MapView .col-right-wrapper .card-deck {
+    margin-top: 0;
 }
 
-.RegionMapView .title .btn {
+.MapView .title .btn {
     float: right;
     margin-top: 16px;
 }
 
-.RegionMapView .title .DropdownButton {
+.MapView .title .DropdownButton {
     float: right;
 }
 
-.RegionMapView h3 {
+.MapView h3 {
     display:inline-block;
 }
 
 .MapView .DropdownButton .btn{
     width: 100px;
+}
+
+.MapHoverViewWrapper {
+    position: relative;
 }
 
 .MapHoverView {
@@ -445,4 +605,83 @@ input {
 
 .PokemonChoiceButton :hover {
     background-color: #FFFFFFAA;
+}
+
+.BattleView {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: #000000AA;
+    z-index: 10;
+}
+
+.BattleView .container {
+    background-color: #FFFFFFAA;
+    border-radius: 16px;
+    margin: 64px auto;
+    width: 600px;
+    height: 400px;
+}
+
+.BattleView h3 {
+    width: 100%;
+    text-align: center;
+    color: black;
+
+}
+
+.BattleView img {
+    width: 192px;
+}
+
+.BattleView .fightBox {
+    position: relative;
+    height: 280px;
+}
+
+.BattleView .fightBox .pokemon {
+    width: 300px;
+}
+
+.BattleView .fightBox .imgWrapper {
+    width: 300px;
+}
+
+.BattleView .fightBox .pokemon.myPokemon {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+}
+
+.BattleView .fightBox .pokemon.otherPokemon {
+    position: absolute;
+    left: 0;
+    top: 0;
+}
+
+.BattleView .imgWrapper {
+    text-align: center;
+}
+
+.BattleView .fightBox .otherPokemon.imgWrapper {
+    position: absolute;
+    right: 0;
+    top: 0;
+}
+
+.BattleView .fightBox .myPokemon.imgWrapper {
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    overflow: hidden;
+}
+.BattleView .fightBox .myPokemon img {
+    transform: translateY(50px);
+}
+
+.BattleView h4 .level {
+    float: right;
+    margin-right: 16px;
 }

@@ -12,6 +12,7 @@ class Pokemon {
     maxXp = 0
 
     isInGym = false
+    isInBox = false
     currentMoveName
     masteries = []
 
@@ -61,7 +62,7 @@ class Pokemon {
         // TODO
         this.level++
         this.xp = 0
-        this.maxXp = parseInt(89.37 + .2445 * this.level * this.level, 10)
+        this.maxXp = parseInt(99.37 + .2445 * this.level * this.level, 10)
         this.maxHealth = parseInt(1247.2 - 274675 / (this.level + 222.373), 10)
         this.health = this.maxHealth
     }
@@ -128,15 +129,18 @@ class Pokemon {
     }
 
     getMoveStats(move) {
-        const accMod = move && move.accuracy ? (100 - move.accuracy) : 1
-        const powMod = move ? move.power / 10 : 1
-        const mastery = this.masteries.find(mastery => mastery.name == move.name)
-        const masteryMod = mastery ? mastery.value : 1
+        const name = move ? move.name : null
+        const acc = move && move.accuracy ? (100 - move.accuracy) : 1
+        const pow = move ? move.power : 1
+        const mastery = move ? this.masteries.find(mastery => mastery.name == move.name) : null
+        const mast = mastery ? mastery.value / 100 : .01
+
+        // const _energy = parseInt(pow * 3.141592, 10)
         return {
-            name: move ? move.name : null,
-            energy: move ? parseInt(move.power / 10, 10) : 1,
-            time: parseInt(accMod * this.level * 1.753, 10),
-            xp: parseInt(1 + masteryMod / 100.0 * powMod * 7.28, 10),
+            name,
+            energy: parseInt(.1 * (((pow - 50) * .5) + 50), 10),
+            time: parseInt(acc * this.level * 1.753, 10),
+            xp: parseInt(1 + (.5 + .5 * mast) * (.3535 * pow + 16.6666), 10),
             mastery: mastery ? mastery.value : 0
         }
     }
@@ -146,10 +150,7 @@ class Pokemon {
     }
 
     setCurrentMove(moveName) {
-        console.log("current move: " + moveName)
         this.currentMoveName = moveName
-        console.log(this.getCurrentMove())
-        DATA.update()
     }
 
     gainXp(n) {
@@ -182,7 +183,7 @@ class Pokemon {
 
     step() {
         if (this.energy < this.maxEnergy)
-            this.energy++
+            this.energy += .02
         DATA.update()
     }
 

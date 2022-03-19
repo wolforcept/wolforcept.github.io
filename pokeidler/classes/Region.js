@@ -5,16 +5,20 @@ class Region {
     w
     h
     name
+    minLevel
+    gyms
     quests
 
     loaded
 
-    constructor(x, y, w, h, name, quests = []) {
+    constructor(x, y, w, h, name, minLevel, gyms, quests = []) {
         this.x = x
         this.y = y
         this.w = w
         this.h = h
         this.name = name
+        this.minLevel = minLevel
+        this.gyms = gyms
         this.quests = quests
     }
 
@@ -52,6 +56,7 @@ class Region {
                 )()
             )
         )
+
         this.loaded = { location, areas, encounters }
     }
 
