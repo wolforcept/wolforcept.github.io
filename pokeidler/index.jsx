@@ -8,12 +8,14 @@ async function init() {
     IMGS["IMG_PLAYER_MOVING_3"] = await loadImage(IMG_PLAYER_MOVING_3)
     IMGS["IMG_PLAYER_MOVING_4"] = await loadImage(IMG_PLAYER_MOVING_4)
     await Promise.all(REGIONS.map(r => r.load()))
+    await Type.loadAll()
     await DATA.read()
     DATA.startClock()
     console.log("Loading done.")
+    return true
 }
 
-var DEBUG = false
+var DEBUG = true
 var CACHE_NAME = "pokeidler"
 var CACHE = {}
 CACHE.fetch = async (request) => {
@@ -53,7 +55,7 @@ const PAGES = [
     { name: "party", title: "Party", img: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/rare-candy.png", canBeVisible: () => DATA.pokemons.length > 0 },
     { name: "gym", title: "Gym", img: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/lucky-punch.png", canBeVisible: () => DATA.getPokemonsInGym().length > 0 },
     { name: "allsprites", title: "All Sprites", img: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/ghost-memory.png", canBeVisible: () => DEBUG },
-    { name: "settings", title: "Settings", img: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/scanner.png" },
+    { name: "info", title: "Info", img: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/scanner.png" },
 ]
 
 const quest_starting_pokemon = new (function () {
@@ -62,10 +64,16 @@ const quest_starting_pokemon = new (function () {
     this.title = "Starting Pokemon"
     this.message = "Choose a starting pokemon"
 
-    const choice = (name) => {
-        DATA.addPokemon(new Pokemon(name))
-        //DATA.finishQuest(this.id)
-        DATA.update()
+    const choice = async (name) => {
+        const newPokemon = new Pokemon(name)
+        newPokemon.levelUp()
+        newPokemon.levelUp()
+        newPokemon.levelUp()
+        newPokemon.levelUp()
+        await newPokemon.load()
+        DATA.addPokemon(newPokemon)
+        DATA.finishQuest(this.id)
+        DATA.refresh()
     }
 
     this.content = () => {
@@ -95,25 +103,26 @@ const REGIONS = [
     // kanto
     new Region(1816, 1660, 32, 32, "pallet-town", 0, [null], [quest_starting_pokemon]),
     new Region(1816, 1600, 32, 55, "kanto-route-1", 5, []),
-    new Region(1816, 1565, 32, 32, "viridian-city", 5, [null]),
-    new Region(1816, 1403, 32, 32, "pewter-city", 5, [null]),
+    new Region(1816, 1565, 32, 32, "viridian-city", 10, [null]),
+    new Region(1816, 1490, 32, 72, "kanto-route-2", 15, []),
+    new Region(1816, 1438, 32, 49, "viridian-forest", 20, [null]),
+    new Region(1816, 1403, 32, 32, "pewter-city", 25, [null]),
+    new Region(1850, 1405, 157, 32, "kanto-route-3", 30, []),
+    new Region(1976, 1372, 32, 32, "mt-moon", 35, []),
+    new Region(2010, 1373, 93, 32, "kanto-route-4", 40, []),
+    new Region(2104, 1340, 64, 64, "cerulean-city", 45, [null]),
+    new Region(2169, 1404, 32, 64, "kanto-route-5", 50, []),
+    new Region(2168, 1533, 32, 64, "kanto-route-6", 55, []),
+    new Region(2168, 1596, 32, 32, "vermilion-city", 60, [null]),
+    new Region(2082, 1499, 84, 32, "kanto-route-7", 65, []),
+    new Region(2016, 1499, 64, 32, "celadon-city", 70, [null]),
+    new Region(2233, 1501, 32, 32, "kanto-route-8", 75, []),
+
     new Region(2168, 1469, 64, 64, "saffron-city", 5, [null]),
-    new Region(2168, 1596, 32, 32, "vermilion-city", 5, [null]),
-    new Region(2016, 1499, 64, 32, "celadon-city", 5, [null]),
     new Region(2264, 1500, 33, 32, "lavender-town", 5, [null]),
     new Region(2072, 1723, 32, 32, "fuchsia-city", 5, [null]),
-    new Region(2104, 1340, 64, 64, "cerulean-city", 5, [null]),
     new Region(1816, 1787, 32, 32, "cinnabar-island", 5, [null]),
-    new Region(1816, 1438, 32, 49, "viridian-forest", 5, [null]),
-    new Region(1976, 1372, 32, 32, "mt-moon", 5, []),
     new Region(2264, 1405, 32, 32, "rock-tunnel", 5, []),
-    new Region(1816, 1490, 32, 72, "kanto-route-2", 5, []),
-    new Region(1850, 1405, 157, 32, "kanto-route-3", 5, []),
-    new Region(2010, 1373, 93, 32, "kanto-route-4", 5, []),
-    new Region(2169, 1404, 32, 64, "kanto-route-5", 5, []),
-    new Region(2168, 1533, 32, 64, "kanto-route-6", 5, []),
-    new Region(2082, 1499, 84, 32, "kanto-route-7", 5, []),
-    new Region(2233, 1501, 32, 32, "kanto-route-8", 5, []),
     new Region(2212, 1373, 84, 32, "kanto-route-9", 5, []),
     new Region(2264, 1437, 32, 64, "kanto-route-10", 5, []),
     new Region(2201, 1597, 66, 32, "kanto-route-11", 5, []),
@@ -142,13 +151,13 @@ var DATA = new Data()
 const App = () => {
 
     const contentRef = React.useRef(null)
-    const [updater, setUpdater] = React.useState(0)
+    const [refresher, setRefresher] = React.useState(0)
     const [sidebarActive, setSidebarActive] = React.useState(true)
     const [selectedPage, setSelectedPage] = React.useState(PAGES[0])
     const [searchValue, setSearchValue] = React.useState("")
     const [alertMessage, setAlertMessage] = React.useState(null)
 
-    DATA.update = () => { setUpdater(updater + 1) }
+    DATA.refresh = () => { setRefresher(refresher + 1) }
     const data = DATA
 
     async function addToParty(e) {
@@ -156,7 +165,7 @@ const App = () => {
         e.preventDefault()
         try {
             await DATA.addPokemon(searchValue.toLowerCase())
-            DATA.update()
+            DATA.refresh()
         } catch (e) {
             setAlertMessage(`Could not find pokemon "${searchValue}"`);
             console.log(e)
@@ -216,7 +225,7 @@ const App = () => {
                             </div>
                             <div class="row justify-content-center bg-blue flex-grow-1">
                                 {selectedPage.name == "party" &&
-                                    <TeamView  party={data.getParty()} setAlertMessage={setAlertMessage} />}
+                                    <TeamView party={data.getParty()} setAlertMessage={setAlertMessage} />}
 
                                 {selectedPage.name == "gym" &&
                                     <GymView pokemonsInGym={data.getPokemonsInGym()} gymSlots={DATA.gymSlots} />}
@@ -227,11 +236,11 @@ const App = () => {
                                 {selectedPage.name == "map" &&
                                     <MapView regions={data.regions} setAlertMessage={setAlertMessage} />}
 
-                                {selectedPage.name == "allsprites" &&
+                                {selectedPage.name == "allsprites" && DEBUG &&
                                     <AllSpritesView />}
 
-                                {selectedPage.name == "settings" &&
-                                    <SettignsTab />}
+                                {selectedPage.name == "info" &&
+                                    <InfoTab />}
                             </div>
                         </div>
                     </div>

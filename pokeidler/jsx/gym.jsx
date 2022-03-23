@@ -64,7 +64,7 @@ const GymSlotView = ({ pokemon }) => {
                                         text={currentMoveStats.name ? "Train " + currentMoveStats.name + " (" + currentMoveStats.mastery + "%)" : "Basic Traning"}
                                         options={
                                             [
-                                                { text: "Return to Party", onClick: () => { pokemon.isInGym = false; DATA.update() } }
+                                                { text: "Return to Party", onClick: () => { pokemon.isInGym = false; DATA.refresh() } }
                                                 ,
                                                 { text: "Basic Training", onClick: () => pokemon.setCurrentMove(null) }
                                                 ,

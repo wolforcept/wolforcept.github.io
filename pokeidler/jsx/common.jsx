@@ -25,7 +25,9 @@ const Alert = ({ alertMessage, setAlertMessage }) => {
 // █▄█ ██▀ ▄▀▄ █   ▀█▀ █▄█    ██▄ ▄▀▄ █▀▄ 
 // █ █ █▄▄ █▀█ █▄▄  █  █ █    █▄█ █▀█ █▀▄ 
 const HealthBar = ({ text, hoverText, size, frontColor, backColor, style }) => {
+
     const [isHovered, setIsHovered] = React.useState(false)
+
     return (<div
         className="HealthBar"
         style={{ "background-color": backColor, ...style }}
@@ -36,6 +38,42 @@ const HealthBar = ({ text, hoverText, size, frontColor, backColor, style }) => {
         {size > 0 && <div className="bar" style={{ "background-color": frontColor, height: 1000, width: size + "%" }}>&nbsp;</div>}
     </div>
     )
+}
+
+const HealthBarSlow = ({ text, hoverText, size, frontColor, backColor, style, descending }) => {
+
+    const [isHovered, setIsHovered] = React.useState(false)
+    let prevSize = usePrevious(React, size)
+    if (!descending && size < prevSize)
+        prevSize = 0
+
+    return (<div
+        className="HealthBar"
+        style={{ "background-color": backColor, ...style }}
+        onMouseEnter={() => setIsHovered(true)}
+        onMouseLeave={() => setIsHovered(false)}
+    >
+        <div className="text">{isHovered ? hoverText : text}</div>
+        {size > 0 && <ActualHealthBar prevSize={prevSize || 1} nextSize={size} frontColor={frontColor} />}
+    </div>
+    )
+}
+
+const ActualHealthBar = ({ prevSize, nextSize, frontColor }) => {
+    const [size, setSize] = React.useState(prevSize)
+
+    if (size != nextSize) {
+        const diff = Math.abs(size - nextSize)
+        if (diff < .1)
+            setTimeout(setSize, 10, nextSize);
+        else if (size < nextSize)
+            setTimeout(setSize, 10, nextSize - (diff * .9));
+        else if (size > nextSize)
+            setTimeout(setSize, 10, nextSize + (diff * .9));
+    }
+
+
+    return <div className="bar" style={{ "background-color": frontColor, height: 1000, width: size + "%" }}>&nbsp;</div>
 }
 
 // █▄ ▄█ ▄▀▄ █▀▄ ▄▀▄ █   
@@ -73,17 +111,17 @@ const PokemonBarsView = ({ pokemon }) => {
     const hpPercent = parseInt((10000 * pokemon.health / pokemon.maxHealth), 10) / 100
     const enPercent = parseInt((10000 * pokemon.energy / pokemon.maxEnergy), 10) / 100
     return (<>
-        <HealthBar
+        <HealthBarSlow
             text="Experience" hoverText={`${pokemon.xp} / ${pokemon.maxXp}`}
             size={xpPercent} frontColor="#2253f5" backColor="#152457"
             style={{ margin: "0 0 8px 0" }}
         />
-        <HealthBar
+        <HealthBarSlow
             text="Health" hoverText={`${pokemon.health} / ${pokemon.maxHealth}`}
             size={hpPercent} frontColor="#0b7824" backColor="#0a4016"
             style={{ margin: "0 0 8px 0" }}
         />
-        <HealthBar
+        <HealthBarSlow
             text="Energy" hoverText={`${pokemon.energy} / ${pokemon.maxEnergy}`}
             size={enPercent} frontColor="#e0a000" backColor="#856404"
         />

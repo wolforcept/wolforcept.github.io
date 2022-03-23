@@ -29,7 +29,7 @@ const PokemonView = ({ pokemon, i, heldPokemon, swapHeldPokemon, setModal, setAl
             message: "Are you sure you want to release your pokemon?",
             saveText: "Yes",
             initialPayload: null,
-            save: () => { DATA.releasePokemon(pokemon); setModal(null) },
+            save: () => { DATA.releasePokemon(pokemon); DATA.refresh(); setModal(null) },
             close: () => setModal(null)
         })
     }
@@ -39,14 +39,22 @@ const PokemonView = ({ pokemon, i, heldPokemon, swapHeldPokemon, setModal, setAl
         let slots = DATA.gymSlots
         if (pokemon.isInGym) {
             pokemon.isInGym = false
-            DATA.update()
+            DATA.refresh()
         } else {
-            if (n < slots) {
-                pokemon.isInGym = true
-                DATA.update()
-            } else {
-                setAlertMessage(`Gym is already full! ${n}/${slots}`)
+            if (DATA.currentBattle && pokemon == DATA.getPokemonInBattle()) {
+                setAlertMessage(`${pokemon.getName()} is engaged in battle!`)
+                return
             }
+            if (DATA.getCurrentRegion().gyms.length == 0) {
+                setAlertMessage(`No gym available is this location!`)
+                return
+            }
+            if (n >= slots) {
+                setAlertMessage(`Gym is already full! ${n}/${slots}`)
+                return
+            }
+            pokemon.isInGym = true
+            DATA.refresh()
         }
     }
 

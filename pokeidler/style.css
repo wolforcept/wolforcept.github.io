@@ -63,12 +63,31 @@ h2 {
 }
 
 h3 {
+    color: white;
+    font-size: 32px;
+    padding: 4px;
+    margin: 4px;
+    margin: 0;
+}
+
+h4 {
+    font-size: 32px;
+    margin: 0;
+    color: black;
+}
+
+h5 {
+    font-size: 24px;
+    color: black;
+}
+
+/* h3 {
     color: black;
     font-size: 24px;
     width: 100%;
     padding: 4px;
     margin: 0;
-}
+} */
 
 img {
     image-rendering: -webkit-optimize-contrast;
@@ -129,6 +148,8 @@ button:focus {
 .alert {
     font-size: 32px;
     position: fixed;
+    right: 0;
+    top: 0;
     z-index: 100;
     margin: 16px;
     background-color: #FFFFFFAA;
@@ -321,7 +342,7 @@ button:focus {
 }
 
 .DropdownButton .btn {
-    padding: 0 20px 0 8px;
+    padding: 0 6px 0 6px;
     border-bottom: 2px solid #1111BB;
 }
 
@@ -329,12 +350,12 @@ button:focus {
     transform: translate(-12px, 2px);
 }
 
-.DropdownButton ::after {
-    transform: translate(-12px);
+.DropdownButton .btn:hover {
+    border: 0;
 }
 
-.DropdownButton.dropdown.btn-primary ::after{
-    margin-right: 4px;
+.DropdownButton ::after {
+    transform: translate(3px, 3px);
 }
 
 .TeamView .row {
@@ -399,13 +420,11 @@ button:focus {
 }
 
 .PokemonView h4 {
-    font-size: 32px;
     text-align: center;
-    margin: 0;
 }
 
 .HealthBar {
-    height: 16px;
+    height: 20px;
     border-radius: 10px;
     overflow: hidden;
     padding: 0;
@@ -420,15 +439,15 @@ button:focus {
 
 .HealthBar .text {
     position: absolute;
-    font-size: 16px;
-    transform: translateY(-6px);
-    padding-left: 6px;
+    font-size: 18px;
+    transform: translateY(-3px);
+    padding-left: 8px;
     color: white;
     text-align: left;
-    text-shadow: -1px 1px 0 rgba(0, 0, 0, 0.2),
-        1px 1px 0 rgba(0, 0, 0, 0.2),
-        1px -1px 0 rgba(0, 0, 0, 0.2),
-        -1px -1px 0 rgba(0, 0, 0, 0.2);
+    text-shadow: -1px 1px 0 rgba(0, 0, 0, 0.5),
+        1px 1px 0 rgba(0, 0, 0, 0.5),
+        1px -1px 0 rgba(0, 0, 0, 0.5),
+        -1px -1px 0 rgba(0, 0, 0, 0.5);
 }
 
 .RenameModal {
@@ -541,13 +560,20 @@ canvas {
     left: 0;
     z-index: 10;
     color: white;
-    font-size: 20px;
     background-color: #000000AA;
     padding: 5px 20px;
     pointer-events:none;
     margin-bottom: 10px;
     border-radius: 16px;
     transform: translateY(-100%);
+}
+
+.MapHoverView .header{
+    font-size: 24px;
+}
+
+.MapHoverView .content{
+    font-size: 20px;
 }
 
 .EncounterView {
@@ -622,14 +648,17 @@ canvas {
     border-radius: 16px;
     margin: 64px auto;
     width: 600px;
-    height: 400px;
+    height: 424px;
 }
 
 .BattleView h3 {
     width: 100%;
     text-align: center;
     color: black;
+}
 
+.BattleView {
+    color: black;
 }
 
 .BattleView img {
@@ -661,7 +690,7 @@ canvas {
     top: 0;
 }
 
-.BattleView .imgWrapper {
+.BattleView .fightBox .imgWrapper {
     text-align: center;
 }
 
@@ -681,7 +710,43 @@ canvas {
     transform: translateY(50px);
 }
 
+.BattleView .buttons {
+    font-size: 24px;
+    padding: 16px 0 16px 16px;
+}
+
 .BattleView h4 .level {
     float: right;
     margin-right: 16px;
+}
+
+.BattleView .buttons .btn {
+    float: right;
+    margin-right: 16px;
+}
+
+.InfoTab h3{
+    background-color: #00000077;
+    padding-left: 24px;
+}
+
+.InfoTab .textbox {
+    background-color: #000000AA;
+    margin: 24px;
+    padding: 8px 16px;
+    font-size: 24px;
+    border-radius: 16px 4px 4px 16px;
+    max-height: 200px;
+    overflow-y: scroll;
+}
+
+.InfoTab .textbox a{
+    padding-left: 6px;
+    padding-right: 6px;
+    color: #b1b1f3;
+}
+
+.InfoTab .textbox a:hover{
+    color: #ffffff;
+    text-decoration: none;
 }

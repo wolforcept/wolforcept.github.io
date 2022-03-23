@@ -2,7 +2,7 @@
 <html lang="en">
 
 <head>
-    <title>Sidebar 09</title>
+    <title>Pokemon Idler</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
@@ -16,6 +16,7 @@
     <script type="application/javascript" src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
 
     <script type="application/javascript" src="../lib/util.js"></script>
+    <script type="application/javascript" src="../lib/myanimlib.js"></script>
 
     <link rel="stylesheet" href="style.css">
 
@@ -32,13 +33,13 @@
     <script type="text/babel" src="jsx/gym.jsx"></script>
     <script type="text/babel" src="jsx/map.jsx"></script>
     <script type="text/babel" src="jsx/party.jsx"></script>
-    <script type="text/babel" src="jsx/settings.jsx"></script>
+    <script type="text/babel" src="jsx/info.jsx"></script>
     <script type="text/babel" src="index.jsx"></script>
     <!-- <script type="text/babel" src="jsx/"></script> -->
     <div id="root" style="color: white; font-size: 32px">&nbsp;&nbsp;&nbsp;&nbsp;Loading...</div>
 
     <script type="text/babel">
-        init().then(() => ReactDOM.render(<App />, document.getElementById('root')))
+        init().then((isRunnable) => isRunnable && ReactDOM.render(<App />, document.getElementById('root')))
     </script>
 
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->

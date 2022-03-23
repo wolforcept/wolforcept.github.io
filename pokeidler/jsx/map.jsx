@@ -1,4 +1,6 @@
 
+const IMG_POKEBALL = "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/poke-ball.png"
+
 var mapMousePoll = false,
     mapMousePoll2 = false,
     mapPos = { x: -1695, y: -1265 },
@@ -13,7 +15,7 @@ var rmx = 0, rmy = 0
 
 const MapView = ({ setAlertMessage }) => {
 
-    console.log("remaking map view")
+    // console.log("remaking map view")
 
     const isVertical = window.matchMedia("screen and (max-width: 800px) and (orientation: portrait)").matches
     const isSmallScreen = window.matchMedia("screen and (max-height: 800px)").matches
@@ -29,7 +31,7 @@ const MapView = ({ setAlertMessage }) => {
 
     const canvas = React.useRef(null);
     const [mapHoveredRegion, setMapHoveredRegion] = React.useState(null)
-    const [currentRegion, _setCurrentRegion] = React.useState(REGIONS[DATA.currentRegion])
+    const [currentRegion, _setCurrentRegion] = React.useState(DATA.getCurrentRegion())
     const setCurrentRegion = (region) => {
         if (region && (isSmallScreen || isVertical)) {
             mapPos.x = -region.x - currentRegion.w / 2 + canvasSize.w / 2 - 16
@@ -44,16 +46,14 @@ const MapView = ({ setAlertMessage }) => {
         .map(quest => <QuestView quest={quest} />)
 
     const encounterViews = currentRegion && currentRegion.getEncounters()
-        .filter(x => x.version_details
-            .find(x => x.encounter_details
-                .find(x => x.method.name == 'walk')
-            )
-        )
+        .filter(x => x.details.find(x => x.method.name == 'walk'))
         .map(enc => <EncounterView encounter={enc} />)
 
     const html = <div className="MapView" >
         {DATA.currentBattle && <BattleView currentBattle={DATA.currentBattle} />}
-
+        <div className="MapHoverViewWrapper">
+            {mapHoveredRegion && <MapHoverView region={mapHoveredRegion} />}
+        </div>
         <div className="container-fluid">
             <div className="row cols-wrapper">
 
@@ -64,13 +64,13 @@ const MapView = ({ setAlertMessage }) => {
                             onClick={() => {
                                 if (DATA.getLiveParty().length > 0) {
                                     DATA.isSearching = true
-                                    DATA.update()
+                                    DATA.refresh()
                                 } else {
                                     setAlertMessage("No available Pokemon!")
                                 }
                             }}>Search for Pokemon</button>}
                         {encounterViews.length > 0 && DATA.isSearching && <button href="#" className="btn btn-primary"
-                            onClick={() => { DATA.isSearching = false; DATA.update() }}>Stop searching</button>}
+                            onClick={() => { DATA.isSearching = false; DATA.refresh() }}>Stop searching</button>}
                         {encounterViews.length > 0 && <DropdownButton
                             style={{ width: 160 }}
                             text={"Walking"}
@@ -79,10 +79,8 @@ const MapView = ({ setAlertMessage }) => {
                             ]}
                         />}
                     </div>
-                    <div className="MapHoverViewWrapper">
-                        {mapHoveredRegion && <MapHoverView region={mapHoveredRegion} />}
-                        <canvas ref={canvas} id="mapCanvas" width={canvasSize.w} height={canvasSize.h} onMouseDown={onMouseDown} onMouseMove={onMouseMove} onMouseUp={onMouseUp} onMouseLeave={onMouseLeave} />
-                    </div>
+                    <canvas ref={canvas} id="mapCanvas" width={canvasSize.w} height={canvasSize.h} onMouseDown={onMouseDown} onMouseMove={onMouseMove} onMouseUp={onMouseUp} onMouseLeave={onMouseLeave} />
+
                 </div>
 
                 <div className="col">
@@ -244,28 +242,54 @@ const QuestView = ({ quest }) => {
 }
 
 const EncounterView = ({ encounter }) => {
-    const seen = DATA.seenPokemon[encounter.pokemon.name]
+    const seen = DATA.seenPokemon.includes(encounter.pokemon.name)
     return (
         <div className={"EncounterView card" + (seen ? "" : " sil")}>
             <img className={seen ? "" : " sil"} src={encounter.pokemon.sprites.front_default} width={192} />
-            <p>{seen ? encounter.pokemon.name : "??????"}</p>
+            <p>{seen ? Pokemon.getNameFrom(encounter.pokemon) : "??????"}</p>
         </div >
     )
 }
 
 const MapHoverView = ({ region }) => {
+    if (!region)
+        return (
+            <div className="MapHoverView" style={{ left: region.x + mapPos.x + 16, top: region.y + mapPos.y - 16 }}>
+                {"Loading…"}
+            </div >
+        )
+
+    const quests = region.getQuests()
+    const unfinishedQuestsNr = quests.filter(x => !DATA.isQuestFinished(x.id)).length
+    const encounters = region.getEncounters()
+    const seenPokemonNr = encounters ? encounters.filter(enc => DATA.seenPokemon.includes(enc.pokemon.name)).length : 0
+    const canvasPos = $("canvas").first().position()
+
     return (
-        <div className="MapHoverView" style={{ left: region.x + mapPos.x + 16, top: region.y + mapPos.y - 16 }}>
-            {region.getTitle() || "Loading…"}
+        <div className="MapHoverView"
+            style={{ left: region.x + mapPos.x + 16 + canvasPos.left, top: region.y + mapPos.y - 16 + canvasPos.top }}
+        >
+            <div className="header">{region.getTitle()}</div>
+            <div className="content">
+                Level: {region.minLevel}<br />
+                {quests.length > 0 && <div>Quests: {unfinishedQuestsNr} / {quests.length}</div>}
+                {encounters && <div>Seen Pokemon: {seenPokemonNr} / {encounters.length}</div>}
+            </div>
         </div >
     )
 }
+
 const BattleView = ({ currentBattle }) => {
 
     // if (!currentBattle || !currentBattle.getMyPokemon)
     //     return <div className="BattleView"><h4>Loading...</h4></div>
 
     const myPokemon = currentBattle.getMyPokemon()
+    if (!myPokemon) {
+        DATA.currentBattle = null
+        DATA.refresh()
+        return <></>
+    }
 
     const myHealthPercent = parseInt(10000 * myPokemon.health / myPokemon.maxHealth, 10) / 100
     const otherHealthPercent = parseInt(10000 * currentBattle.health / currentBattle.maxHealth, 10) / 100
@@ -276,27 +300,28 @@ const BattleView = ({ currentBattle }) => {
             <h3>Pokemon Battle!</h3>
 
             <div className="fightBox">
+                <img id="pokeballImg" src={IMG_POKEBALL} style={{ opacity: 0, width: 30, height: 30, position: 'absolute', left: 0, bottom: 0 }} />
 
                 <div className="myPokemon imgWrapper">
-                    <img src={myPokemon.getImageSrc(true)} alt={myPokemon.name}
+                    <img id="myPokemonImg" src={myPokemon.getImageSrc(true)} alt={myPokemon.name}
                         width="192px" height="192px" />
                 </div>
 
                 <div className="myPokemon pokemon col">
                     <h4><span>{myPokemon.getName()}</span><span className="level">Lv. {myPokemon.level}</span></h4>
-                    <HealthBar
+                    <HealthBarSlow
                         text="Health" hoverText={`${myPokemon.health} / ${myPokemon.maxHealth}`}
                         size={myHealthPercent} frontColor="#0b7824" backColor="#0a4016"
                         style={{ margin: "0 0 8px 0" }}
                     />
-                    <HealthBar
+                    <HealthBarSlow
                         text="Experience" hoverText={`${myPokemon.xp} / ${myPokemon.maxXp}`}
                         size={xpPercent} frontColor="#2253f5" backColor="#152457"
                         style={{ margin: "0 0 8px 0" }}
                     />
                 </div>
 
-                <div className="otherPokemon imgWrapper">
+                <div id="otherPokemonImg" className="otherPokemon imgWrapper">
                     <img src={currentBattle.image} alt={currentBattle.name}
                         width="192px" height="192px" />
                 </div>
@@ -304,15 +329,28 @@ const BattleView = ({ currentBattle }) => {
                 <div className="otherPokemon pokemon col">
 
                     <h4><span>{currentBattle.name}</span><span className="level">Lv. {currentBattle.level}</span></h4>
-                    <HealthBar
+                    <HealthBarSlow
                         text="Health" hoverText={`${currentBattle.health} / ${currentBattle.maxHealth}`}
                         size={otherHealthPercent} frontColor="#0b7824" backColor="#0a4016"
                         style={{ margin: "0 0 8px 0" }}
                     />
+                    {currentBattle.catching > 0 &&
+                        <HealthBarSlow
+                            text="Catching..."
+                            size={currentBattle.catching} frontColor="#c9140a" backColor="#40160a"
+                            style={{ margin: "0 0 8px 0" }}
+                        />}
                 </div>
             </div>
             <div className="buttons">
-                <button className="btn btn-primary" onClick={() => DATA.currentBattle = null} >Run from Battle</button>
+                <div>
+                    {DATA.logData[DATA.logData.length - 2] && <span>{DATA.logData[DATA.logData.length - 2]}</span>}
+                    <button className="btn btn-primary" onClick={() => DATA.currentBattle.tryCatch()} >{currentBattle.catching > 0 ? `Catching ${currentBattle.catching}%` : `Throw Pokeball`}</button>
+                </div>
+                <div>
+                    {DATA.logData[DATA.logData.length - 1] && <span>{DATA.logData[DATA.logData.length - 1]}</span>}
+                    <button className="btn btn-primary" onClick={() => { DATA.currentBattle = null; DATA.refresh() }} >Run from Battle</button>
+                </div>
             </div>
         </div>
     </div>

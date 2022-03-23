@@ -11,7 +11,7 @@ class Region {
 
     loaded
 
-    constructor(x, y, w, h, name, minLevel, gyms, quests = []) {
+    constructor(x, y, w, h, name, minLevel, gyms = [], quests = []) {
         this.x = x
         this.y = y
         this.w = w
@@ -23,7 +23,6 @@ class Region {
     }
 
     async load() {
-        console.log("Loading location data from loadstring: \"" + this.name + "\" ")
         const location = await (await CACHE.fetch('https://pokeapi.co/api/v2/location/' + this.name)).json()
         const areas = await Promise.all(
             location.areas.map((_area) =>
@@ -51,13 +50,20 @@ class Region {
                         delete pokemon.game_indices
                         delete pokemon.moves
                         const species = await (await CACHE.fetch(pokemon.species.url)).json()
-                        return { ..._enc, pokemon: { ...pokemon, species } }
+                        const details = arrayMax(_enc.version_details, vd => vd.max_chance).encounter_details
+                        const maxChance = arrayMax(_enc.version_details, vd => vd.max_chance).max_chance
+                        delete _enc.version_details
+                        return { ..._enc, maxChance, details, pokemon: { ...pokemon, species } }
                     }
                 )()
             )
         )
 
+        encounters.sort((a, b) => b.maxChance - a.maxChance)
+        if (DEBUG)
+            console.log(this)
         this.loaded = { location, areas, encounters }
+        console.log("Loaded location data from loadstring: \"" + this.name + "\" ")
     }
 
     getTitle() {
