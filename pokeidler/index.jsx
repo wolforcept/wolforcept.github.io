@@ -53,97 +53,10 @@ const IMG_RELEASE = "https://raw.githubusercontent.com/PokeAPI/sprites/master/sp
 const PAGES = [
     { name: "map", title: "Map", img: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/old-sea-map.png" },
     { name: "party", title: "Party", img: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/rare-candy.png", canBeVisible: () => DATA.pokemons.length > 0 },
-    { name: "gym", title: "Gym", img: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/lucky-punch.png", canBeVisible: () => DATA.getPokemonsInGym().length > 0 },
+    { name: "box", title: "Box", img: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/machine-part.png", canBeVisible: () => DATA.box.length > 0 && DATA.getCurrentRegion() && DATA.getCurrentRegion().gyms.length > 0 },
+    { name: "gym", title: "Gym", img: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/lucky-punch.png", canBeVisible: () => DATA.getCurrentRegion() && DATA.getCurrentRegion().gyms.length > 0 },
     { name: "allsprites", title: "All Sprites", img: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/ghost-memory.png", canBeVisible: () => DEBUG },
     { name: "info", title: "Info", img: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/scanner.png" },
-]
-
-const quest_starting_pokemon = new (function () {
-
-    this.id = "quest_starting_pokemon"
-    this.title = "Starting Pokemon"
-    this.message = "Choose a starting pokemon"
-
-    const choice = async (name) => {
-        const newPokemon = new Pokemon(name)
-        newPokemon.levelUp()
-        newPokemon.levelUp()
-        newPokemon.levelUp()
-        newPokemon.levelUp()
-        await newPokemon.load()
-        DATA.addPokemon(newPokemon)
-        DATA.finishQuest(this.id)
-        DATA.refresh()
-    }
-
-    this.content = () => {
-
-        return (<div>
-            <div className="d-flex align-items-start">
-                <div className="col" style={{ padding: 0, width: 192, maxWidth: 192 }}>
-                    <PokemonChoiceButton id="1" onClick={() => choice("bulbasaur")} />
-                </div>
-                <div className="col" style={{ padding: 0, width: 192, maxWidth: 192 }}>
-                    <PokemonChoiceButton id="4" onClick={() => choice("charmander")} />
-                </div>
-            </div>
-            <div className="d-flex align-items-start">
-                <div className="col" style={{ padding: 0, width: 192, maxWidth: 192 }}>
-                    <PokemonChoiceButton id="7" onClick={() => choice("squirtle")} />
-                </div>
-                <div className="col" style={{ padding: 0, width: 192, maxWidth: 192 }}>
-                    <PokemonChoiceButton id="25" onClick={() => choice("pikachu")} />
-                </div>
-            </div>
-        </div>)
-    }
-})();
-
-const REGIONS = [
-    // kanto
-    new Region(1816, 1660, 32, 32, "pallet-town", 0, [null], [quest_starting_pokemon]),
-    new Region(1816, 1600, 32, 55, "kanto-route-1", 5, []),
-    new Region(1816, 1565, 32, 32, "viridian-city", 10, [null]),
-    new Region(1816, 1490, 32, 72, "kanto-route-2", 15, []),
-    new Region(1816, 1438, 32, 49, "viridian-forest", 20, [null]),
-    new Region(1816, 1403, 32, 32, "pewter-city", 25, [null]),
-    new Region(1850, 1405, 157, 32, "kanto-route-3", 30, []),
-    new Region(1976, 1372, 32, 32, "mt-moon", 35, []),
-    new Region(2010, 1373, 93, 32, "kanto-route-4", 40, []),
-    new Region(2104, 1340, 64, 64, "cerulean-city", 45, [null]),
-    new Region(2169, 1404, 32, 64, "kanto-route-5", 50, []),
-    new Region(2168, 1533, 32, 64, "kanto-route-6", 55, []),
-    new Region(2168, 1596, 32, 32, "vermilion-city", 60, [null]),
-    new Region(2082, 1499, 84, 32, "kanto-route-7", 65, []),
-    new Region(2016, 1499, 64, 32, "celadon-city", 70, [null]),
-    new Region(2233, 1501, 32, 32, "kanto-route-8", 75, []),
-
-    new Region(2168, 1469, 64, 64, "saffron-city", 5, [null]),
-    new Region(2264, 1500, 33, 32, "lavender-town", 5, [null]),
-    new Region(2072, 1723, 32, 32, "fuchsia-city", 5, [null]),
-    new Region(1816, 1787, 32, 32, "cinnabar-island", 5, [null]),
-    new Region(2264, 1405, 32, 32, "rock-tunnel", 5, []),
-    new Region(2212, 1373, 84, 32, "kanto-route-9", 5, []),
-    new Region(2264, 1437, 32, 64, "kanto-route-10", 5, []),
-    new Region(2201, 1597, 66, 32, "kanto-route-11", 5, []),
-    // new Region(, "kanto-route-12",5, []),
-    // new Region(, "kanto-route-13",5, []),
-    // new Region(, "kanto-route-14",5, []),
-    // new Region(, "kanto-route-15",5, []),
-    // new Region(, "kanto-route-16",5, []),
-    // new Region(, "kanto-route-17",5, []),
-    // new Region(, "kanto-route-18",5, []),
-    // new Region(, "kanto-route-19",5, []),
-    // new Region(, "kanto-route-20",5, []),
-    // new Region(, "kanto-route-21",5, []),
-    // new Region(, "kanto-route-22",5, []),
-    // new Region(, "kanto-route-23",5, []),
-    new Region(2137, 1309, 32, 32, "kanto-route-24", 5, []),
-    new Region(2172, 1309, 59, 31, "kanto-route-25", 5, []),
-    // new Region(0, 0, 0, 0, "",5),
-    new Region(1787, 1565, 25, 30, "kanto-route-22", 5, []),
-    // johto
-    new Region(1272, 1404, 64, 64, "ecruteak-city", 5, []),
 ]
 
 var DATA = new Data()
@@ -216,22 +129,22 @@ const App = () => {
 
         <div id="appContent" className={sidebarActive ? " sidebarActive" : ""}>
 
-            <div class="container-fluid">
+            <div class="container-fluid" about={refresher}>
                 <div class="row min-vh-100">
                     <div class="col-12">
                         <div class="d-flex flex-column h-100">
                             <div ref={contentRef} class="row justify-content-center">
                                 <h1>{selectedPage.title}</h1>
                             </div>
-                            <div class="row justify-content-center bg-blue flex-grow-1">
+                            <div id="pageContent" class="row justify-content-center bg-blue flex-grow-1" style={isVertical ? {} : { maxHeight: `${window.innerHeight - 80 - 16}px` }}>
                                 {selectedPage.name == "party" &&
                                     <TeamView party={data.getParty()} setAlertMessage={setAlertMessage} />}
 
                                 {selectedPage.name == "gym" &&
-                                    <GymView pokemonsInGym={data.getPokemonsInGym()} gymSlots={DATA.gymSlots} />}
+                                    <GymView party={data.getParty()} />}
 
                                 {selectedPage.name == "box" &&
-                                    <TeamView party={data.getPokemonsInBox()} setAlertMessage={setAlertMessage} />}
+                                    <TeamView party={data.getPokemonsInBox()} setAlertMessage={setAlertMessage} isBox={true} />}
 
                                 {selectedPage.name == "map" &&
                                     <MapView regions={data.regions} setAlertMessage={setAlertMessage} />}

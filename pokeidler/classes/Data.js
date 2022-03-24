@@ -121,12 +121,9 @@ class Battle {
                     DATA.log(`${myPokemon.getName()} used ${move.name}!`)
                     DATA.log(`It inflicted ${dmg} dmg to ${this.name}`)
                     MyAnim.moveStraight("#myPokemonImg", 20, -20, 6)
-                        .then(() => MyAnim.moveStraight("#myPokemonImg", -20, 20, 6)
-                            .then(() => MyAnim.alpha("#otherPokemonImg", 1, 0, 20)
-                                .then(() => MyAnim.alpha("#otherPokemonImg", 0, 1, 20)
-                                )
-                            )
-                        )
+                        .then(() => MyAnim.moveStraight("#myPokemonImg", -20, 20, 6))
+                    MyAnim.alpha("#otherPokemonImg", 1, 0, 20)
+                        .then(() => MyAnim.alpha("#otherPokemonImg", 0, 1, 20))
                 }
                 this.turn = 2
                 break
@@ -195,17 +192,19 @@ async function createBattle(region) {
         return new Battle(pokemon.loadString, pokemon.getName(), pokemon.health, pokemon.level, pokemon.getImageSrc(), moves)
 }
 
+const TRANSIENTS = ['pokemons', 'box', 'clock']
 class Data {
 
     name = CACHE_NAME
     pokemons = []
+    box = []
     currentRegion = 0
-    gymSlots = 10
     seenPokemon = []
     finishedQuests = []
     isSearching = false
     ticks = 0
     currentBattle = null
+    clock
 
     //settings 
     alwaysShowPercentage = false
@@ -248,6 +247,9 @@ class Data {
         dataToSave.pokemons.forEach(pokemon => {
             delete pokemon.loaded
         });
+        dataToSave.box.forEach(boxPokemon => {
+            delete boxPokemon.loaded
+        });
         localStorage.setItem(this.name, JSON.stringify(dataToSave));
         console.log(`Data Saved. nr of pokemons: ${dataToSave.pokemons.length}`)
     }
@@ -261,9 +263,12 @@ class Data {
                 console.log("Loading pokemons...")
                 this.pokemons = loadedData.pokemons.map(loadedPokemon => new Pokemon(loadedPokemon))
                 await Promise.all(this.pokemons.map(pokemon => pokemon.load()))
+                console.log("Loading box...")
+                this.box = loadedData.box.map(loadedBoxPokemon => new Pokemon(loadedBoxPokemon))
+                await Promise.all(this.box.map(boxPokemon => boxPokemon.load()))
                 console.log("Loading other data...")
                 Object.keys(loadedData).forEach(key => {
-                    if (key != 'pokemons' && key != 'clock')
+                    if (!TRANSIENTS.includes(key))
                         this[key] = loadedData[key]
                 })
                 if (loadedData.currentBattle) {
@@ -271,6 +276,9 @@ class Data {
                     console.log("Loaded current battle:")
                     console.log(this.currentBattle);
                 }
+                console.log("finished loading.")
+                if (DEBUG)
+                    console.log(this)
                 return
             }
         } catch (e) {
@@ -287,26 +295,40 @@ class Data {
     async addPokemon(loadString) {
         let pokemon = new Pokemon(loadString)
         await pokemon.load()
-        // TODO if (this.getParty().length == 6)
-        // pokemon.isInBox = true
-        this.pokemons.push(pokemon)
+        if (this.getParty().length == 6)
+            this.box.push(pokemon)
+        else
+            this.pokemons.push(pokemon)
         this.refresh()
     }
 
     getParty() {
-        return this.pokemons.filter(pokemon => (!pokemon.isInGym && !pokemon.isInBox))
+        return this.pokemons
     }
 
     getLiveParty() {
-        return this.pokemons.filter(pokemon => (!pokemon.isInGym && !pokemon.isInBox && pokemon.health > 0))
-    }
-
-    getPokemonsInGym() {
-        return this.pokemons.filter(pokemon => pokemon.isInGym)
+        return this.pokemons.filter(pokemon => (pokemon.health > 0))
     }
 
     getPokemonsInBox() {
-        return this.pokemons.filter(pokemon => pokemon.isInBox)
+        return this.box
+    }
+
+    sendPokemonToParty(pokemon) {
+        if (this.pokemons.length < 6) {
+            const i = this.box.indexOf(pokemon)
+            this.box.splice(i, 1)
+            this.pokemons.push(pokemon)
+            return true
+        }
+        return false
+    }
+
+    sendPokemonToBox(pokemon) {
+        const i = this.pokemons.indexOf(pokemon)
+        console.log(i)
+        this.pokemons.splice(i, 1)
+        this.box.push(pokemon)
     }
 
     canEnterRegion(region) {

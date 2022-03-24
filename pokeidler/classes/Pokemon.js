@@ -1,7 +1,10 @@
+const CACHE = {}
+
 class Pokemon {
 
     name
     loadString
+    loaded = false
 
     level = 0
     health = 0
@@ -11,8 +14,6 @@ class Pokemon {
     xp = 0
     maxXp = 0
 
-    isInGym = false
-    isInBox = false
     currentMoveName
     masteries = []
 
@@ -31,6 +32,11 @@ class Pokemon {
     }
 
     async load() {
+        if (CACHE[this.loadString]) {
+            console.log(`pokemon ${this.loadString} already in cache`)
+            this.loaded = true
+            return
+        }
 
         console.log("Loading pokemon data from loadstring \"" + this.loadString + "\"")
         const pokemon = await (await CACHE.fetch('https://pokeapi.co/api/v2/pokemon/' + this.loadString)).json()
@@ -51,12 +57,13 @@ class Pokemon {
         const species = await (await CACHE.fetch(pokemon.species.url)).json()
         const evolutions = await (await CACHE.fetch(species.evolution_chain.url)).json()
 
-        this.loaded = { pokemon, moves, species, evolutions }
+        CACHE[this.loadString] = { pokemon, moves, species, evolutions }
+        this.loaded = true
     }
-    getCachedPokemon() { return this.loaded.pokemon }
-    getCachedMoves() { return this.loaded.moves }
-    getCachedSpecies() { return this.loaded.species }
-    getCachedEvolutions() { return this.loaded.evolutions }
+    getCachedPokemon() { return CACHE[this.loadString].pokemon }
+    getCachedMoves() { return CACHE[this.loadString].moves }
+    getCachedSpecies() { return CACHE[this.loadString].species }
+    getCachedEvolutions() { return CACHE[this.loadString].evolutions }
 
     levelUp() {
         this.setLevel(this.level + 1)
@@ -159,7 +166,7 @@ class Pokemon {
 
     getMoveStats(move) {
         const name = move ? move.name : null
-        const acc = move && move.accuracy ? (100 - move.accuracy) : 1
+        const acc = move ? move.accuracy ? (100 - move.accuracy) : 1 : 1
         const pow = move ? move.power : 1
         const mastery = move ? this.masteries.find(mastery => mastery.name == move.name) : null
         const mast = mastery ? mastery.value / 100 : .01

@@ -1,5 +1,5 @@
 
-const GymView = ({ pokemonsInGym, gymSlots }) => {
+const GymView = ({ party }) => {
 
     const [modal, setModal] = React.useState(null)
 
@@ -7,7 +7,7 @@ const GymView = ({ pokemonsInGym, gymSlots }) => {
         {modal && <ModalView modal={modal} />}
         <div className="container">
             <div className="card-deck">{
-                pokemonsInGym && pokemonsInGym.map((pokemon, i) => <GymSlotView pokemon={pokemon} />)
+                party && party.map((pokemon, i) => <GymSlotView pokemon={pokemon} />)
             }</div>
         </div>
     </div>
@@ -15,6 +15,10 @@ const GymView = ({ pokemonsInGym, gymSlots }) => {
 }
 
 const GymSlotView = ({ pokemon }) => {
+
+    if (!pokemon.loaded) {
+        return <div className="GymSlotView"><div className="card"><div className="d-flex align-items-start"><h4 className="card-title">&nbsp;&nbsp;&nbsp;Loading...&nbsp;&nbsp;&nbsp;&nbsp;</h4></div></div></div>
+    }
 
     const [trainTimer, setTrainTimer] = React.useState(0)
 
@@ -45,7 +49,7 @@ const GymSlotView = ({ pokemon }) => {
 
                     <div>
                         <h4 className="card-title">{pokemon.getTitle()}</h4>
-                        <h5 className="card-title">{'Level: ' + pokemon.level}&nbsp;&nbsp;&nbsp;&nbsp;{pokemon.isInGym ? " (in Gym)" : ""}</h5>
+                        <h5 className="card-title">{'Level: ' + pokemon.level}</h5>
                         <div className="card-body" style={{ padding: "auto" }}>
                             <div style={{ marginBottom: 10 }}>
                                 <p className="card-text">
@@ -61,13 +65,11 @@ const GymSlotView = ({ pokemon }) => {
                                 <div style={{ textAlign: "right" }}>
                                     <DropdownButton
                                         style={{ width: 160 }}
-                                        text={currentMoveStats.name ? "Train " + currentMoveStats.name + " (" + currentMoveStats.mastery + "%)" : "Basic Traning"}
+                                        text={currentMoveStats.name ? "Train " + currentMoveStats.name + " (" + currentMoveStats.mastery + "%)" : "Basic Training"}
                                         options={
                                             [
-                                                { text: "Return to Party", onClick: () => { pokemon.isInGym = false; DATA.refresh() } }
-                                                ,
-                                                { text: "Basic Training", onClick: () => pokemon.setCurrentMove(null) }
-                                                ,
+                                                { text: "Basic Training", onClick: () => pokemon.setCurrentMove(null) },
+                                                ...(pokemon.level >= 100 ? [{ text: "Level Up", onClick: () => pokemon.setCurrentMove("levelup") }] : []),
                                                 ...(
                                                     pokemon.getMoves().map((move) => {
                                                         const stats = pokemon.getMoveStats(move)

@@ -33,7 +33,7 @@ const AllSpritesView = () => {
     });
     rest.sort((a, b) => a[0] - b[0])
 
-    return (<div className="AllSpritesView pokeTab">
+    return (<div className="AllSpritesView pokeTab" style={{ height: 1000 }}>
         <div className="flex-grow-1 tabContent">
 
             {rest.map((sprite) =>

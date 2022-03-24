@@ -21,7 +21,9 @@ body {
 
     padding: 0;
     margin: 0;
-    
+
+    overflow-y: hidden;
+
     background-image: url("assets/background.png");
     background-size: cover;
     background-repeat: no-repeat;
@@ -35,6 +37,7 @@ body {
     image-rendering: pixelated;
     -ms-interpolation-mode: nearest-neighbor;
 }
+
 
 header {
     text-align: center;
@@ -228,20 +231,6 @@ button:focus {
     width: calc(100% - 300px);
 }
 
-@media screen and (max-width: 800px) and (orientation: portrait) { 
-    #appContent{
-        position: relative;
-        left: 0px;
-        width: 100%;
-    }
-    
-    #appContent.sidebarActive{
-        position: relative;
-        left: 0px;
-        width: 100%;
-    }
-}
-
 /*
 ▄▀▀ █ █▀▄ ██▀ ██▄ ▄▀▄ █▀▄ 
 ▄█▀ █ █▄▀ █▄▄ █▄█ █▀█ █▀▄ 
@@ -318,16 +307,13 @@ button:focus {
     color: #FFFFFFFF;
 }
 
-
-@media screen and (max-width: 800px) and (orientation: portrait) { 
-    #sidebar {
-        width: 100%;
-    }
-    #sidebarButton {
-        display: none;
-    }
+#pageContent {
+    display: block;
+    float: left;
+    overflow-y: scroll;
+    max-height: calc(100vh-96px);
+    /* `${window.innerHeight - 80 - 16}px` */
 }
-
 
 /*
 █ █ █ ██▀ █   █ ▄▀▀ 
@@ -527,6 +513,7 @@ button:focus {
 
 canvas {
     z-index: 10;
+    margin-bottom: 16px;
 }
 
 .MapView .col-right-wrapper .card-deck {
@@ -548,6 +535,11 @@ canvas {
 
 .MapView .DropdownButton .btn{
     width: 100px;
+}
+
+.MapView #right-panel {
+    max-height: 748px;
+    overflow-y: scroll;
 }
 
 .MapHoverViewWrapper {
@@ -749,4 +741,45 @@ canvas {
 .InfoTab .textbox a:hover{
     color: #ffffff;
     text-decoration: none;
+}
+
+
+/* ON PHONES ONLY */
+@media screen and (max-width: 800px) and (orientation: portrait) { 
+    body {
+        overflow-y: visible;
+    }
+    
+    #appContent{
+        position: relative;
+        left: 0px;
+        width: 100%;
+        overflow-y: visible;
+        max-height: 99999px;
+    }
+    
+    #appContent.sidebarActive{
+        position: relative;
+        left: 0px;
+        width: 100%;
+    }
+    #sidebar {
+        width: 100%;
+    }
+    #sidebarButton {
+        display: none;
+    }
+
+    .MapView #right-panel {
+        max-height: 10000px;
+        overflow-y: visible;
+    }
+
+    .MapView canvas {
+        display: block;
+    }
+
+    .HealthBar {
+        max-width: calc(60vw);
+    }
 }

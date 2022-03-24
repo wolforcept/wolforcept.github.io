@@ -1,5 +1,5 @@
 
-const PokemonView = ({ pokemon, i, heldPokemon, swapHeldPokemon, setModal, setAlertMessage }) => {
+const PokemonView = ({ pokemon, i, heldPokemon, swapHeldPokemon, setModal, setAlertMessage, isBox }) => {
 
     const [tab, setTab] = React.useState(1)
     const [hovered, setHovered] = React.useState(false)
@@ -34,28 +34,16 @@ const PokemonView = ({ pokemon, i, heldPokemon, swapHeldPokemon, setModal, setAl
         })
     }
 
-    function sendToGym(e) {
-        let n = DATA.getPokemonsInGym().length
-        let slots = DATA.gymSlots
-        if (pokemon.isInGym) {
-            pokemon.isInGym = false
-            DATA.refresh()
+    function sendTo() {
+        if (isBox) {
+            const possible = DATA.sendPokemonToParty(pokemon)
+            if (!possible) {
+                setAlertMessage("Party is full!")
+            }
         } else {
-            if (DATA.currentBattle && pokemon == DATA.getPokemonInBattle()) {
-                setAlertMessage(`${pokemon.getName()} is engaged in battle!`)
-                return
-            }
-            if (DATA.getCurrentRegion().gyms.length == 0) {
-                setAlertMessage(`No gym available is this location!`)
-                return
-            }
-            if (n >= slots) {
-                setAlertMessage(`Gym is already full! ${n}/${slots}`)
-                return
-            }
-            pokemon.isInGym = true
-            DATA.refresh()
+            DATA.sendPokemonToBox(pokemon)
         }
+        DATA.refresh()
     }
 
     if (!pokemon.loaded)
@@ -77,7 +65,7 @@ const PokemonView = ({ pokemon, i, heldPokemon, swapHeldPokemon, setModal, setAl
             }
             <div className="card-body">
                 <h4 className="card-title">{pokemon.getTitle()}</h4>
-                <h5 className="card-title">{'Level: ' + pokemon.level}&nbsp;&nbsp;&nbsp;&nbsp;{pokemon.isInGym ? " (in Gym)" : ""}</h5>
+                <h5 className="card-title">{'Level: ' + pokemon.level}</h5>
                 <div style={{ height: "80px" }}>
                     { /* pokemon.species.flavor_text_entries.map((entry) => <span>{entry.flavor_text}</span>) */}
                     {tab == 1 &&
@@ -104,8 +92,8 @@ const PokemonView = ({ pokemon, i, heldPokemon, swapHeldPokemon, setModal, setAl
                 <a className="btn btn-primary tab" onClick={setCurrTab(2)}>Moves</a>
                 <a className="btn btn-primary tab" onClick={setCurrTab(3)}>Descr</a>
                 <DropdownButton text="opts" options={[
-                    { text: pokemon.isInGym ? "Remove to Gym" : "Send to Gym", onClick: sendToGym },
                     { text: "Rename", onClick: rename },
+                    { text: isBox ? "to Party" : "to Box", onClick: sendTo },
                     { text: "Release", onClick: release },
                 ]} />
             </div>
@@ -113,7 +101,7 @@ const PokemonView = ({ pokemon, i, heldPokemon, swapHeldPokemon, setModal, setAl
     </>
 }
 
-const TeamView = ({ party, setAlertMessage }) => {
+const TeamView = ({ party, setAlertMessage, isBox }) => {
 
     const [heldPokemon, setHeldPokemon] = React.useState(null)
     const [modal, setModal] = React.useState(null)
@@ -158,7 +146,7 @@ const TeamView = ({ party, setAlertMessage }) => {
                 <>
                     {heldPokemon && <img id="HeldPokemon" src={heldPokemon.imgSrc} width={192} height={192} />}
                     {party && party.map((pokemon, i) =>
-                        <PokemonView pokemon={pokemon} i={i} heldPokemon={heldPokemon} swapHeldPokemon={swapHeldPokemon} setModal={setModal} setAlertMessage={setAlertMessage} />)}
+                        <PokemonView pokemon={pokemon} i={i} heldPokemon={heldPokemon} swapHeldPokemon={swapHeldPokemon} setModal={setModal} setAlertMessage={setAlertMessage} isBox={isBox} />)}
                 </>
             }</div>
         </div>

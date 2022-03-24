@@ -39,14 +39,22 @@ const MapView = ({ setAlertMessage }) => {
         }
         DATA.setCurrentRegion(region)
         _setCurrentRegion(region)
-
+        DATA.refresh()
     }
 
     const questViews = currentRegion && currentRegion.getQuests()
         .map(quest => <QuestView quest={quest} />)
 
+    const uniqueEncounters = []
     const encounterViews = currentRegion && currentRegion.getEncounters()
-        .filter(x => x.details.find(x => x.method.name == 'walk'))
+        // .filter(x => x.details.find(x => x.method.name == 'walk'))
+        .filter(x => {
+            if (!uniqueEncounters.includes(x.pokemon.name)) {
+                uniqueEncounters.push(x.pokemon.name)
+                return true
+            }
+            return false
+        })
         .map(enc => <EncounterView encounter={enc} />)
 
     const html = <div className="MapView" >
@@ -84,7 +92,7 @@ const MapView = ({ setAlertMessage }) => {
                 </div>
 
                 <div className="col">
-                    <div className="col-right-wrapper scroller" >
+                    <div id="right-panel" className="col-right-wrapper" >
                         <div className="card-deck">
                             {questViews.length > 0 && <h2>Quests:</h2>}
                             {questViews}
@@ -135,7 +143,7 @@ const MapView = ({ setAlertMessage }) => {
                 return [a - mapPos.x, b - mapPos.y]
             })()
 
-            console.log(`${ssmx}, ${ssmy}, ${ss2mx - ssmx}, ${ss2my - ssmy}`)
+            console.log(`${parseInt(ssmx)}, ${parseInt(ssmy)}, ${parseInt(ss2mx - ssmx)}, ${parseInt(ss2my - ssmy)}`)
         }
     }
 
@@ -280,9 +288,6 @@ const MapHoverView = ({ region }) => {
 }
 
 const BattleView = ({ currentBattle }) => {
-
-    // if (!currentBattle || !currentBattle.getMyPokemon)
-    //     return <div className="BattleView"><h4>Loading...</h4></div>
 
     const myPokemon = currentBattle.getMyPokemon()
     if (!myPokemon) {
