@@ -57,6 +57,10 @@ const MapView = ({ setAlertMessage }) => {
         })
         .map(enc => <EncounterView encounter={enc} />)
 
+    React.useEffect(() => {
+        repaint()
+    });
+
     const html = <div className="MapView" >
         {DATA.currentBattle && <BattleView currentBattle={DATA.currentBattle} />}
         <div className="MapHoverViewWrapper">
@@ -186,6 +190,9 @@ const MapView = ({ setAlertMessage }) => {
     }
 
     function repaint() {
+        if (DEBUG)
+            console.log("rendering canvas!")
+
         if (!canvas || !canvas.current) {
             return
         }

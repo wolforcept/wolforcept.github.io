@@ -15,7 +15,7 @@ async function init() {
     return true
 }
 
-var DEBUG = true
+var DEBUG = false
 var CACHE_NAME = "pokeidler"
 var CACHE = {}
 CACHE.fetch = async (request) => {
