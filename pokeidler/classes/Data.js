@@ -5,20 +5,22 @@ class Battle {
     health
     maxHealth
     level
+    xp
     image
     moves
 
     turn = 0
     catching = 0
 
-    constructor(loaded, name, health, level, image, moves) {
+    constructor(loaded, name, health, level, xp, image, moves) {
         if (loaded.loadString) {
             // load  battle from another battle
             this.loadString = loaded.loadString
             this.name = loaded.name
             this.health = loaded.health
-            this.maxHealth = loaded.health
+            this.maxHealth = loaded.maxHealth
             this.level = loaded.level
+            this.xp = loaded.xp
             this.image = loaded.image
             this.moves = loaded.moves
             this.turn = loaded.turn
@@ -29,6 +31,7 @@ class Battle {
             this.health = health
             this.maxHealth = health
             this.level = level
+            this.xp = xp
             this.image = image
             this.moves = moves
         }
@@ -53,30 +56,28 @@ class Battle {
 
         const myPokemon = this.getMyPokemon()
 
-        if (this.turn != 3 && myPokemon.health <= 0) {
-            this.turn = 3
-            DATA.log(myPokemon.getName() + " fainted.")
-            DATA.refresh()
-            return
-        }
-
-        if (this.turn != 3 && this.health <= 0) {
-            this.turn = 3
-            const xpGained = this.level
-            myPokemon.gainXp(xpGained)
-            DATA.log(myPokemon.getName() + " defeated " + this.name + " for " + xpGained + " xp")
-            DATA.refresh()
-            return
-        }
-
-        // console.log(this)
-
         switch (this.turn) {
 
             case 0: { // prepare, show battle
                 this.turn = 1
                 DATA.log(`A wild ${this.name} appeared!`)
-                break
+                data.refresh()
+                return
+            }
+
+            case 3: { // other pokemon defeated
+                myPokemon.gainXp(this.xp)
+                DATA.log(myPokemon.getName() + " defeated " + this.name + " for " + this.xp + " xp")
+                DATA.refresh()
+                DATA.currentBattle = null
+                data.refresh()
+                return
+            }
+
+            case 4: { // my pokemon fainted
+                this.turn = 1
+                data.refresh()
+                return
             }
 
             case 1: { // my turn
@@ -99,7 +100,8 @@ class Battle {
                         this.turn = 3
                         DATA.addPokemon(this.loadString)
                         DATA.refresh()
-                        return;
+                        return
+
                     } else {
                         const escapeRate = 1 + Math.max(0, 30 * this.health / this.maxHealth)
                         this.catching = Math.max(0, this.catching - escapeRate)
@@ -116,47 +118,70 @@ class Battle {
                 else { // otherwise attack
                     const moves = myPokemon.getMoves()
                     const move = moves[parseInt(Math.random() * moves.length, 10)]
-                    const dmg = this.level * move.power * .1
+                    const moveStats = myPokemon.getMoveStats(move)
+
+                    const lvDiff = myPokemon.level - this.level
+                    const baseDmg = move.power * (.5 + .5 * moveStats.mastery * .1) * .8 * .01 * this.maxHealth
+                    const dmgIncrease = baseDmg * lvDiff * .1
+                    const dmg = parseInt(baseDmg + Math.max(-baseDmg * .9, Math.min(baseDmg * 10, dmgIncrease)))
+
+                    myPokemon.gainXp(parseInt(moveStats.xp / 2))
                     this.health -= dmg
-                    DATA.log(`${myPokemon.getName()} used ${move.name}!`)
-                    DATA.log(`It inflicted ${dmg} dmg to ${this.name}`)
+                    DATA.refresh()
+
                     MyAnim.moveStraight("#myPokemonImg", 20, -20, 6)
                         .then(() => MyAnim.moveStraight("#myPokemonImg", -20, 20, 6))
                     MyAnim.alpha("#otherPokemonImg", 1, 0, 20)
                         .then(() => MyAnim.alpha("#otherPokemonImg", 0, 1, 20))
+
+                    DATA.log(`${myPokemon.getName()} used ${move.name}!`)
+                    DATA.log(`It inflicted ${dmg} dmg to ${this.name}`)
+
+                    if (this.health <= 0) {
+                        this.turn = 3
+                        DATA.refresh()
+                        return
+                    }
                 }
                 this.turn = 2
-                break
+                data.refresh()
+                return
             }
 
             case 2: { // his turn
                 const move = this.moves[parseInt(Math.random() * this.moves.length, 10)]
-                const dmg = this.level * move.power * .1 * .5
-                myPokemon.health -= dmg
-                DATA.log(`${this.name} used ${move.name}!`)
-                DATA.log(`It inflicted ${dmg} dmg to ${myPokemon.getName()}`)
-                this.turn = 1
-
-                MyAnim.moveStraight("#otherPokemonImg", -20, 20, 6)
-                    .then(() => MyAnim.moveStraight("#otherPokemonImg", 20, -20, 6)
-                        .then(
-                            () => MyAnim.alpha("#myPokemonImg", 1, 0, 20).then(
-                                () => MyAnim.alpha("#myPokemonImg", 0, 1, 20)
+                if (move) {
+                    const lvDiff = this.level - myPokemon.level
+                    const baseDmg = move.power * .5 * .01 * myPokemon.maxHealth
+                    const dmgIncrease = baseDmg * lvDiff * .1
+                    const dmg = parseInt(baseDmg + Math.max(-baseDmg * .9, Math.min(baseDmg * 10, dmgIncrease)))
+                    myPokemon.health -= dmg
+                    DATA.log(`${this.name} used ${move.name}!`)
+                    DATA.log(`It inflicted ${dmg} dmg to ${myPokemon.getName()}`)
+                    MyAnim.moveStraight("#otherPokemonImg", -20, 20, 6)
+                        .then(() => MyAnim.moveStraight("#otherPokemonImg", 20, -20, 6)
+                            .then(
+                                () => MyAnim.alpha("#myPokemonImg", 1, 0, 20).then(
+                                    () => MyAnim.alpha("#myPokemonImg", 0, 1, 20)
+                                )
                             )
                         )
-                    )
+                    if (myPokemon.health <= 0) {
+                        this.turn = 4
+                        DATA.log(myPokemon.getName() + " fainted.")
+                        DATA.refresh()
+                        return
+                    }
 
-                break
-            }
-
-            case 3: {
-                DATA.currentBattle = null
-                break
+                } else {
+                    DATA.log(`${this.name} is distracted...`)
+                }
+                this.turn = 1
+                data.refresh()
+                return
             }
 
         }
-
-        DATA.refresh()
 
     }
 
@@ -189,7 +214,7 @@ async function createBattle(region) {
     })
 
     if (DATA.canBattle())
-        return new Battle(pokemon.loadString, pokemon.getName(), pokemon.health, pokemon.level, pokemon.getImageSrc(), moves)
+        return new Battle(pokemon.loadString, pokemon.getName(), pokemon.health, pokemon.level, parseInt(pokemon.maxXp / 2), pokemon.getImageSrc(), moves)
 }
 
 const TRANSIENTS = ['pokemons', 'box', 'clock']
@@ -202,6 +227,8 @@ class Data {
     seenPokemon = []
     finishedQuests = []
     isSearching = false
+    searchingMethod = 'walk'
+    searchMethods = ['walk']
     ticks = 0
     currentBattle = null
     clock
@@ -335,13 +362,11 @@ class Data {
         if (!region.minLevel)
             return true
         const party = this.getParty()
-        if (party.length == 0)
-            return false
         for (let i = 0; i < party.length; i++) {
-            if (party[i].level < region.minLevel)
-                return false
+            if (party[i].level >= region.minLevel)
+                return true
         }
-        return true
+        return false
     }
 
     setCurrentRegion(region) {

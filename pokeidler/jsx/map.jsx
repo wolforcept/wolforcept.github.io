@@ -62,7 +62,7 @@ const MapView = ({ setAlertMessage }) => {
     });
 
     const html = <div className="MapView" >
-        {DATA.currentBattle && <BattleView currentBattle={DATA.currentBattle} />}
+        {DATA.currentBattle && <BattleView currentBattle={DATA.currentBattle} isVertical={isVertical} />}
         <div className="MapHoverViewWrapper">
             {mapHoveredRegion && <MapHoverView region={mapHoveredRegion} />}
         </div>
@@ -72,22 +72,26 @@ const MapView = ({ setAlertMessage }) => {
                 <div className="col" style={{ maxWidth: canvasSize.w + 32 }} >
                     <h2>Current Location: {currentRegion.getTitle()}</h2>
                     <div style={{ minHeight: 48 }}>
-                        {encounterViews.length > 0 && !DATA.isSearching && <button href="#" className="btn btn-primary"
+                        {!DATA.isSearching && <button href="#" className="btn btn-primary"
                             onClick={() => {
-                                if (DATA.getLiveParty().length > 0) {
-                                    DATA.isSearching = true
-                                    DATA.refresh()
-                                } else {
-                                    setAlertMessage("No available Pokemon!")
+                                if (encounterViews.length == 0) {
+                                    setAlertMessage('No pokemons to find!')
+                                    return
                                 }
+                                if (DATA.getLiveParty().length == 0) {
+                                    setAlertMessage("No available Pokemon!")
+                                    return
+                                }
+                                DATA.isSearching = true
+                                DATA.refresh()
                             }}>Search for Pokemon</button>}
-                        {encounterViews.length > 0 && DATA.isSearching && <button href="#" className="btn btn-primary"
+                        {DATA.isSearching && <button href="#" className="btn btn-primary"
                             onClick={() => { DATA.isSearching = false; DATA.refresh() }}>Stop searching</button>}
-                        {encounterViews.length > 0 && <DropdownButton
+                        {<DropdownButton
                             style={{ width: 160 }}
                             text={"Walking"}
                             options={[
-                                { text: "Walking", onClick: () => { } }
+                                { text: "Walking", onClick: () => DATA.searchingMethod = 'walk' }
                             ]}
                         />}
                     </div>
@@ -196,6 +200,12 @@ const MapView = ({ setAlertMessage }) => {
         if (!canvas || !canvas.current) {
             return
         }
+
+        if (currentRegion && (isSmallScreen || isVertical)) {
+            mapPos.x = -currentRegion.x - currentRegion.w / 2 + canvasSize.w / 2 - 16
+            mapPos.y = -currentRegion.y - currentRegion.h / 2 + canvasSize.h / 2 - 16
+        }
+
         const canvasEle = canvas.current;
         const ctx = canvasEle.getContext("2d");
         ctx.imageSmoothingEnabled = false
@@ -294,7 +304,7 @@ const MapHoverView = ({ region }) => {
     )
 }
 
-const BattleView = ({ currentBattle }) => {
+const BattleView = ({ currentBattle, isVertical }) => {
 
     const myPokemon = currentBattle.getMyPokemon()
     if (!myPokemon) {
@@ -309,7 +319,7 @@ const BattleView = ({ currentBattle }) => {
 
     return <div className="BattleView">
         <div className="container">
-            <h3>Pokemon Battle!</h3>
+            <h3>Wild Pokemon Battle!</h3>
 
             <div className="fightBox">
                 <img id="pokeballImg" src={IMG_POKEBALL} style={{ opacity: 0, width: 30, height: 30, position: 'absolute', left: 0, bottom: 0 }} />
@@ -354,16 +364,31 @@ const BattleView = ({ currentBattle }) => {
                         />}
                 </div>
             </div>
-            <div className="buttons">
-                <div>
-                    {DATA.logData[DATA.logData.length - 2] && <span>{DATA.logData[DATA.logData.length - 2]}</span>}
-                    <button className="btn btn-primary" onClick={() => DATA.currentBattle.tryCatch()} >{currentBattle.catching > 0 ? `Catching ${currentBattle.catching}%` : `Throw Pokeball`}</button>
+            {isVertical ?
+                <div className="buttons">
+                    <div>
+                        <button className="btn btn-primary" onClick={() => DATA.currentBattle.tryCatch()} >{currentBattle.catching > 0 ? `Catching ${parseInt(currentBattle.catching)}%` : `Throw Pokeball`}</button>
+                        <button className="btn btn-primary" onClick={() => { DATA.currentBattle = null; DATA.refresh() }} >Run from Battle</button>
+                    </div>
+                    <div>
+                        {DATA.logData[DATA.logData.length - 2] && <span>{DATA.logData[DATA.logData.length - 2]}</span>}
+                    </div>
+                    <div>
+                        {DATA.logData[DATA.logData.length - 1] && <span>{DATA.logData[DATA.logData.length - 1]}</span>}
+                    </div>
                 </div>
-                <div>
-                    {DATA.logData[DATA.logData.length - 1] && <span>{DATA.logData[DATA.logData.length - 1]}</span>}
-                    <button className="btn btn-primary" onClick={() => { DATA.currentBattle = null; DATA.refresh() }} >Run from Battle</button>
+                :
+                <div className="buttons">
+                    <div>
+                        {DATA.logData[DATA.logData.length - 2] && <span>{DATA.logData[DATA.logData.length - 2]}</span>}
+                        <button className="btn btn-primary" onClick={() => DATA.currentBattle.tryCatch()} >{currentBattle.catching > 0 ? `Catching ${parseInt(currentBattle.catching)}%` : `Throw Pokeball`}</button>
+                    </div>
+                    <div>
+                        {DATA.logData[DATA.logData.length - 1] && <span>{DATA.logData[DATA.logData.length - 1]}</span>}
+                        <button className="btn btn-primary" onClick={() => { DATA.currentBattle = null; DATA.refresh() }} >Run from Battle</button>
+                    </div>
                 </div>
-            </div>
+            }
         </div>
     </div>
 }

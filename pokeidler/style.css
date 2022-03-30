@@ -700,6 +700,7 @@ canvas {
 }
 .BattleView .fightBox .myPokemon img {
     transform: translateY(50px);
+    transform: translateX(-30px);
 }
 
 .BattleView .buttons {
@@ -715,6 +716,10 @@ canvas {
 .BattleView .buttons .btn {
     float: right;
     margin-right: 16px;
+}
+
+.BattleView #pokeballImg{
+    position: absolute;
 }
 
 .InfoTab h3{
@@ -781,5 +786,27 @@ canvas {
 
     .HealthBar {
         max-width: calc(60vw);
+    }
+
+    .BattleView .container {
+        margin: 32px auto;
+        height: auto;
+    }
+
+    .BattleView .fightBox .pokemon {
+        width: 250px;
+    }
+
+    .BattleView .fightBox .imgWrapper {
+        width: 200px;
+    }
+
+    .BattleView .buttons .btn {
+        float: none;
+        margin-left: 0;
+    }
+
+    .BattleView .HealthBar {
+        max-width: calc(50vw);
     }
 }

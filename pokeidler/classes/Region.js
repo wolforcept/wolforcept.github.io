@@ -61,8 +61,12 @@ class Region {
             )
         )
 
-        const lvls = encounters.map(enc => enc.details.map(det => det.min_level)).flat()
-        this.minLevel = 2 * Math.min(this.minLevel, parseInt(arraySum(lvls) / lvls.length) - 2)
+        const lvls = encounters
+            .filter(enc => enc.details.find(det => det.method.name === 'walk'))
+            .map(enc => enc.details.map(det => det.min_level))
+            .flat()
+            // this.minLevel = 2 * Math.min(this.minLevel, parseInt(arraySum(lvls) / lvls.length) - 2)
+            this.minLevel = Math.max(0, 2 * Math.min(this.minLevel, parseInt(arrayMin(lvls)) - 2))
 
         encounters.sort((a, b) => b.maxChance - a.maxChance)
         if (DEBUG)
@@ -79,6 +83,7 @@ class Region {
     getEncounters() {
         if (!this.loaded) return []
         return this.loaded.encounters
+            .filter(enc => enc.details.find(det => det.method.name === DATA.searchingMethod))
     }
 
     getQuests() {
@@ -94,10 +99,12 @@ const quest_starting_pokemon = new (function () {
     this.message = "Choose a starting pokemon"
 
     const choice = async (loadString) => {
+        if (DATA.isQuestFinished(this.id))
+            return
+        DATA.finishQuest(this.id)
         const newPokemon = new Pokemon(loadString, 5)
         await newPokemon.load()
         DATA.addPokemon(newPokemon)
-        DATA.finishQuest(this.id)
         DATA.refresh()
     }
 

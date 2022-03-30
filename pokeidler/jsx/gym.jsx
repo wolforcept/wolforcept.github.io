@@ -68,14 +68,14 @@ const GymSlotView = ({ pokemon }) => {
                                         text={currentMoveStats.name ? "Train " + currentMoveStats.name + " (" + currentMoveStats.mastery + "%)" : "Basic Training"}
                                         options={
                                             [
-                                                { text: "Basic Training", onClick: () => pokemon.setCurrentMove(null) },
-                                                ...(pokemon.level >= 100 ? [{ text: "Level Up", onClick: () => pokemon.setCurrentMove("levelup") }] : []),
+                                                { text: "Basic Training", onClick: () => { pokemon.setCurrentMove(null); DATA.refresh() } },
+                                                // ...(pokemon.level >= 100 ? [{ text: "Level Up", onClick: () => pokemon.setCurrentMove("levelup") }] : []),
                                                 ...(
                                                     pokemon.getMoves().map((move) => {
                                                         const stats = pokemon.getMoveStats(move)
                                                         return {
                                                             text: "Train " + stats.name + " (" + stats.mastery + "%)",
-                                                            onClick: () => { pokemon.setCurrentMove(move.name) }
+                                                            onClick: () => { { pokemon.setCurrentMove(move.name); DATA.refresh() } }
                                                         }
                                                     })
                                                 )]

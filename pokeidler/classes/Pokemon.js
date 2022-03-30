@@ -72,7 +72,7 @@ class Pokemon {
     setLevel(newLevel) {
         this.level = newLevel
         this.xp = 0
-        this.maxXp = parseInt(99.37 + .2445 * this.level * this.level, 10)
+        this.maxXp = parseInt(99.37 + .3445 * this.level * this.level, 10)
         this.maxHealth = parseInt(1247.2 - 274675 / (this.level + 222.373), 10)
         this.health = this.maxHealth
     }
