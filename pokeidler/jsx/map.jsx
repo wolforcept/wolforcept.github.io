@@ -259,7 +259,7 @@ const MapView = ({ setAlertMessage }) => {
 const QuestView = ({ quest }) => {
     return (
         <div className="QuestView">
-            <h3>{quest.title}</h3>
+            <h4>{quest.title}</h4>
             <p>{quest.message}</p>
             {quest.content()}
         </div>

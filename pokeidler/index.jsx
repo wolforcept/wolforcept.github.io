@@ -7,7 +7,9 @@ async function init() {
     IMGS["IMG_PLAYER_MOVING_2"] = await loadImage(IMG_PLAYER_MOVING_2)
     IMGS["IMG_PLAYER_MOVING_3"] = await loadImage(IMG_PLAYER_MOVING_3)
     IMGS["IMG_PLAYER_MOVING_4"] = await loadImage(IMG_PLAYER_MOVING_4)
-    await Promise.all(REGIONS.map(r => r.load()))
+    for (let i = 0; i < REGIONS.length; i++)
+        REGIONS[i].load()
+    // (async () => REGIONS.forEach(r => r.load()))()
     await Type.loadAll()
     await DATA.read()
     DATA.startClock()
@@ -52,9 +54,8 @@ const IMG_RELEASE = "https://raw.githubusercontent.com/PokeAPI/sprites/master/sp
 
 const PAGES = [
     { name: "map", title: "Map", img: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/old-sea-map.png" },
-    { name: "party", title: "Party", img: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/rare-candy.png", canBeVisible: () => DATA.pokemons.length > 0 },
-    { name: "box", title: "Box", img: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/machine-part.png", canBeVisible: () => DATA.box.length > 0 && DATA.getCurrentRegion() && DATA.getCurrentRegion().gyms.length > 0 },
-    { name: "gym", title: "Gym", img: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/lucky-punch.png", canBeVisible: () => DATA.getCurrentRegion() && DATA.getCurrentRegion().gyms.length > 0 },
+    { name: "party", title: "Party", img: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/rare-candy.png" },
+    { name: "box", title: "Box", img: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/machine-part.png" },
     { name: "allsprites", title: "All Sprites", img: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/ghost-memory.png", canBeVisible: () => DEBUG },
     { name: "info", title: "Info", img: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/scanner.png" },
 ]

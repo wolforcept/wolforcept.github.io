@@ -106,7 +106,7 @@ class Pokemon {
     }
 
     getTitle() {
-        return `#${this.getId()} ${this.getName()}`
+        return `${this.getName()} Lv.${this.level} `
     }
 
     getFlavorText() {
@@ -165,18 +165,26 @@ class Pokemon {
     }
 
     getMoveStats(move) {
-        const name = move ? move.name : null
-        const acc = move ? move.accuracy ? (100 - move.accuracy) : 1 : 1
-        const pow = move ? move.power : 1
-        const mastery = move ? this.masteries.find(mastery => mastery.name == move.name) : null
+        if (!move)
+            return {
+                name: null,
+                energy: 1,
+                xp: parseInt(2 + this.level * .1),
+                mastery: 0
+            }
+
+        const name = move.name
+        // const acc = move.accuracy ? (100 - move.accuracy) : 1
+        const pow = move.power
+        const mastery = this.masteries.find(mastery => mastery.name == move.name)
         const mast = mastery ? mastery.value / 100 : .01
 
         // const _energy = parseInt(pow * 3.141592, 10)
         return {
             name,
-            energy: parseInt(.1 * (((pow - 50) * .5) + 50), 10),
-            time: parseInt(acc * this.level * 1.753, 10),
-            xp: parseInt(1 + (.5 + .5 * mast) * (.3535 * pow + 16.6666), 10),
+            energy: parseInt(.5 * (.25 + .75 * mast) * (((pow - 50) * .5) + 50), 10),
+            // time: parseInt(acc * this.level * 1.753, 10),
+            xp: parseInt(1 + (.1 + .9 * mast) * (.3535 * pow + 16.6666), 10),
             mastery: mastery ? mastery.value : 0
         }
     }
@@ -204,6 +212,7 @@ class Pokemon {
 
     train() {
         const stats = this.getCurrentMoveStats()
+        if (this.energy < stats.energy) return
         if (stats.name) {
             const mastery = this.masteries.find(x => x.name == stats.name)
             if (mastery) {

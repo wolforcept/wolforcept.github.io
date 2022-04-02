@@ -1,8 +1,8 @@
 // █▀▄ █▀▄ ▄▀▄ █▀▄ █▀▄ ▄▀▄ █   █ █▄ █ 
 // █▄▀ █▀▄ ▀▄▀ █▀  █▄▀ ▀▄▀ ▀▄▀▄▀ █ ▀█ 
-const DropdownButton = ({ text, options }) => {
-    return (<div className="DropdownButton">
-        <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">{text}</button>
+const DropdownButton = ({ text, options, style }) => {
+    return (<div className="DropdownButton" style={style} >
+        <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown" style={{ width: "100%" }}>{text}</button>
         <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
             {options.map(
                 (option) => <li><a className="dropdown-item" onClick={(e) => { option.onClick(); e.preventDefault() }}>{cap(option.text)}</a></li>
@@ -109,7 +109,6 @@ const ModalView = ({ modal }) => {
 const PokemonBarsView = ({ pokemon }) => {
     const xpPercent = parseInt((10000 * pokemon.xp / pokemon.maxXp), 10) / 100
     const hpPercent = parseInt((10000 * pokemon.health / pokemon.maxHealth), 10) / 100
-    const enPercent = parseInt((10000 * pokemon.energy / pokemon.maxEnergy), 10) / 100
     return (<>
         <HealthBarSlow
             text="Experience" hoverText={`${pokemon.xp} / ${pokemon.maxXp}`}
@@ -120,10 +119,6 @@ const PokemonBarsView = ({ pokemon }) => {
             text="Health" hoverText={`${pokemon.health} / ${pokemon.maxHealth}`}
             size={hpPercent} frontColor="#0b7824" backColor="#0a4016"
             style={{ margin: "0 0 8px 0" }}
-        />
-        <HealthBarSlow
-            text="Energy" hoverText={`${pokemon.energy} / ${pokemon.maxEnergy}`}
-            size={enPercent} frontColor="#e0a000" backColor="#856404"
         />
     </>)
 }

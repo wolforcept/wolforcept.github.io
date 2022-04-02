@@ -163,6 +163,9 @@ button:focus {
     padding: 0 8px;
     margin: 4px;
     border-bottom: 2px solid #1111BB; 
+    font-size: 20px;
+    cursor:pointer;  
+    background-image: linear-gradient(-10deg,#005abb,#007bff );
 }
 
 .btn:hover{
@@ -344,6 +347,14 @@ button:focus {
     transform: translate(3px, 3px);
 }
 
+.DropdownButton ul{
+    width: 100%;
+}
+
+.DropdownButton a{
+    font-size: 20px;
+}
+
 .TeamView .row {
     margin-bottom: 20px;
 }
@@ -361,28 +372,111 @@ button:focus {
 }
 
 .PokemonView {
+    position: relative;
     border-radius: 16px;
     background-color: #FFFFFFAA;
     box-sizing: content-box;
     padding: 0;
-    width: 220px;
-    max-width: 250px;
     min-width: 250px;
+    max-height: 305px;
+    margin-right: 64px;
+    margin-bottom: 16px;
+}
+
+.PokemonView.opened {
+    display: inline-block;
+    width: 250px;
+    min-width: 250px;
+    max-width: 250px;
+}
+
+.PokemonView.closed {
+    width: 500px;
+    min-width: 500px;
+    max-width: 500px;
+}
+
+.PokemonView .pokemon-main{
+    width: 250px;
+    max-width: 250px;
+    padding-right: 0;
+}
+
+.PokemonView .pokemon-secondary {
+    height: 100%;
+    padding: 16px 64px 0 0;
 }
 
 .PokemonView p{
-    font-size: 16px;
+    font-size: 24px;
     color: black;
 }
 
-.PokemonView img{
+.PokemonView .card-img-top{
    width: 192px;
    margin: auto;
 }
 
 .PokemonView .card-body{
     padding: 0 10px 10px 10px;
- }
+}
+
+.PokemonView .pokemon-tabs {
+    position: absolute;
+    top: 10px;
+    left: 240px;
+    height: 300px;
+    /* background-color: cyan; */
+    z-index: 1;
+}
+
+.PokemonView .pokemon-tabs{
+    opacity: 0;
+    transform: translateX(-20px);
+    transition: all 200ms;
+}
+
+.PokemonView:hover .pokemon-tabs {
+    opacity: 100%;
+    transform: translateX(0px);
+}
+
+.PokemonView.closed > .pokemon-tabs {
+    opacity: 100%;
+    transform: translateX(0px);
+}
+
+@keyframes gradient {
+	0% {
+		background-position: 0% 50%;
+	}
+	50% {
+		background-position: 100% 50%;
+	}
+	100% {
+		background-position: 0% 50%;
+	}
+}
+
+.PokemonView .pokemon-tab {
+    height: 60px;
+    display: block;
+    border-radius: 100px;
+    margin-bottom: 14px;
+    overflow: hidden;
+    cursor:pointer;  
+    background-image: linear-gradient(-45deg,#004b9b,#007bff );
+    border: 1px solid rgba(0, 0, 0, 0.322);
+}
+
+.PokemonView .pokemon-tab.selected {
+    background-image: linear-gradient(45deg,#007bff, #b4d8ff,#007bff);
+    border: 1px solid rgba(255, 255, 255, 0.322);
+}
+
+.PokemonView .pokemon-tab img {
+    width: 60px;   
+}
 
 ::-webkit-scrollbar {
     width: 4px;
@@ -410,6 +504,7 @@ button:focus {
 }
 
 .HealthBar {
+    width: 100%;
     height: 20px;
     border-radius: 10px;
     overflow: hidden;
@@ -602,7 +697,7 @@ canvas {
 
 .QuestView {
     background-color: #FFFFFFAA;
-    padding: 0px 0px;
+    padding: 8px 0 0 0 ;
     border-radius: 16px;
     margin: 8px;
 }
