@@ -1,5 +1,24 @@
 const CACHE = {}
 
+function getSelfOnEvoChain(chain, name, arr) {
+
+    if (chain.species.name == name) {
+        if (!arr)
+            arr = [chain.species.name]
+
+        return chain
+    }
+
+    if (arr)
+        arr.push(chain.species.name)
+
+    for (let i = 0; i < chain.evolves_to.length; i++) {
+        const chain2 = getSelfOnEvoChain(chain.evolves_to[i], name, arr)
+        if (chain2)
+            return chain2
+    }
+}
+
 class Pokemon {
 
     name
@@ -10,12 +29,13 @@ class Pokemon {
     health = 0
     maxHealth = 0
     energy = 100
-    maxEnergy = 100
     xp = 0
     maxXp = 0
+    chosenEvolution = 0
 
     currentMoveName
     masteries = []
+    items = []
 
     shiny
     female
@@ -24,11 +44,45 @@ class Pokemon {
     constructor(loadData, level) {
         if (loadData.loadString) {
             this.loadString = loadData.loadString
-            Object.keys(this).forEach(key => this[key] = loadData[key])
+            Object.keys(this).forEach(key => {
+                if (loadData[key])
+                    this[key] = loadData[key]
+            })
         } else {
             this.loadString = loadData
             this.setLevel(level || 1)
         }
+    }
+
+    getTypes() {
+        return this.getCachedPokemon().types.map(x => x.type.name)
+    }
+
+    getMaxEnergy() {
+        let maxEnergy = 100
+        this.items.forEach(x => {
+            if (x == 'macho_brace')
+                maxEnergy += 100
+        })
+        return maxEnergy
+    }
+
+    getItemDamageBoost() {
+        let boost = 0;
+
+        if (this.type == 'grass' && this.hasItem('leaf_stone'))
+            boost += .1;
+
+        if (this.type == 'fire' && this.hasItem('fire_stone'))
+            boost += .1;
+
+        if (this.type == 'water' && this.hasItem('water_stone'))
+            boost += .1;
+
+        if (this.type == 'electric' && this.hasItem('thunder_stone'))
+            boost += .1;
+
+        return boost;
     }
 
     async load() {
@@ -55,8 +109,9 @@ class Pokemon {
             )
         )
         const species = await (await CACHE.fetch(pokemon.species.url)).json()
-        const evolutions = await (await CACHE.fetch(species.evolution_chain.url)).json()
-
+        const evolution_chain = (await (await CACHE.fetch(species.evolution_chain.url)).json()).chain
+        let evolutions = getSelfOnEvoChain(evolution_chain, species.name).evolves_to
+        evolutions = evolutions.map(e => { return { name: e.species.name, details: e.evolution_details, isBaby: e.is_baby } })
         CACHE[this.loadString] = { pokemon, moves, species, evolutions }
         this.loaded = true
     }
@@ -115,6 +170,10 @@ class Pokemon {
         ).flavor_text.replaceAll('', ' ')
     }
 
+    getEvolutionNames() {
+        return this.getCachedEvolutions().map(e => e.name)
+    }
+
     getImageSrc(back) {
         const pokemon = this.getCachedPokemon()
         const s = (back ? "back" : "front") + (this.shiny ? "_shiny" : "_default") + (this.female ? "_female" : "")
@@ -169,7 +228,7 @@ class Pokemon {
             return {
                 name: null,
                 energy: 1,
-                xp: parseInt(2 + this.level * .1),
+                xp: 10,
                 mastery: 0
             }
 
@@ -179,12 +238,10 @@ class Pokemon {
         const mastery = this.masteries.find(mastery => mastery.name == move.name)
         const mast = mastery ? mastery.value / 100 : .01
 
-        // const _energy = parseInt(pow * 3.141592, 10)
         return {
             name,
-            energy: parseInt(.5 * (.25 + .75 * mast) * (((pow - 50) * .5) + 50), 10),
-            // time: parseInt(acc * this.level * 1.753, 10),
-            xp: parseInt(1 + (.1 + .9 * mast) * (.3535 * pow + 16.6666), 10),
+            energy: parseInt(.5 * (.25 + .75 * mast) * (((pow - 50) * .5) + 50)),
+            xp: parseInt(10 + (.1 + .9 * mast) * (.3535 * pow + 16.6666)),
             mastery: mastery ? mastery.value : 0
         }
     }
@@ -195,6 +252,18 @@ class Pokemon {
 
     setCurrentMove(moveName) {
         this.currentMoveName = moveName
+    }
+
+    hasItem(item) {
+        return this.items.find(item) ? true : false
+    }
+
+    addItem(item) {
+        this.items.push(item)
+    }
+
+    removeItem(itemIndex) {
+        this.items.splice(itemIndex, 1)
     }
 
     gainXp(n) {
@@ -227,8 +296,10 @@ class Pokemon {
 
     step(ticks) {
         if (ticks % 100 == 0) {
-            if (this.energy < this.maxEnergy) {
+            const maxE = this.getMaxEnergy()
+            if (this.energy < maxE) {
                 this.energy += 2
+                if (this.energy > maxE) this.energy = maxE
                 DATA.refresh()
             }
         }

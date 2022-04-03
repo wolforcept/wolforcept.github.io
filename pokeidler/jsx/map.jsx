@@ -365,7 +365,7 @@ const BattleView = ({ currentBattle, isVertical }) => {
                 </div>
             </div>
             {isVertical ?
-                <div className="buttons">
+                <div className="buttons vertical">
                     <div>
                         <button className="btn btn-primary" onClick={() => DATA.currentBattle.tryCatch()} >{currentBattle.catching > 0 ? `Catching ${parseInt(currentBattle.catching)}%` : `Throw Pokeball`}</button>
                         <button className="btn btn-primary" onClick={() => { DATA.currentBattle = null; DATA.refresh() }} >Run from Battle</button>
@@ -378,7 +378,7 @@ const BattleView = ({ currentBattle, isVertical }) => {
                     </div>
                 </div>
                 :
-                <div className="buttons">
+                <div className="buttons horizontal">
                     <div>
                         {DATA.logData[DATA.logData.length - 2] && <span>{DATA.logData[DATA.logData.length - 2]}</span>}
                         <button className="btn btn-primary" onClick={() => DATA.currentBattle.tryCatch()} >{currentBattle.catching > 0 ? `Catching ${parseInt(currentBattle.catching)}%` : `Throw Pokeball`}</button>

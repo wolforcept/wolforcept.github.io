@@ -799,8 +799,16 @@ canvas {
 }
 
 .BattleView .buttons {
+    position: relative;
     font-size: 24px;
     padding: 16px 0 16px 16px;
+    width: 100%;
+}
+
+.BattleView .buttons.horizontal .btn {
+    position: absolute;
+    right: 0;
+    width: 130px;
 }
 
 .BattleView h4 .level {

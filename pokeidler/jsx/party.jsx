@@ -1,14 +1,18 @@
-const IMG_STATS = "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/card-key.png"
-const IMG_MOVES = "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/lucky-punch.png"
-const IMG_ITEMS = "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/super-potion.png"
-const IMG_OPTIONS = "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/town-map.png"
+const IMG_ = "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/"
+const IMG_STATS = IMG_ + "card-key.png"
+const IMG_MOVES = IMG_ + "lucky-punch.png"
+const IMG_ITEMS = IMG_ + "super-potion.png"
+const IMG_OPTIONS = IMG_ + "town-map.png"
 
 const PokemonView = ({ pokemon, i, heldPokemon, swapHeldPokemon, setModal, setAlertMessage, isBox }) => {
 
     const [tab, setTab] = React.useState(0)
     const [hovered, setHovered] = React.useState(false)
     const [updater, setUpdater] = React.useState(1)
+    const [selectedItemIndex, setSelectedItemIndex] = React.useState(0)
     const setCurrTab = (i) => (e) => { setTab(tab == i ? 0 : i); e.preventDefault() }
+
+    const selectedItem = ITEMS[pokemon.items[selectedItemIndex]]
 
     function rename(e) {
         setModal({
@@ -86,16 +90,28 @@ const PokemonView = ({ pokemon, i, heldPokemon, swapHeldPokemon, setModal, setAl
                 </div>
                 <div className="pokemon-secondary col" style={tab == 0 ? { display: "none" } : {}} >
                     {tab == 1 && <>
-                        <h4 className="card-title">{'Level: ' + pokemon.level}</h4>
+                        <h4 className="card-title">{'Details'}</h4>
                         <p className="card-text">
                             {pokemon.getFlavorText()}
+                        </p>
+                        <p className="card-text">
+                            Evolves at Lv.100 into:<br />
+                            <DropdownButton
+                                style={{ width: "100%" }}
+                                text={cap(pokemon.getEvolutionNames()[pokemon.chosenEvolution])}
+                                options={
+                                    pokemon.getEvolutionNames().map((e, i) => {
+                                        return { text: e, onClick: () => { pokemon.chosenEvolution = i; DATA.refresh() } }
+                                    })
+                                }
+                            />
                         </p>
                     </>}
                     {tab == 2 && <>
                         <h4 className="card-title">{'Moves'}</h4>
                         <HealthBarSlow
-                            text="Energy" hoverText={`${pokemon.energy} / ${pokemon.maxEnergy}`}
-                            size={parseInt((10000 * pokemon.energy / pokemon.maxEnergy), 10) / 100
+                            text="Energy" hoverText={`${pokemon.energy} / ${pokemon.getMaxEnergy()}`}
+                            size={parseInt((10000 * pokemon.energy / pokemon.getMaxEnergy()), 10) / 100
                             }
                             frontColor="#e0a000" backColor="#856404"
                             style={{ height: 24, borderRadius: 100, fontSize: 24 }}
@@ -117,14 +133,39 @@ const PokemonView = ({ pokemon, i, heldPokemon, swapHeldPokemon, setModal, setAl
                                         })
                                     )]
                             }
-                        /><br />
+                        />
+                        <br />
                         <h5 className="card-title">Energy: {currentMoveStats.energy}</h5>
                         <h5 className="card-title">XP: {currentMoveStats.xp}</h5>
-                        <button href="#" className="btn btn-primary" onClick={train} style={{ width: "100%" }}
-                        >Train</button>
+                        {isBox && <p>(In Box)</p>}
+                        {DATA.currentBattle && !isBox && <p>(In Battle)</p>}
+                        {!DATA.currentBattle && !isBox &&
+                            <button href="#" className="btn btn-primary" onClick={train} style={{ width: "100%" }}
+                            >Train</button>}
                     </>}
                     {tab == 3 && <>
                         <h4 className="card-title">{'Items'}</h4>
+                        {pokemon.items.length == 0 && <p>No items</p>}
+                        {pokemon.items.length > 0 &&
+                            <DropdownButton
+                                style={{ width: "100%" }}
+                                text={<><img src={IMG_ + selectedItem.img} />{selectedItem.name}</>}
+                                options={
+                                    pokemon.items.map((item, i) => {
+                                        return {
+                                            text: <><img src={IMG_ + ITEMS[item].img} />{ITEMS[item].name}</>,
+                                            onClick: () => { setSelectedItemIndex(i) }
+                                        }
+                                    })}
+                            />}
+                        {selectedItem && <>
+                            <p>{selectedItem.description}</p>
+                            <button href="#" className="btn btn-primary" style={{ width: "100%" }} onClick={() => {
+                                pokemon.removeItem(selectedItemIndex)
+                                setSelectedItemIndex(i - 1)
+                                DATA.addItem(selectedItem.name)
+                            }}>Remove</button><br />
+                        </>}
                     </>}
                     {tab == 4 && <>
                         <h4 className="card-title">{'Actions'}</h4>

@@ -5,7 +5,7 @@ const DropdownButton = ({ text, options, style }) => {
         <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown" style={{ width: "100%" }}>{text}</button>
         <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
             {options.map(
-                (option) => <li><a className="dropdown-item" onClick={(e) => { option.onClick(); e.preventDefault() }}>{cap(option.text)}</a></li>
+                (option) => <li><a className="dropdown-item" onClick={(e) => { option.onClick(); e.preventDefault() }}>{option.text}</a></li>
             )}
         </ul>
     </div>)
