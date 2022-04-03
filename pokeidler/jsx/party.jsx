@@ -94,7 +94,8 @@ const PokemonView = ({ pokemon, i, heldPokemon, swapHeldPokemon, setModal, setAl
                         <p className="card-text">
                             {pokemon.getFlavorText()}
                         </p>
-                        <p className="card-text">
+                        {pokemon.getEvolutionNames().length == 0 && <p>No Evolutions.</p>}
+                        {pokemon.getEvolutionNames().length > 0 && <p className="card-text">
                             Evolves at Lv.100 into:<br />
                             <DropdownButton
                                 style={{ width: "100%" }}
@@ -105,7 +106,7 @@ const PokemonView = ({ pokemon, i, heldPokemon, swapHeldPokemon, setModal, setAl
                                     })
                                 }
                             />
-                        </p>
+                        </p>}
                     </>}
                     {tab == 2 && <>
                         <h4 className="card-title">{'Moves'}</h4>
