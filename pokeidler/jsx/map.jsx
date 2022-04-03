@@ -75,7 +75,7 @@ const MapView = ({ setAlertMessage }) => {
                         {!DATA.isSearching && <button href="#" className="btn btn-primary"
                             onClick={() => {
                                 if (encounterViews.length == 0) {
-                                    setAlertMessage('No pokemons to find!')
+                                    setAlertMessage('No pokemons to find in this location!')
                                     return
                                 }
                                 if (DATA.getLiveParty().length == 0) {

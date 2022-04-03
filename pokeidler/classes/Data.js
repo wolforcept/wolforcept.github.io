@@ -136,7 +136,7 @@ class Battle {
                     const totalDamage = parseInt(baseDamage + Math.max(-baseDamage * .9, Math.min(baseDamage * 10, dmgIncrease)))
 
                     myPokemon.gainXp(parseInt(moveStats.xp / 2))
-                    this.health -= totalDamage
+                    this.health -= Math.max(this.maxHealth * .9, totalDamage)
 
                     MyAnim.moveStraight("#myPokemonImg", 20, -20, 6)
                         .then(() => MyAnim.moveStraight("#myPokemonImg", -20, 20, 6))
