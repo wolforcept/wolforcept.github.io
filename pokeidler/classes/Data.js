@@ -100,7 +100,7 @@ class Battle {
                                     })
                                 )
                             )
-                        DATA.log(`Pokeball caught!`)
+                        DATA.log(`Pokemon caught!`)
                         this.turn = 10
                         DATA.addPokemon(this.loadString)
                         return
@@ -123,33 +123,37 @@ class Battle {
                 else { // otherwise attack
                     const moves = myPokemon.getMoves()
                     const move = moves[parseInt(Math.random() * moves.length, 10)]
-                    const moveStats = myPokemon.getMoveStats(move)
+                    if (!move) {
+                        DATA.log(`${this.name} is distracted...`)
+                    } else {
+                        const moveStats = myPokemon.getMoveStats(move)
 
-                    const baseDamage = move.power * (.5 + .5 * moveStats.mastery * .1) * .8 * .01 * this.maxHealth
+                        const baseDamage = (move.power || 1) * (.5 + .5 * moveStats.mastery * .1) * .8 * .01 * this.maxHealth
 
-                    // boosts must be in %
-                    const levelDamageBoost = (myPokemon.level - this.level) * .1
-                    const itemDamageBoost = myPokemon.getItemDamageBoost()
-                    const weaknessDamageBoost = Type.getDamageBoost(move.type.name, this.types);
+                        // boosts must be in %
+                        const levelDamageBoost = (myPokemon.level - this.level) * .1
+                        const itemDamageBoost = myPokemon.getItemDamageBoost()
+                        const weaknessDamageBoost = Type.getDamageBoost(move.type.name, this.types);
 
-                    const dmgIncrease = baseDamage * (levelDamageBoost + itemDamageBoost + weaknessDamageBoost)
-                    const totalDamage = parseInt(baseDamage + Math.max(-baseDamage * .9, Math.min(baseDamage * 10, dmgIncrease)))
+                        const dmgIncrease = baseDamage * (levelDamageBoost + itemDamageBoost + weaknessDamageBoost)
+                        const totalDamage = parseInt(baseDamage + Math.max(-baseDamage * .9, Math.min(baseDamage * 10, dmgIncrease)))
 
-                    myPokemon.gainXp(parseInt(moveStats.xp / 2))
-                    this.health -= Math.max(this.maxHealth * .9, totalDamage)
+                        myPokemon.gainXp(parseInt(moveStats.xp / 2))
+                        this.health -= Math.min(this.maxHealth * .9, totalDamage)
 
-                    MyAnim.moveStraight("#myPokemonImg", 20, -20, 6)
-                        .then(() => MyAnim.moveStraight("#myPokemonImg", -20, 20, 6))
-                    MyAnim.alpha("#otherPokemonImg", 1, 0, 20)
-                        .then(() => MyAnim.alpha("#otherPokemonImg", 0, 1, 20))
+                        MyAnim.moveStraight("#myPokemonImg", 20, -20, 6)
+                            .then(() => MyAnim.moveStraight("#myPokemonImg", -20, 20, 6))
+                        MyAnim.alpha("#otherPokemonImg", 1, 0, 20)
+                            .then(() => MyAnim.alpha("#otherPokemonImg", 0, 1, 20))
 
-                    const extra = weaknessDamageBoost > 0
-                        ? " It is super effective!"
-                        : weaknessDamageBoost < 0
-                            ? " It is not very effective!"
-                            : "";
-                    DATA.log(`${myPokemon.getName()} used ${move.name}!${extra}`)
-                    DATA.log(`It inflicted ${totalDamage} dmg to ${this.name}`)
+                        const extra = weaknessDamageBoost > 0
+                            ? " It is super effective!"
+                            : weaknessDamageBoost < 0
+                                ? " It is not very effective!"
+                                : "";
+                        DATA.log(`${myPokemon.getName()} used ${move.name}!${extra}`)
+                        DATA.log(`It inflicted ${totalDamage} dmg to ${this.name}`)
+                    }
 
                     if (this.health <= 0)
                         this.turn = 3
@@ -164,11 +168,14 @@ class Battle {
                 if (!move) {
                     DATA.log(`${this.name} is distracted...`)
                 } else {
-                    const lvDiff = this.level - myPokemon.level
-                    const baseDmg = move.power * .5 * .01 * myPokemon.maxHealth
-                    const dmgIncrease = baseDmg * lvDiff * .1
-                    const dmg = parseInt(baseDmg + Math.max(-baseDmg * .9, Math.min(baseDmg * 10, dmgIncrease)))
-                    myPokemon.health -= dmg
+                    const levelDamageBoost = (this.level - myPokemon.level) * .1
+                    const weaknessDamageBoost = Type.getDamageBoost(move.type.name, myPokemon.getTypes());
+
+                    const baseDamage = (move.power || 1) * .5 * .01 * myPokemon.maxHealth
+                    const dmgIncrease = baseDamage * (levelDamageBoost + itemDamageBoost + weaknessDamageBoost)
+                    const totalDamage = parseInt(baseDamage + Math.max(-baseDamage * .9, Math.min(baseDamage * 10, dmgIncrease)))
+                    myPokemon.health -= totalDamage
+
                     DATA.log(`${this.name} used ${move.name}!`)
                     DATA.log(`It inflicted ${dmg} dmg to ${myPokemon.getName()}`)
                     MyAnim.moveStraight("#otherPokemonImg", -20, 20, 6)
