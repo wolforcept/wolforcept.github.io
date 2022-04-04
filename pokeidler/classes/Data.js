@@ -1,3 +1,5 @@
+const turn_start = 0, turn_exit = 1, turn_win = 2, turn_defeat = 3, turn_my_attack = 4, turn_other_attack = 5
+
 class Battle {
 
     loadString
@@ -10,8 +12,7 @@ class Battle {
     image
     moves
 
-
-    turn = 0
+    turn = turn_start
     catching = 0
 
     constructor(loaded, name, types, health, level, xp, image, moves) {
@@ -56,143 +57,167 @@ class Battle {
         DATA.refresh()
     }
 
+    //
+    // STEP
+    //
+
+    stepTryCatch(myPokemon) {
+        DATA.log(`You threw a pokeball...`)
+        if (this.catching == 100) {
+            MyAnim.alpha("#pokeballImg", 0, 1, 1)
+            MyAnim.moveFunction("#pokeballImg", (t) => { return { x: 400 * t, y: 296 * t * t - 494 * t - 1 } }, 20)
+                .then(() => MyAnim.alpha("#pokeballImg", 1, 1, 1)
+                    .then(() => MyAnim.alpha("#pokeballImg", 0, 0, 1)
+                        .then(() => {
+                            $("#pokeballImg").css({ 'transform': `translate(0px, 0px)` })
+                            this.image = IMG_POKEBALL
+                        })
+                    )
+                )
+            DATA.log(`Pokemon caught!`)
+            DATA.addPokemon(this.loadString)
+            this.turn = turn_exit
+
+        } else {
+            const escapeRate = 1 + Math.max(0, 30 * this.health / this.maxHealth)
+            this.catching = Math.max(0, this.catching - escapeRate)
+            MyAnim.alpha("#pokeballImg", 0, 1, 1)
+            MyAnim.moveFunction("#pokeballImg", (t) => { return { x: 500 * t, y: 315 * t * t - 412 * t } }, 30)
+                .then(() => MyAnim.alpha("#pokeballImg", 1, 1, 1)
+                    .then(() => MyAnim.alpha("#pokeballImg", 0, 0, 1)
+                        .then(() => $("#pokeballImg").css({ 'transform': `translate(0px, 0px)` }))
+                    )
+                )
+            DATA.log(`Pokeball missed!`)
+            this.turn = turn_other_attack
+        }
+    }
+
+    stepWin(myPokemon) {
+        myPokemon.gainXp(this.xp)
+        DATA.log(this.name + "fainted! " + myPokemon.getName() + " gained " + this.xp + " xp")
+        this.turn = turn_exit
+    }
+
+    stepDefeat(myPokemon) {
+        DATA.log(myPokemon.getName() + " fainted! ")
+        this.turn = turn_exit
+    }
+
+    stepMyAttack(myPokemon) {
+        const moves = myPokemon.getMoves()
+        const move = moves[parseInt(Math.random() * moves.length)]
+        if (!move) {
+            DATA.log(`${this.name} is distracted...`)
+        } else {
+            const moveStats = myPokemon.getMoveStats(move)
+
+            const baseDamage = (move.power || 1) * (.5 + .5 * moveStats.mastery * .1) * .8 * .01 * this.maxHealth
+
+            // boosts must be in %
+            const levelDamageBoost = (myPokemon.level - this.level) * .1
+            const itemDamageBoost = myPokemon.getItemDamageBoost()
+            const weaknessDamageBoost = Type.getDamageBoost(move.type.name, this.types);
+
+            const dmgIncrease = baseDamage * (levelDamageBoost + itemDamageBoost + weaknessDamageBoost)
+            const totalDamage = parseInt(baseDamage + Math.max(-baseDamage * .9, Math.min(baseDamage * 10, dmgIncrease)))
+
+            myPokemon.gainXp(parseInt(moveStats.xp / 2))
+            this.health -= Math.min(this.maxHealth * .9, totalDamage)
+
+            MyAnim.moveStraight("#myPokemonImg", 20, -20, 6)
+                .then(() => MyAnim.moveStraight("#myPokemonImg", -20, 20, 6))
+            MyAnim.alpha("#otherPokemonImg", 1, 0, 20)
+                .then(() => MyAnim.alpha("#otherPokemonImg", 0, 1, 20))
+
+            DATA.log(`${myPokemon.getName()} used ${move.name}!`)
+            // DATA.log(`It inflicted ${totalDamage} dmg to ${this.name}`)
+            if (weaknessDamageBoost > 0)
+                DATA.log(`It is super effective!`)
+            if (weaknessDamageBoost < 0)
+                DATA.log(`It is not very effective!`)
+        }
+
+        if (this.health <= 0)
+            this.turn = turn_win
+        else
+            this.turn = turn_other_attack
+    }
+
+    stepOtherAttack(myPokemon) {
+        const move = this.moves[parseInt(Math.random() * this.moves.length, 10)]
+        if (!move) {
+            DATA.log(`${this.name} is distracted...`)
+        } else {
+            const levelDamageBoost = (this.level - myPokemon.level) * .1
+            console.log(move)
+            const weaknessDamageBoost = Type.getDamageBoost(move.type, myPokemon.getTypes());
+
+            const baseDamage = (move.power || 1) * .5 * .01 * myPokemon.maxHealth
+            const damageIncrease = baseDamage * (levelDamageBoost + weaknessDamageBoost)
+            const totalDamage = parseInt(baseDamage + Math.max(-baseDamage * .9, Math.min(baseDamage * 10, damageIncrease)))
+            myPokemon.health -= totalDamage
+
+            DATA.log(`${this.name} used ${move.name}!`)
+            if (weaknessDamageBoost > 0)
+                DATA.log(`It is super effective!`)
+            if (weaknessDamageBoost < 0)
+                DATA.log(`It is not very effective!`)
+            // DATA.log(`It inflicted ${totalDamage} dmg to ${myPokemon.getName()}`)
+            MyAnim.moveStraight("#otherPokemonImg", -20, 20, 6)
+                .then(() => MyAnim.moveStraight("#otherPokemonImg", 20, -20, 6)
+                    .then(
+                        () => MyAnim.alpha("#myPokemonImg", 1, 0, 20).then(
+                            () => MyAnim.alpha("#myPokemonImg", 0, 1, 20)
+                        )
+                    )
+                )
+            if (myPokemon.health <= 0) {
+                this.turn = turn_defeat
+                return
+            }
+        }
+        this.turn = turn_my_attack
+    }
+
     step() {
 
         const myPokemon = this.getMyPokemon()
 
         switch (this.turn) {
 
-            case 0: { // prepare, show battle
-                this.turn = 1
+            case turn_start: { // prepare, show battle
+                this.turn = myPokemon.level >= this.level ? turn_my_attack : turn_other_attack
+                DATA.log(``)
                 DATA.log(`A wild ${this.name} appeared!`)
                 return
             }
 
-            case 10: { // exit battle
+            case turn_exit: { // exit battle
                 DATA.currentBattle = null
                 return
             }
 
-            case 3: { // other pokemon defeated
-                myPokemon.gainXp(this.xp)
-                DATA.log(myPokemon.getName() + " defeated " + this.name + " for " + this.xp + " xp")
-                this.turn = 10 // exit
+            case turn_win: { // other pokemon defeated
+                this.stepWin(myPokemon)
                 return
             }
 
-            case 4: { // my pokemon fainted
-                this.turn = 1
+            case turn_defeat: { // my pokemon fainted
+                this.stepDefeat(myPokemon)
                 return
             }
 
-            case 1: { // my turn
-
-                if (this.catching > 0) { // try catch
-                    DATA.log(`You threw a pokeball...`)
-                    if (this.catching == 100) {
-                        MyAnim.alpha("#pokeballImg", 0, 1, 1)
-                        MyAnim.moveFunction("#pokeballImg", (t) => { return { x: 400 * t, y: 296 * t * t - 494 * t - 1 } }, 20)
-                            .then(() => MyAnim.alpha("#pokeballImg", 1, 1, 1)
-                                .then(() => MyAnim.alpha("#pokeballImg", 0, 0, 1)
-                                    .then(() => {
-                                        $("#pokeballImg").css({ 'transform': `translate(0px, 0px)` })
-                                        this.image = IMG_POKEBALL
-                                    })
-                                )
-                            )
-                        DATA.log(`Pokemon caught!`)
-                        this.turn = 10
-                        DATA.addPokemon(this.loadString)
-                        return
-
-                    } else {
-                        const escapeRate = 1 + Math.max(0, 30 * this.health / this.maxHealth)
-                        this.catching = Math.max(0, this.catching - escapeRate)
-                        MyAnim.alpha("#pokeballImg", 0, 1, 1)
-                        MyAnim.moveFunction("#pokeballImg", (t) => { return { x: 500 * t, y: 315 * t * t - 412 * t } }, 30)
-                            .then(() => MyAnim.alpha("#pokeballImg", 1, 1, 1)
-                                .then(() => MyAnim.alpha("#pokeballImg", 0, 0, 1)
-                                    .then(() => $("#pokeballImg").css({ 'transform': `translate(0px, 0px)` }))
-                                )
-                            )
-                        DATA.log(`Pokeball missed!`)
-                        this.turn = 2
-                        return
-                    }
-                }
-                else { // otherwise attack
-                    const moves = myPokemon.getMoves()
-                    const move = moves[parseInt(Math.random() * moves.length, 10)]
-                    if (!move) {
-                        DATA.log(`${this.name} is distracted...`)
-                    } else {
-                        const moveStats = myPokemon.getMoveStats(move)
-
-                        const baseDamage = (move.power || 1) * (.5 + .5 * moveStats.mastery * .1) * .8 * .01 * this.maxHealth
-
-                        // boosts must be in %
-                        const levelDamageBoost = (myPokemon.level - this.level) * .1
-                        const itemDamageBoost = myPokemon.getItemDamageBoost()
-                        const weaknessDamageBoost = Type.getDamageBoost(move.type.name, this.types);
-
-                        const dmgIncrease = baseDamage * (levelDamageBoost + itemDamageBoost + weaknessDamageBoost)
-                        const totalDamage = parseInt(baseDamage + Math.max(-baseDamage * .9, Math.min(baseDamage * 10, dmgIncrease)))
-
-                        myPokemon.gainXp(parseInt(moveStats.xp / 2))
-                        this.health -= Math.min(this.maxHealth * .9, totalDamage)
-
-                        MyAnim.moveStraight("#myPokemonImg", 20, -20, 6)
-                            .then(() => MyAnim.moveStraight("#myPokemonImg", -20, 20, 6))
-                        MyAnim.alpha("#otherPokemonImg", 1, 0, 20)
-                            .then(() => MyAnim.alpha("#otherPokemonImg", 0, 1, 20))
-
-                        const extra = weaknessDamageBoost > 0
-                            ? " It is super effective!"
-                            : weaknessDamageBoost < 0
-                                ? " It is not very effective!"
-                                : "";
-                        DATA.log(`${myPokemon.getName()} used ${move.name}!${extra}`)
-                        DATA.log(`It inflicted ${totalDamage} dmg to ${this.name}`)
-                    }
-
-                    if (this.health <= 0)
-                        this.turn = 3
-                    else
-                        this.turn = 2
-                    return
-                }
+            case turn_my_attack: { // my turn
+                if (this.catching > 0)
+                    this.stepTryCatch(myPokemon);
+                else
+                    this.stepMyAttack(myPokemon)
+                return;
             }
 
-            case 2: { // his turn
-                const move = this.moves[parseInt(Math.random() * this.moves.length, 10)]
-                if (!move) {
-                    DATA.log(`${this.name} is distracted...`)
-                } else {
-                    const levelDamageBoost = (this.level - myPokemon.level) * .1
-                    const weaknessDamageBoost = Type.getDamageBoost(move.type.name, myPokemon.getTypes());
-
-                    const baseDamage = (move.power || 1) * .5 * .01 * myPokemon.maxHealth
-                    const dmgIncrease = baseDamage * (levelDamageBoost + itemDamageBoost + weaknessDamageBoost)
-                    const totalDamage = parseInt(baseDamage + Math.max(-baseDamage * .9, Math.min(baseDamage * 10, dmgIncrease)))
-                    myPokemon.health -= totalDamage
-
-                    DATA.log(`${this.name} used ${move.name}!`)
-                    DATA.log(`It inflicted ${dmg} dmg to ${myPokemon.getName()}`)
-                    MyAnim.moveStraight("#otherPokemonImg", -20, 20, 6)
-                        .then(() => MyAnim.moveStraight("#otherPokemonImg", 20, -20, 6)
-                            .then(
-                                () => MyAnim.alpha("#myPokemonImg", 1, 0, 20).then(
-                                    () => MyAnim.alpha("#myPokemonImg", 0, 1, 20)
-                                )
-                            )
-                        )
-                    if (myPokemon.health <= 0) {
-                        DATA.log(myPokemon.getName() + " fainted.")
-                        this.turn = 4
-                        return
-                    }
-                }
-                this.turn = 1
+            case turn_other_attack: { // his turn
+                this.stepOtherAttack(myPokemon)
                 return
             }
 
@@ -216,7 +241,7 @@ async function createBattle(region) {
     const chosenEncounter = randomWeighted(encounters, probs, total)
     const level = chosenEncounter.details[parseInt(Math.random() * chosenEncounter.details.length, 10)].max_level
     const pokemon = new Pokemon(chosenEncounter.pokemon.name, level)
-    await pokemon.load()
+    await pokemon.loadAsync()
     const moves = pokemon.getMoves().map(x => {
         return {
             name: x.names.find(x => x.language.name == 'en').name,
@@ -229,7 +254,7 @@ async function createBattle(region) {
     }
 }
 
-const TRANSIENTS = ['pokemons', 'box', 'clock']
+const TRANSIENTS = ['pokemons', 'box', 'clock', 'isSearching', 'currentBattle']
 class Data {
 
     name = CACHE_NAME
@@ -243,6 +268,7 @@ class Data {
     searchMethods = ['walk']
     ticks = 0
     currentBattle = null
+    battleCooldown = 0
     clock
 
     //settings 
@@ -251,14 +277,20 @@ class Data {
     async startClock() {
         this.clock = setInterval(() => {
             this.ticks++
+
+            if (this.battleCooldown > 0)
+                this.battleCooldown--
+            console.log(this.battleCooldown)
+
             if (this.repaint) this.repaint()
             this.pokemons.forEach(pokemon => pokemon.step(this.ticks));
 
             if (this.isSearching && this.getLiveParty().length == 0)
                 this.isSearching = false
 
-            if (Math.random() < .005)
+            if (this.battleCooldown < 1 && Math.random() < .005)
                 if (this.canBattle()) {
+                    this.battleCooldown = 200
                     createBattle(this.getCurrentRegion()).then(battle => {
                         this.currentBattle = battle
                         DATA.refresh()
@@ -268,6 +300,8 @@ class Data {
             if (this.ticks % 150 == 0) {
                 if (this.currentBattle) {
                     this.currentBattle.step()
+                    if (!this.currentBattle)
+                        this.battleCooldown = 200
                     DATA.refresh()
                 }
             }
@@ -284,12 +318,6 @@ class Data {
 
     async write() {
         const dataToSave = JSON.parse(JSON.stringify(this));
-        dataToSave.pokemons.forEach(pokemon => {
-            delete pokemon.loaded
-        });
-        dataToSave.box.forEach(boxPokemon => {
-            delete boxPokemon.loaded
-        });
         localStorage.setItem(this.name, JSON.stringify(dataToSave));
         console.log(`Data Saved. nr of pokemons: ${dataToSave.pokemons.length}`)
     }
@@ -302,20 +330,20 @@ class Data {
             if (loadedData) {
                 console.log("Loading pokemons...")
                 this.pokemons = loadedData.pokemons.map(loadedPokemon => new Pokemon(loadedPokemon))
-                await Promise.all(this.pokemons.map(pokemon => pokemon.load()))
+                Promise.all(this.pokemons.map(pokemon => pokemon.loadAsync()))
                 console.log("Loading box...")
                 this.box = loadedData.box.map(loadedBoxPokemon => new Pokemon(loadedBoxPokemon))
-                await Promise.all(this.box.map(boxPokemon => boxPokemon.load()))
+                Promise.all(this.box.map(boxPokemon => boxPokemon.loadAsync()))
                 console.log("Loading other data...")
                 Object.keys(loadedData).forEach(key => {
                     if (!TRANSIENTS.includes(key))
                         this[key] = loadedData[key]
                 })
-                if (loadedData.currentBattle) {
-                    this.currentBattle = new Battle(loadedData.currentBattle)
-                    console.log("Loaded current battle:")
-                    console.log(this.currentBattle);
-                }
+                // if (loadedData.currentBattle) {
+                //     this.currentBattle = new Battle(loadedData.currentBattle)
+                //     console.log("Loaded current battle:")
+                //     console.log(this.currentBattle);
+                // }
                 console.log("finished loading.")
                 if (DEBUG)
                     console.log(this)
@@ -334,7 +362,7 @@ class Data {
 
     async addPokemon(loadString) {
         let pokemon = new Pokemon(loadString)
-        await pokemon.load()
+        pokemon.loadAsync()
         if (this.getParty().length == 6)
             this.box.push(pokemon)
         else
@@ -408,7 +436,9 @@ class Data {
     }
 
     canBattle() {
-        return this.getLiveParty().length > 0 &&
+        const liveParty = this.getLiveParty()
+        return liveParty.length > 0 &&
+            liveParty[0].loaded &&
             this.isSearching &&
             !this.currentBattle &&
             this.getCurrentRegion()
@@ -416,6 +446,13 @@ class Data {
 
     getPokemonInBattle() {
         return DATA.getParty().filter(x => x.health > 0)[0]
+    }
+
+    runFromBattle() {
+        this.currentBattle = null
+        this.battleCooldown = 200
+        console.log(this)
+        this.refresh()
     }
 
     logData = []

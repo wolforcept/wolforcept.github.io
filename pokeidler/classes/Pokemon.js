@@ -85,7 +85,7 @@ class Pokemon {
         return boost;
     }
 
-    async load() {
+    async loadAsync() {
         if (CACHE[this.loadString]) {
             console.log(`pokemon ${this.loadString} already in cache`)
             this.loaded = true
@@ -115,10 +115,26 @@ class Pokemon {
         CACHE[this.loadString] = { pokemon, moves, species, evolutions }
         this.loaded = true
     }
-    getCachedPokemon() { return CACHE[this.loadString].pokemon }
-    getCachedMoves() { return CACHE[this.loadString].moves }
-    getCachedSpecies() { return CACHE[this.loadString].species }
-    getCachedEvolutions() { return CACHE[this.loadString].evolutions }
+    getCachedPokemon() {
+        if (!CACHE[this.loadString])
+            return null
+        return CACHE[this.loadString].pokemon
+    }
+    getCachedMoves() {
+        if (!CACHE[this.loadString])
+            return null
+        return CACHE[this.loadString].moves
+    }
+    getCachedSpecies() {
+        if (!CACHE[this.loadString])
+            return null
+        return CACHE[this.loadString].species
+    }
+    getCachedEvolutions() {
+        if (!CACHE[this.loadString])
+            return null
+        return CACHE[this.loadString].evolutions
+    }
 
     levelUp() {
         this.setLevel(this.level + 1)

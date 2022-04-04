@@ -103,7 +103,7 @@ const quest_starting_pokemon = new (function () {
             return
         DATA.finishQuest(this.id)
         const newPokemon = new Pokemon(loadString, 5)
-        await newPokemon.load()
+        newPokemon.loadAsync()
         newPokemon.addItem('macho_brace')
         if (newPokemon.loadString == 'charmander')
             newPokemon.addItem('fire_stone')

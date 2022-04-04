@@ -7,14 +7,18 @@ async function init() {
     IMGS["IMG_PLAYER_MOVING_2"] = await loadImage(IMG_PLAYER_MOVING_2)
     IMGS["IMG_PLAYER_MOVING_3"] = await loadImage(IMG_PLAYER_MOVING_3)
     IMGS["IMG_PLAYER_MOVING_4"] = await loadImage(IMG_PLAYER_MOVING_4)
-    for (let i = 0; i < REGIONS.length; i++)
-        REGIONS[i].load()
-    // (async () => REGIONS.forEach(r => r.load()))()
     await Type.loadAll()
     await DATA.read()
     DATA.startClock()
     console.log("Loading done.")
+    initAsync()
     return true
+}
+async function initAsync() {
+    console.log("Starting async load")
+    for (let i = 0; i < REGIONS.length; i++)
+        REGIONS[i].load()
+    console.log("Async loading done.")
 }
 
 var DEBUG = false

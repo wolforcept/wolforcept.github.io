@@ -71,29 +71,33 @@ const MapView = ({ setAlertMessage }) => {
 
                 <div className="col" style={{ maxWidth: canvasSize.w + 32 }} >
                     <h2>Current Location: {currentRegion.getTitle()}</h2>
-                    <div style={{ minHeight: 48 }}>
-                        {!DATA.isSearching && <button href="#" className="btn btn-primary"
-                            onClick={() => {
-                                if (encounterViews.length == 0) {
-                                    setAlertMessage('No pokemons to find in this location!')
-                                    return
-                                }
-                                if (DATA.getLiveParty().length == 0) {
-                                    setAlertMessage("No available Pokemon!")
-                                    return
-                                }
-                                DATA.isSearching = true
-                                DATA.refresh()
-                            }}>Search for Pokemon</button>}
-                        {DATA.isSearching && <button href="#" className="btn btn-primary"
-                            onClick={() => { DATA.isSearching = false; DATA.refresh() }}>Stop searching</button>}
-                        {<DropdownButton
-                            style={{ width: 160 }}
-                            text={"Walking"}
-                            options={[
-                                { text: "Walking", onClick: () => DATA.searchingMethod = 'walk' }
-                            ]}
-                        />}
+                    <div style={{ minHeight: 48, height: 48, maxHeight: 48 }}>
+                        {!currentRegion.loaded && <p>Region is loading...</p>}
+                        {currentRegion.loaded && <>
+                            {!DATA.isSearching && <button href="#" className="btn btn-primary"
+                                onClick={() => {
+                                    if (encounterViews.length == 0) {
+                                        setAlertMessage('No pokemons to find in this location!')
+                                        return
+                                    }
+                                    if (DATA.getLiveParty().length == 0) {
+                                        setAlertMessage("No available Pokemon!")
+                                        return
+                                    }
+                                    DATA.isSearching = true
+                                    DATA.refresh()
+                                }}>Search for Pokemon</button>}
+                            {DATA.isSearching && <button href="#" className="btn btn-primary"
+                                onClick={() => { DATA.isSearching = false; DATA.refresh() }}>Stop searching</button>}
+                            {<DropdownButton
+                                style={{ width: 160 }}
+                                text={"Walking"}
+                                options={[
+                                    { text: "Walking", onClick: () => DATA.searchingMethod = 'walk' }
+                                ]}
+                            />}
+                        </>
+                        }
                     </div>
                     <canvas ref={canvas} id="mapCanvas" width={canvasSize.w} height={canvasSize.h} onMouseDown={onMouseDown} onMouseMove={onMouseMove} onMouseUp={onMouseUp} onMouseLeave={onMouseLeave} />
 
@@ -277,10 +281,10 @@ const EncounterView = ({ encounter }) => {
 }
 
 const MapHoverView = ({ region }) => {
-    if (!region)
+    if (!region.loaded)
         return (
             <div className="MapHoverView" style={{ left: region.x + mapPos.x + 16, top: region.y + mapPos.y - 16 }}>
-                {"Loading…"}
+                Loading...
             </div >
         )
 
@@ -368,7 +372,7 @@ const BattleView = ({ currentBattle, isVertical }) => {
                 <div className="buttons vertical">
                     <div>
                         <button className="btn btn-primary" onClick={() => DATA.currentBattle.tryCatch()} >{currentBattle.catching > 0 ? `Catching ${parseInt(currentBattle.catching)}%` : `Throw Pokeball`}</button>
-                        <button className="btn btn-primary" onClick={() => { DATA.currentBattle = null; DATA.refresh() }} >Run from Battle</button>
+                        <button className="btn btn-primary" onClick={() => DATA.runFromBattle()} >Run from Battle</button>
                     </div>
                     <div>
                         {DATA.logData[DATA.logData.length - 2] && <span>{DATA.logData[DATA.logData.length - 2]}</span>}
@@ -385,7 +389,7 @@ const BattleView = ({ currentBattle, isVertical }) => {
                     </div>
                     <div>
                         {DATA.logData[DATA.logData.length - 1] && <span>{DATA.logData[DATA.logData.length - 1]}</span>}
-                        <button className="btn btn-primary" onClick={() => { DATA.currentBattle = null; DATA.refresh() }} >Run from Battle</button>
+                        <button className="btn btn-primary" onClick={() => DATA.runFromBattle()} >Run from Battle</button>
                     </div>
                 </div>
             }
