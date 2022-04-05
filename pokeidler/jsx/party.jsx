@@ -176,12 +176,14 @@ const PokemonView = ({ pokemon, i, heldPokemon, swapHeldPokemon, setModal, setAl
                                     })}
                             />}
                         {selectedItem && <>
-                            <p>{selectedItem.description}</p>
+                            <div className="item-description">
+                                <p>{selectedItem.description}</p>
+                            </div>
                             <button href="#" className="btn btn-primary" style={{ width: "100%" }} onClick={() => {
                                 pokemon.removeItem(selectedItemIndex)
-                                setSelectedItemIndex(i - 1)
-                                DATA.addItem(selectedItem.name)
-                            }}>Remove</button><br />
+                                setSelectedItemIndex(Math.max(0, i - 1))
+                                DATA.refresh()
+                            }}>Remove</button>
                         </>}
                     </>}
                     {tab == 4 && <>

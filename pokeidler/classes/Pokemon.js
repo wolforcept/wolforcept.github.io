@@ -70,16 +70,16 @@ class Pokemon {
     getItemDamageBoost() {
         let boost = 0;
 
-        if (this.type == 'grass' && this.hasItem('leaf_stone'))
+        if (this.type == 'grass' && this.hasItemName('leaf_stone'))
             boost += .1;
 
-        if (this.type == 'fire' && this.hasItem('fire_stone'))
+        if (this.type == 'fire' && this.hasItemName('fire_stone'))
             boost += .1;
 
-        if (this.type == 'water' && this.hasItem('water_stone'))
+        if (this.type == 'water' && this.hasItemName('water_stone'))
             boost += .1;
 
-        if (this.type == 'electric' && this.hasItem('thunder_stone'))
+        if (this.type == 'electric' && this.hasItemName('thunder_stone'))
             boost += .1;
 
         return boost;
@@ -273,16 +273,17 @@ class Pokemon {
         this.currentMoveName = moveName
     }
 
-    hasItem(item) {
-        return this.items.find(item) ? true : false
+    hasItemName(itemName) {
+        return this.items.find(itemName) ? true : false
     }
 
-    addItem(item) {
-        this.items.push(item)
+    addItemName(itemName) {
+        this.items.push(itemName)
     }
 
     removeItem(itemIndex) {
-        this.items.splice(itemIndex, 1)
+        const itemNameRemoved = this.items.splice(itemIndex, 1)
+        DATA.addItemName(itemNameRemoved)
     }
 
     gainXp(n) {
@@ -316,9 +317,13 @@ class Pokemon {
     heal() {
         if (this.health < this.maxHealth &&
             this.energy == this.getMaxEnergy()) {
-            this.health = this.maxHealth
+            this.addHealth(this.maxHealth)
             this.energy = 0
         }
+    }
+
+    addHealth(value) {
+        this.health = parseInt(Math.min(this.maxHealth, this.health + value))
     }
 
     step(ticks) {

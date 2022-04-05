@@ -97,7 +97,6 @@ class Battle {
         const xpDiff = myPokemon.level < this.level + 10 ? 0 :
             this.xp * (1 - 0.01 * Math.pow(myPokemon.level - 10, 2))
         const xp = parseInt(Math.max(0, this.xp + xpDiff))
-        // console.log(`${this.xp} + ${xpDiff} = ${xp}`)
         myPokemon.gainXp(xp)
         DATA.log(this.name + " fainted! " + myPokemon.getName() + " gained " + xp + " xp")
         this.turn = turn_exit
@@ -137,7 +136,6 @@ class Battle {
                 .then(() => MyAnim.alpha("#otherPokemonImg", 0, 1, 20))
 
             DATA.log(`${myPokemon.getName()} used ${move.name}!`)
-            // DATA.log(`It inflicted ${totalDamage} dmg to ${this.name}`)
             if (weaknessDamageBoost > 0)
                 DATA.log(`It is super effective!`)
             if (weaknessDamageBoost < 0)
@@ -156,20 +154,18 @@ class Battle {
             DATA.log(`${this.name} is distracted...`)
         } else {
             const levelDamageBoost = (this.level - myPokemon.level) * .1
-            console.log(move)
             const weaknessDamageBoost = Type.getDamageBoost(move.type, myPokemon.getTypes());
 
             const baseDamage = (move.power || 1) * .5 * .01 * myPokemon.maxHealth
             const damageIncrease = baseDamage * (levelDamageBoost + weaknessDamageBoost)
             const totalDamage = parseInt(baseDamage + Math.max(-baseDamage * .9, Math.min(baseDamage * 10, damageIncrease)))
-            myPokemon.health -= totalDamage
+            myPokemon.addHealth(-totalDamage)
 
             DATA.log(`${this.name} used ${move.name}!`)
             if (weaknessDamageBoost > 0)
                 DATA.log(`It is super effective!`)
             if (weaknessDamageBoost < 0)
                 DATA.log(`It is not very effective!`)
-            // DATA.log(`It inflicted ${totalDamage} dmg to ${myPokemon.getName()}`)
             MyAnim.moveStraight("#otherPokemonImg", -20, 20, 6)
                 .then(() => MyAnim.moveStraight("#otherPokemonImg", 20, -20, 6)
                     .then(
@@ -195,7 +191,7 @@ class Battle {
 
             case turn_start: { // prepare, show battle
                 this.turn = myPokemon.level >= this.level ? turn_my_attack : turn_other_attack
-                DATA.log(``)
+                DATA.log(`-----------------------------`)
                 DATA.log(`A wild ${this.name} appeared!`)
                 return
             }
@@ -267,6 +263,7 @@ class Data {
     name = CACHE_NAME
     pokemons = []
     box = []
+    items = []
     currentRegion = 0
     seenPokemon = []
     finishedQuests = []
@@ -345,11 +342,6 @@ class Data {
                     if (!TRANSIENTS.includes(key))
                         this[key] = loadedData[key]
                 })
-                // if (loadedData.currentBattle) {
-                //     this.currentBattle = new Battle(loadedData.currentBattle)
-                //     console.log("Loaded current battle:")
-                //     console.log(this.currentBattle);
-                // }
                 console.log("synced > finished loading.")
                 if (DEBUG)
                     console.log(this)
@@ -458,6 +450,14 @@ class Data {
         this.currentBattle = null
         this.battleCooldown = 200
         this.refresh()
+    }
+
+    getItems() {
+        return this.items.map(itemName => ITEMS[itemName])
+    }
+
+    addItemName(itemName) {
+        this.items.push(itemName)
     }
 
     logData = []

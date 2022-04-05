@@ -22,7 +22,7 @@ async function initAsync() {
     DATA.box.forEach(p => p.loadAsync())
 }
 
-var DEBUG = false
+var DEBUG = true
 var CACHE_NAME = "pokeidler"
 var CACHE = {}
 CACHE.fetch = async (request) => {
@@ -61,6 +61,7 @@ const PAGES = [
     { name: "map", title: "Map", img: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/old-sea-map.png" },
     { name: "party", title: "Party", img: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/rare-candy.png" },
     { name: "box", title: "Box", img: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/machine-part.png" },
+    { name: "items", title: "Items", img: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/destiny-knot.png" },
     { name: "allsprites", title: "All Sprites", img: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/ghost-memory.png", canBeVisible: () => DEBUG },
     { name: "info", title: "Info", img: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/scanner.png" },
 ]
