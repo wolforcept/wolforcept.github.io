@@ -4,8 +4,10 @@ const InfoTab = ({ }) => {
 
     const [log, setLog] = React.useState(DATA.logData || [])
 
-    React.useEffect(() => DATA.updateInfoLog = setLog, [])
-
+    React.useEffect(() => {
+        DATA.updateInfoLog = setLog
+        DATA.scrollToBottomOfLog()
+    }, [])
 
     return (
         <div className="pokeTab InfoTab">

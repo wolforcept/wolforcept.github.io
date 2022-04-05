@@ -96,7 +96,7 @@ class Battle {
     stepWin(myPokemon) {
         const xpDiff = myPokemon.level < this.level + 10 ? 0 :
             this.xp * (1 - 0.01 * Math.pow(myPokemon.level - 10, 2))
-        const xp = Math.max(0, this.xp + xpDiff);
+        const xp = parseInt(Math.max(0, this.xp + xpDiff))
         // console.log(`${this.xp} + ${xpDiff} = ${xp}`)
         myPokemon.gainXp(xp)
         DATA.log(this.name + " fainted! " + myPokemon.getName() + " gained " + xp + " xp")
@@ -104,8 +104,10 @@ class Battle {
     }
 
     stepDefeat(myPokemon) {
-        DATA.log(myPokemon.getName() + " fainted! ")
-        this.turn = turn_exit
+        if (DATA.getLiveParty().length > 0)
+            this.turn = turn_my_attack
+        else
+            this.turn = turn_exit
     }
 
     stepMyAttack(myPokemon) {
@@ -177,6 +179,7 @@ class Battle {
                     )
                 )
             if (myPokemon.health <= 0) {
+                DATA.log(myPokemon.getName() + " fainted! ")
                 this.turn = turn_defeat
                 return
             }
@@ -328,16 +331,16 @@ class Data {
     async read() {
 
         try {
-            console.log("Loading player data...")
+            console.log("synced > Loading player data...")
             const loadedData = JSON.parse(localStorage.getItem(this.name))
             if (loadedData) {
-                console.log("Loading pokemons...")
+                console.log("synced > Loading pokemons...")
                 this.pokemons = loadedData.pokemons.map(loadedPokemon => new Pokemon(loadedPokemon))
-                Promise.all(this.pokemons.map(pokemon => pokemon.loadAsync()))
-                console.log("Loading box...")
+                // Promise.all(this.pokemons.map(pokemon => pokemon.loadAsync()))
+                console.log("synced > Loading box...")
                 this.box = loadedData.box.map(loadedBoxPokemon => new Pokemon(loadedBoxPokemon))
-                Promise.all(this.box.map(boxPokemon => boxPokemon.loadAsync()))
-                console.log("Loading other data...")
+                // Promise.all(this.box.map(boxPokemon => boxPokemon.loadAsync()))
+                console.log("synced > Loading other data...")
                 Object.keys(loadedData).forEach(key => {
                     if (!TRANSIENTS.includes(key))
                         this[key] = loadedData[key]
@@ -347,19 +350,19 @@ class Data {
                 //     console.log("Loaded current battle:")
                 //     console.log(this.currentBattle);
                 // }
-                console.log("finished loading.")
+                console.log("synced > finished loading.")
                 if (DEBUG)
                     console.log(this)
                 return
             }
         } catch (e) {
-            console.log('Unable to load player data.')
+            console.log('synced > Unable to load player data.')
             console.log(e)
         }
 
-        console.log('No player data loaded.');
+        console.log('synced > No player data loaded.');
         this.write()
-        console.log('New player data created.');
+        console.log('synced > New player data created.');
 
     }
 
@@ -441,7 +444,7 @@ class Data {
     canBattle() {
         const liveParty = this.getLiveParty()
         return liveParty.length > 0 &&
-            liveParty[0].loaded &&
+            liveParty[0].isLoaded() &&
             this.isSearching &&
             !this.currentBattle &&
             this.getCurrentRegion()

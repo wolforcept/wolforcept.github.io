@@ -6,6 +6,11 @@ const IMG_OPTIONS = IMG_ + "town-map.png"
 
 const PokemonView = ({ pokemon, i, heldPokemon, swapHeldPokemon, setModal, setAlertMessage, isBox }) => {
 
+    if (!pokemon.isLoaded()) {
+        setTimeout(DATA.refresh, 1000);
+        return <div className="PokemonView" style={{ color: "black", color: "black" }}>Loading...</div>
+    }
+
     const [tab, setTab] = React.useState(0)
     const [hovered, setHovered] = React.useState(false)
     const [updater, setUpdater] = React.useState(1)
@@ -60,8 +65,10 @@ const PokemonView = ({ pokemon, i, heldPokemon, swapHeldPokemon, setModal, setAl
         setUpdater(updater + 1)
     }
 
-    if (!pokemon.loaded)
-        return <div className="PokemonView" style={{ color: "black", color: "black" }}>Loading...</div>
+    function heal() {
+        pokemon.heal()
+        setUpdater(updater + 1)
+    }
 
     const currentMoveStats = pokemon.getCurrentMoveStats()
 
@@ -90,8 +97,8 @@ const PokemonView = ({ pokemon, i, heldPokemon, swapHeldPokemon, setModal, setAl
                 </div>
                 <div className="pokemon-secondary col" style={tab == 0 ? { display: "none" } : {}} >
                     {tab == 1 && <>
-                        <h4 className="card-title">{'Details'}</h4>
-                        <p className="card-text">
+                        <h4 className="card-title no-margin">{'Details'}</h4>
+                        <p className="flavor-text card-text">
                             {pokemon.getFlavorText()}
                         </p>
                         {pokemon.getEvolutionNames().length == 0 && <p>No Evolutions.</p>}
@@ -136,13 +143,22 @@ const PokemonView = ({ pokemon, i, heldPokemon, swapHeldPokemon, setModal, setAl
                             }
                         />
                         <br />
-                        <h5 className="card-title">Energy: {currentMoveStats.energy}</h5>
-                        <h5 className="card-title">XP: {currentMoveStats.xp}</h5>
+                        <div class="row min-vh-100">
+                            <div class="col-6">
+                                <h5 className="no-margin">Energy: {currentMoveStats.energy}</h5>
+                            </div>
+                            <div class="col-6">
+                                <h5 className="no-margin">XP: {currentMoveStats.xp}</h5>
+                            </div>
+                        </div>
                         {isBox && <p>(In Box)</p>}
                         {DATA.currentBattle && !isBox && <p>(In Battle)</p>}
                         {!DATA.currentBattle && !isBox &&
                             <button href="#" className="btn btn-primary" onClick={train} style={{ width: "100%" }}
                             >Train</button>}
+                        {!DATA.currentBattle && !isBox &&
+                            <button href="#" className="btn btn-primary" onClick={heal} style={{ width: "100%" }}
+                            >Heal</button>}
                     </>}
                     {tab == 3 && <>
                         <h4 className="card-title">{'Items'}</h4>

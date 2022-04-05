@@ -88,7 +88,6 @@ class Pokemon {
     async loadAsync() {
         if (CACHE[this.loadString]) {
             console.log(`pokemon ${this.loadString} already in cache`)
-            this.loaded = true
             return
         }
 
@@ -111,9 +110,9 @@ class Pokemon {
         const species = await (await CACHE.fetch(pokemon.species.url)).json()
         const evolution_chain = (await (await CACHE.fetch(species.evolution_chain.url)).json()).chain
         let evolutions = getSelfOnEvoChain(evolution_chain, species.name).evolves_to
-        evolutions = evolutions.map(e => { return { name: e.species.name, details: e.evolution_details, isBaby: e.is_baby } })
+        evolutions = evolutions.map(e => ({ name: e.species.name, details: e.evolution_details, isBaby: e.is_baby }))
         CACHE[this.loadString] = { pokemon, moves, species, evolutions }
-        this.loaded = true
+        console.log("finished loading " + this.loadString);
     }
     getCachedPokemon() {
         if (!CACHE[this.loadString])
@@ -135,6 +134,9 @@ class Pokemon {
             return null
         return CACHE[this.loadString].evolutions
     }
+    isLoaded() {
+        return CACHE[this.loadString] ? true : false
+    }
 
     levelUp() {
         this.setLevel(this.level + 1)
@@ -144,8 +146,9 @@ class Pokemon {
         this.level = newLevel
         this.xp = 0
         this.maxXp = parseInt(99.37 + .3445 * this.level * this.level, 10)
+        const percentHealth = this.health / this.maxHealth || 1
         this.maxHealth = parseInt(1247.2 - 274675 / (this.level + 222.373), 10)
-        this.health = this.maxHealth
+        this.health = parseInt(this.maxHealth * percentHealth)
     }
 
     getId() {
@@ -310,14 +313,20 @@ class Pokemon {
         this.energy -= stats.energy
     }
 
+    heal() {
+        if (this.health < this.maxHealth &&
+            this.energy == this.getMaxEnergy()) {
+            this.health = this.maxHealth
+            this.energy = 0
+        }
+    }
+
     step(ticks) {
         if (ticks % 100 == 0) {
-            const maxE = this.getMaxEnergy()
-            if (this.energy < maxE) {
-                this.energy += 2
-                if (this.energy > maxE) this.energy = maxE
+            const prevEnergy = this.energy
+            this.energy = Math.min(this.energy + 2, this.getMaxEnergy())
+            if (this.energy != prevEnergy)
                 DATA.refresh()
-            }
         }
     }
 

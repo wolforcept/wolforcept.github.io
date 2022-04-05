@@ -79,9 +79,17 @@ h4 {
     color: black;
 }
 
+h4.no-margin {
+    margin: 0;
+}
+
 h5 {
     font-size: 24px;
     color: black;
+}
+
+h5.no-margin {
+    margin: 0;
 }
 
 /* h3 {
@@ -403,8 +411,15 @@ button:focus {
 }
 
 .PokemonView .pokemon-secondary {
-    height: 100%;
+    height: 305px;
     padding: 16px 64px 0 0;
+}
+
+.PokemonView .pokemon-secondary .flavor-text{
+    height: 150px;
+    max-height: 150px;
+    min-height: 150px;
+    overflow-y: scroll;
 }
 
 .PokemonView p{

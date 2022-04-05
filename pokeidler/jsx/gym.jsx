@@ -16,7 +16,7 @@ const GymView = ({ party }) => {
 
 const GymSlotView = ({ pokemon }) => {
 
-    if (!pokemon.loaded) {
+    if (!pokemon.isLoaded()) {
         return <div className="GymSlotView"><div className="card"><div className="d-flex align-items-start"><h4 className="card-title">&nbsp;&nbsp;&nbsp;Loading...&nbsp;&nbsp;&nbsp;&nbsp;</h4></div></div></div>
     }
 

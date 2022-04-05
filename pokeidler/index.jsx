@@ -1,5 +1,5 @@
 async function init() {
-    console.log("Starting load")
+    console.log("Starting synced load")
     await CACHE.init()
     IMGS[IMG_MAP] = await loadImage(IMG_MAP)
     IMGS[IMG_PLAYER] = await loadImage(IMG_PLAYER)
@@ -10,7 +10,7 @@ async function init() {
     await Type.loadAll()
     await DATA.read()
     DATA.startClock()
-    console.log("Loading done.")
+    console.log("Synced loading done.")
     initAsync()
     return true
 }
@@ -18,7 +18,8 @@ async function initAsync() {
     console.log("Starting async load")
     for (let i = 0; i < REGIONS.length; i++)
         REGIONS[i].load()
-    console.log("Async loading done.")
+    DATA.pokemons.forEach(p => p.loadAsync())
+    DATA.box.forEach(p => p.loadAsync())
 }
 
 var DEBUG = false
