@@ -94,8 +94,12 @@ class Battle {
     }
 
     stepWin(myPokemon) {
-        myPokemon.gainXp(this.xp)
-        DATA.log(this.name + "fainted! " + myPokemon.getName() + " gained " + this.xp + " xp")
+        const xpDiff = myPokemon.level < this.level + 10 ? 0 :
+            this.xp * (1 - 0.01 * Math.pow(myPokemon.level - 10, 2))
+        const xp = Math.max(0, this.xp + xpDiff);
+        // console.log(`${this.xp} + ${xpDiff} = ${xp}`)
+        myPokemon.gainXp(xp)
+        DATA.log(this.name + " fainted! " + myPokemon.getName() + " gained " + xp + " xp")
         this.turn = turn_exit
     }
 
@@ -280,7 +284,6 @@ class Data {
 
             if (this.battleCooldown > 0)
                 this.battleCooldown--
-            console.log(this.battleCooldown)
 
             if (this.repaint) this.repaint()
             this.pokemons.forEach(pokemon => pokemon.step(this.ticks));
@@ -451,7 +454,6 @@ class Data {
     runFromBattle() {
         this.currentBattle = null
         this.battleCooldown = 200
-        console.log(this)
         this.refresh()
     }
 
