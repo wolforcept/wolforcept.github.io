@@ -70,6 +70,11 @@ const PokemonView = ({ pokemon, i, heldPokemon, swapHeldPokemon, setModal, setAl
         setUpdater(updater + 1)
     }
 
+    function evolve(){
+        pokemon.evolve()
+        setUpdater(updater + 1)
+    }
+
     const currentMoveStats = pokemon.getCurrentMoveStats()
 
     return <>
@@ -103,7 +108,11 @@ const PokemonView = ({ pokemon, i, heldPokemon, swapHeldPokemon, setModal, setAl
                         </p>
                         {pokemon.getEvolutionNames().length == 0 && <p>No Evolutions.</p>}
                         {pokemon.getEvolutionNames().length > 0 && <p className="card-text">
-                            Evolves at Lv.100 into:<br />
+                            {pokemon.level < 100 ?
+                                <>Evolves at Lv.100 into:<br /></>
+                                :
+                                <button className="btn btn-primary" style={{ width: "100%" }} onClick={evolve}>Evolve Now</button>
+                            }
                             <DropdownButton
                                 style={{ width: "100%" }}
                                 text={cap(pokemon.getEvolutionNames()[pokemon.chosenEvolution])}
@@ -154,10 +163,10 @@ const PokemonView = ({ pokemon, i, heldPokemon, swapHeldPokemon, setModal, setAl
                         {isBox && <p>(In Box)</p>}
                         {DATA.currentBattle && !isBox && <p>(In Battle)</p>}
                         {!DATA.currentBattle && !isBox &&
-                            <button href="#" className="btn btn-primary" onClick={train} style={{ width: "100%" }}
+                            <button className="btn btn-primary" onClick={train} style={{ width: "100%" }}
                             >Train</button>}
                         {!DATA.currentBattle && !isBox &&
-                            <button href="#" className="btn btn-primary" onClick={heal} style={{ width: "100%" }}
+                            <button className="btn btn-primary" onClick={heal} style={{ width: "100%" }}
                             >Heal</button>}
                     </>}
                     {tab == 3 && <>
@@ -179,7 +188,7 @@ const PokemonView = ({ pokemon, i, heldPokemon, swapHeldPokemon, setModal, setAl
                             <div className="item-description">
                                 <p>{selectedItem.description}</p>
                             </div>
-                            <button href="#" className="btn btn-primary" style={{ width: "100%" }} onClick={() => {
+                            <button className="btn btn-primary" style={{ width: "100%" }} onClick={() => {
                                 pokemon.removeItem(selectedItemIndex)
                                 setSelectedItemIndex(Math.max(0, i - 1))
                                 DATA.refresh()
@@ -188,9 +197,9 @@ const PokemonView = ({ pokemon, i, heldPokemon, swapHeldPokemon, setModal, setAl
                     </>}
                     {tab == 4 && <>
                         <h4 className="card-title">{'Actions'}</h4>
-                        <button href="#" className="btn btn-primary" style={{ width: "100%" }} onClick={rename}>Rename Pokemon</button><br />
-                        <button href="#" className="btn btn-primary" style={{ width: "100%" }} onClick={sendTo}>{isBox ? "Send to Party" : "Send to Box"}</button><br />
-                        <button href="#" className="btn btn-primary" style={{ width: "100%" }} onClick={release}>Release Pokemon</button><br />
+                        <button className="btn btn-primary" style={{ width: "100%" }} onClick={rename}>Rename Pokemon</button><br />
+                        <button className="btn btn-primary" style={{ width: "100%" }} onClick={sendTo}>{isBox ? "Send to Party" : "Send to Box"}</button><br />
+                        <button className="btn btn-primary" style={{ width: "100%" }} onClick={release}>Release Pokemon</button><br />
                     </>}
                 </div>
             </div>

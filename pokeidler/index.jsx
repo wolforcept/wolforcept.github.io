@@ -84,7 +84,11 @@ const App = () => {
         if (!DEBUG) return
         e.preventDefault()
         try {
-            await DATA.addPokemon(searchValue.toLowerCase())
+            const itemId = Object.keys(ITEMS).find(x => x == searchValue.toLowerCase())
+            if (itemId)
+                DATA.addItemId(itemId)
+            else
+                await DATA.addPokemon(searchValue.toLowerCase())
             DATA.refresh()
         } catch (e) {
             setAlertMessage(`Could not find pokemon "${searchValue}"`);
@@ -144,17 +148,18 @@ const App = () => {
                                 <h1>{selectedPage.title}</h1>
                             </div>
                             <div id="pageContent" class="row justify-content-center bg-blue flex-grow-1" style={isVertical ? {} : { maxHeight: `${window.innerHeight - 80 - 16}px` }}>
+
+                                {selectedPage.name == "map" &&
+                                    <MapView regions={data.regions} setAlertMessage={setAlertMessage} />}
+
                                 {selectedPage.name == "party" &&
                                     <TeamView party={data.getParty()} setAlertMessage={setAlertMessage} />}
-
-                                {selectedPage.name == "gym" &&
-                                    <GymView party={data.getParty()} />}
 
                                 {selectedPage.name == "box" &&
                                     <TeamView party={data.getPokemonsInBox()} setAlertMessage={setAlertMessage} isBox={true} />}
 
-                                {selectedPage.name == "map" &&
-                                    <MapView regions={data.regions} setAlertMessage={setAlertMessage} />}
+                                {selectedPage.name == "items" &&
+                                    <ItemsTab />}
 
                                 {selectedPage.name == "allsprites" && DEBUG &&
                                     <AllSpritesView />}

@@ -453,11 +453,15 @@ class Data {
     }
 
     getItems() {
-        return this.items.map(itemName => ITEMS[itemName])
+        return this.items.map(itemId => ({ id: itemId, ...ITEMS[itemId] }))
     }
 
-    addItemName(itemName) {
-        this.items.push(itemName)
+    addItemId(itemId) {
+        this.items.push(itemId)
+    }
+
+    removeItem(itemIndex) {
+        this.items.splice(itemIndex, 1)
     }
 
     logData = []

@@ -71,16 +71,16 @@ class Pokemon {
         let boost = 0;
 
         if (this.type == 'grass' && this.hasItemName('leaf_stone'))
-            boost += .1;
+            boost += .2
 
         if (this.type == 'fire' && this.hasItemName('fire_stone'))
-            boost += .1;
+            boost += .2
 
         if (this.type == 'water' && this.hasItemName('water_stone'))
-            boost += .1;
+            boost += .2
 
         if (this.type == 'electric' && this.hasItemName('thunder_stone'))
-            boost += .1;
+            boost += .2
 
         return boost;
     }
@@ -113,6 +113,7 @@ class Pokemon {
         evolutions = evolutions.map(e => ({ name: e.species.name, details: e.evolution_details, isBaby: e.is_baby }))
         CACHE[this.loadString] = { pokemon, moves, species, evolutions }
         console.log("finished loading " + this.loadString);
+        DATA.refresh()
     }
     getCachedPokemon() {
         if (!CACHE[this.loadString])
@@ -191,6 +192,12 @@ class Pokemon {
 
     getEvolutionNames() {
         return this.getCachedEvolutions().map(e => e.name)
+    }
+
+    evolve() {
+        this.loadString = this.getEvolutionNames()[this.chosenEvolution]
+        this.setLevel(1)
+        this.loadAsync()
     }
 
     getImageSrc(back) {
@@ -277,13 +284,13 @@ class Pokemon {
         return this.items.find(itemName) ? true : false
     }
 
-    addItemName(itemName) {
-        this.items.push(itemName)
+    addItemId(itemId) {
+        this.items.push(itemId)
     }
 
     removeItem(itemIndex) {
-        const itemNameRemoved = this.items.splice(itemIndex, 1)
-        DATA.addItemName(itemNameRemoved)
+        const itemId = this.items.splice(itemIndex, 1)[0]
+        DATA.addItemId(itemId)
     }
 
     gainXp(n) {
@@ -315,10 +322,11 @@ class Pokemon {
     }
 
     heal() {
-        if (this.health < this.maxHealth &&
-            this.energy == this.getMaxEnergy()) {
-            this.addHealth(this.maxHealth)
-            this.energy = 0
+        if (!DATA.currentBattle &&
+            this.health < this.maxHealth &&
+            this.energy > 0) {
+            this.addHealth(parseInt(this.maxHealth * .01))
+            this.energy--
         }
     }
 
