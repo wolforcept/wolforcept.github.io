@@ -195,7 +195,7 @@ class Pokemon {
     }
 
     evolve() {
-        if (level > 50) {
+        if (this.level > 50) {
             this.loadString = this.getEvolutionNames()[this.chosenEvolution]
             this.setLevel(1)
             this.loadAsync()
