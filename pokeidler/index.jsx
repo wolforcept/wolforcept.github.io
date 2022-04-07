@@ -22,7 +22,7 @@ async function initAsync() {
     DATA.box.forEach(p => p.loadAsync())
 }
 
-var DEBUG = true
+var DEBUG = false
 var CACHE_NAME = "pokeidler"
 var CACHE = {}
 CACHE.fetch = async (request) => {
