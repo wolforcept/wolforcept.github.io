@@ -325,7 +325,7 @@ class Pokemon {
         if (!DATA.currentBattle &&
             this.health < this.maxHealth &&
             this.energy > 0) {
-            this.addHealth(parseInt(this.maxHealth * .01))
+            this.addHealth(1+parseInt(this.maxHealth * .01))
             this.energy--
         }
     }
