@@ -195,9 +195,11 @@ class Pokemon {
     }
 
     evolve() {
-        this.loadString = this.getEvolutionNames()[this.chosenEvolution]
-        this.setLevel(1)
-        this.loadAsync()
+        if (level > 50) {
+            this.loadString = this.getEvolutionNames()[this.chosenEvolution]
+            this.setLevel(1)
+            this.loadAsync()
+        }
     }
 
     getImageSrc(back) {
@@ -325,7 +327,7 @@ class Pokemon {
         if (!DATA.currentBattle &&
             this.health < this.maxHealth &&
             this.energy > 0) {
-            this.addHealth(1+parseInt(this.maxHealth * .01))
+            this.addHealth(1 + parseInt(this.maxHealth * .01))
             this.energy--
         }
     }

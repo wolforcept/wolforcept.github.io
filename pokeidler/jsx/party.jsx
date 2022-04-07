@@ -108,8 +108,8 @@ const PokemonView = ({ pokemon, i, heldPokemon, swapHeldPokemon, setModal, setAl
                         </p>
                         {pokemon.getEvolutionNames().length == 0 && <p>No Evolutions.</p>}
                         {pokemon.getEvolutionNames().length > 0 && <p className="card-text">
-                            {pokemon.level < 100 ?
-                                <>Evolves at Lv.100 into:<br /></>
+                            {pokemon.level < 50 ?
+                                <>Evolves at Lv.50 into:<br /></>
                                 :
                                 <button className="btn btn-primary" style={{ width: "100%" }} onClick={evolve}>Evolve Now</button>
                             }
