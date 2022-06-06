@@ -27,7 +27,7 @@ function connect(address, username, password) {
     socket.onmessage = function (event) {
         let message = JSON.parse(event.data);
         if (message.type != "gamestate")
-            console.log("Message received: " + message.type);
+            console.log({ message });
 
         switch (message.type) {
             case "gamestate": {

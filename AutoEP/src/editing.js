@@ -52,7 +52,6 @@ function startEditing(message) {
         else if (lastEditedType)
             type = lastEditedType;
 
-        console.log(message)
         if (!type)
             return;
         editingType = type;
