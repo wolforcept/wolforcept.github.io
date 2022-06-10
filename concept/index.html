@@ -3,142 +3,118 @@
 <head>
     <title>CONCEPT!</title>
     <link rel="icon" type="image/png" href="images/14.png" />
+    <link rel="stylesheet" type="text/css" href="index.css">
 
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Lato&display=swap');
+    <script src="../lib/jquery.min.js"></script>
+    <script src="constants.js"></script>
 
-        * {
-            font-family: 'Lato', sans-serif;
-        }
-
-        body {
-            margin: 0;
-            background-color: rgb(25, 23, 27);
-            overflow: hidden;
-        }
-
-        h1 {
-            position: relative;
-            font-size: 16px;
-            z-index: 1;
-            overflow: hidden;
-            text-align: center;
-            color: #ccc;
-            margin-top: 0;
-            margin-bottom: 0;
-        }
-
-        h1:before {
-            position: absolute;
-            top: 51%;
-            overflow: hidden;
-            width: 40%;
-            height: 1px;
-            content: '\a0';
-            background-color: #ccc;
-            margin-left: -50%;
-            text-align: right;
-        }
-
-        h1:after {
-            position: absolute;
-            top: 51%;
-            overflow: hidden;
-            width: 30%;
-            height: 1px;
-            content: '\a0';
-            background-color: #ccc;
-            margin-left: 10%;
-        }
-
-        .color {
-            background-color: #ccc;
-        }
-
-        hr {
-            display: block;
-            height: 1px;
-            border: 0;
-            border-top: 1px solid #ccc;
-            margin: 1em 0;
-            padding: 0;
-        }
-
-        .moveable {
-            position: absolute;
-            cursor: move;
-            z-index: 10;
-            background-color: #00000000;
-        }
-
-        .button {
-            display: inline;
-        }
-
-        #buttons {
-            position: absolute;
-            right: 0;
-            width: 280px;
-            cursor: grab;
-            z-index: 0;
-            color: #8b2e2ea9;
-            height: 100%;
-            overflow-y: scroll;
-        }
-
-        #helpDivButton {
-            position: absolute;
-            color: white;
-            background: #444444;
-            width: 16px;
-            height: 16px;
-            text-align: center;
-            padding: 8px;
-            border-radius: 8px;
-            left: 8px;
-            top: 8px;
-            cursor: pointer;
-        }
-
-        #helpDiv {
-            display: none;
-            position: absolute;
-            color: white;
-            background: #444444;
-            width: 340px;
-            height: 114px;
-            text-align: center;
-            padding: 8px;
-            border-radius: 8px;
-            left: 36px;
-            top: 36px;
-            z-index: 100;
-        }
-    </style>
+    <script src="../lib/gsap/gsap.min.js"></script>
+    <script src="../lib/gsap/Draggable.min.js"></script>
 
     <script>
-        function helpClicked() {
-            let div = document.getElementById("helpDiv");
+
+        function isMobile() {
+            return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)
+        }
+
+        const gridSize = isMobile() ? 128 : 64;
+
+        function toggleVisibility(elementId) {
+            let div = document.getElementById(elementId);
             if (div.style.display != "block")
                 div.style.display = "block"
             else
                 div.style.display = ""
         }
-    </script>
-</head>
 
-<body>
+        function newWordClicked() {
+            let div = document.getElementById("wordDiv");
+            div.innerHTML = "Your word: \"" + words[Math.floor(Math.random() * words.length)] + "\""
+            div.innerHTML = div.innerHTML.charAt(0).toUpperCase() + div.innerHTML.substring(1)
+        }
 
-    <div id="helpDivButton" onclick="helpClicked()">?</div>
-    <div id="helpDiv">
-        In Concept, your goal is to guess words through the association of icons.<br />
-        A player chooses a word or phrase that the other players need to guess.<br />
-        The player places concepts on board.<br />
-        The other players try to guess the chosen word.<br />
-    </div>
-    <div id="buttons"></div>
+        function exportClicked() {
+            var copyText = document.getElementById("exportInput");
+            copyText.select();
+            copyText.setSelectionRange(0, 99999);
+            navigator.clipboard.writeText(copyText.value)
+        }
 
-    <script>
+        function exportFocused() {
+            var copyText = document.getElementById("exportInput");
+            copyText.select();
+            copyText.setSelectionRange(0, 99999);
+        }
+
+        function importClicked() {
+            var copyText = document.getElementById("importInput");
+            saveState(copyText.value);
+        }
+
+        //
+        //
+
+        var state = []
+
+        function getStateString() {
+            let stateString = ``;
+            state.forEach(e => {
+                let rect = e.getBoundingClientRect();
+                let x = parseInt(rect.left / gridSize)
+                let y = parseInt(rect.top / gridSize)
+                stateString += e.conceptIndex + "." + x + "." + y + "_"
+            });
+            return stateString.substring(0, stateString.length - 1)
+        }
+
+        function getUrlSearch() {
+            return new URLSearchParams((new URL(window.location.href)).search)
+        }
+
+        function getUrlParam(paramName) {
+            return getUrlSearch().get(paramName)
+        }
+
+        function loadState() {
+            let stateString = getUrlParam('state');
+            if (stateString) {
+                let elemStrings = stateString.split("_")
+                elemStrings.forEach(es => {
+                    let elemParts = es.split(".")
+                    if (elemParts.length == 3) {
+                        createNode(elemParts[0], {
+                            x: gridSize * elemParts[1] + gridSize / 2,
+                            y: gridSize * elemParts[2] + gridSize / 2
+                        }, false)
+                    }
+                })
+            } else {
+
+                createNode("base", {
+                    x: 32 + 64 * Math.round((fullWidth() - 280) / 2 / 64),
+                    y: 32 + 128
+                })
+
+            }
+            updateExportInput()
+        }
+
+        function saveState(newStateString) {
+            let url = getUrlSearch()
+            let stateString = newStateString || getStateString()
+            url.set('state', stateString)
+            window.history.replaceState('', '', "?" + url.toString())
+            updateExportInput()
+            if (newStateString)
+                window.location.href = window.location.href
+        }
+
+        function updateExportInput() {
+            document.getElementById("exportInput").value = getStateString()
+        }
+
+        //
+        //
 
         function fullWidth() {
             return Math.max(
@@ -151,214 +127,57 @@
             );
         }
 
-        // TODO
-        // words
-        // clear button
-        // remover à direita
-        // nao remover main topic
-
-        var tooltips = [
-            "Object, Package",
-            "Family, Society, Group",
-            "Woman, Female",
-            "Man, Male",
-            "Job, Work",
-            "Hobbie, Sport, Activity",
-            "Fauna, Animals",
-            "Flora, Plants, Nature",
-            "Literature, Writing, Book",
-            "Music, Song, Note",
-            "Cinema, Movie, Film, Camera",
-            "Arts, Sculpture, Paiting, Drawing",
-            "Television, Broadcast, Series",
-            "Title, Brand, Name",
-            "Idea, Thought, Concept",
-            "Expression, Language, Dialog",
-            "Place, Location, Country, Flag",
-            "Building, Construction, Town",
-            "Date, Event, Day",
-            "Holiday, Anniversary, Party",
-            "Maritime/Water Vehicles, Swim",
-            "Flying Vehicle, Fly, Airborne",
-            "Road Vehicle, Car",
-            "Tools",
-            "Games, Toys",
-            "Clothes, Accessory, Costume",
-            "Food, Edible, Eating",
-            "House, Home, Interior, Domestic",
-            //
-            "Real, Historical",
-            "Fictional, Imaginary",
-            "Young, New, Child, Baby",
-            "Old, Past",
-            "Slow, Turtle",
-            "Fast, Hare",
-            "Defense, Protection, Wall",
-            "Conflict, Armed, Combat",
-            "Life, Heart, Love",
-            "Death, Evil, Sickness",
-            "Happy, Positive",
-            "Sad, Negative",
-            "Computer, Electronics",
-            "Industrial, Mechanics",
-            "Money, Rich, Expensive",
-            "Time, Duration",
-            "Religion, Myth, Belief",
-            "Power, Politics",
-            "Science, Maths, Chemistry",
-            "Medical, Medication, Medicine, Cure",
-            "Head, Face",
-            "Arm, Hand",
-            "Torso, Belly, Body",
-            "Leg, Foot",
-            "Ear, Hear, Sound",
-            "Nose, Smell",
-            "Eye, Sight, See",
-            "Mouth, Taste, Eating",
-            //
-            "Cloud, Rain, Snow, Cold",
-            "Flash, Electricity, Storm, Anger",
-            "Night, Evening, Moon",
-            "Sun, Hot, Light, Day",
-            "Fire, Burn",
-            "Water, Liquid, Aquatic",
-            "Air, Wind, Blow",
-            "Earth, Dirt",
-            "Rock, Mineral, Hard",
-            "Wood",
-            "Metal",
-            "Fabric",
-            "Plastic, Rubber",
-            "Paper, Sheet",
-            "Opposites, Inverse",
-            "Cut, Separate, Half",
-            "Fragment, Multitude, Powder",
-            "Part of, Piece of",
-            "Inside, Within, Internal",
-            "Grid, Network, Prison",
-            "Zero, None, Null",
-            "One, Unit",
-            //
-            "Straight Line, Straight",
-            "Arch, Curve",
-            "Cross, Crossing",
-            "Broken Line, Sharp, Uneven",
-            "Spiral, Drunkenness, Madness",
-            "Sinusoidal, Wavy, River, Hair",
-            "Ring, Circle",
-            "Round",
-            "Triangle",
-            "Star",
-            "Rectangle, Square",
-            "Flat",
-            "Cube",
-            "Sphere",
-            "Pyramid",
-            "Cylinder",
-            "Cone",
-            "Hollow, Drilled, Hole",
-            "Big, Taller, Higher",
-            "Small, Little, Lower",
-            "Big, Wide, Longer",
-            "Thin, Narrow, Shorter",
-            "Up, Climb, Rise",
-            "Down, Descend, Fall",
-            "Left, Before, Start",
-            "Right, After, End",
-            "Rotate, Surround, Cycle",
-            "Action",
-            //
-            "Red",
-            "Yellow",
-            "Brown",
-            "Orange",
-            "Green",
-            "Blue",
-            "Pink",
-            "Purple",
-            "White",
-            "Transparent, Glass, Invisible"
-        ]
-
-        var sections = [
-            { title: "Main Concepts", from: 0, to: 47 },
-            { title: "Body", from: 48, to: 55 },
-            { title: "Materials", from: 56, to: 69 },
-            { title: "?", from: 70, to: 77 },
-            { title: "Shapes", from: 78, to: 105 },
-            { title: "Colors", from: 106, to: 117 },
-        ]
-
-        function createDragElement(elmnt, event, cantBeDeleted, moveOnStart) {
-            var pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;
-            elmnt.onmousedown = dragMouseDown;
-
-            elmnt.style.position = "absolute";
-            elmnt.style.top = event.y + "px";
-            elmnt.style.left = event.x + "px";
-
-            function remove() {
-                document.body.removeChild(elmnt)
-            }
-
-            function dragMouseDown(e) {
-                e = e || window.event;
-                if (e.button == 1 && cantBeDeleted) {
-                    remove()
-                } else {
-                    pos3 = e.clientX;
-                    pos4 = e.clientY;
-                    document.onmouseup = closeDragElement;
-                    document.onmousemove = elementDrag;
-                }
-            }
-
-            function elementDrag(e) {
-                e = e || window.event;
-                e.preventDefault();
-                pos1 = pos3 - e.clientX;
-                pos2 = pos4 - e.clientY;
-                pos3 = e.clientX;
-                pos4 = e.clientY;
-                elmnt.style.top = (elmnt.offsetTop - pos2) + "px";
-                elmnt.style.left = (elmnt.offsetLeft - pos1) + "px";
-            }
-
-            function closeDragElement() {
-
-                let finalY = 64 * Math.round((elmnt.offsetTop - pos2) / 64)
-                let finalX = 64 * Math.round((elmnt.offsetLeft - pos1) / 64)
-                elmnt.style.top = finalY + "px";
-                elmnt.style.left = finalX + "px";
-                document.onmouseup = null;
-                document.onmousemove = null;
-
-                console.log(finalX);
-                if (finalX > fullWidth() - 280)
-                    remove()
-            }
-
-            if (moveOnStart)
-                dragMouseDown(event)
+        function removeNode(element) {
+            document.body.removeChild(element)
+            state.splice(state.indexOf(element), 1)
+            saveState()
         }
 
-        function createNode(i, event, moveOnStart) {
-            var elemDiv = document.createElement('div');
-            elemDiv.className = "moveable"
-            elemDiv.innerHTML = `<img src="./images/${i}.png" width="64" height="64">`
-            document.body.appendChild(elemDiv);
-            createDragElement(elemDiv, { x: event.x - 32, y: event.y - 32 }, i != "base", moveOnStart)
+        function createNode(i, event, save = true, startDrag = false) {
+            var element = document.createElement('div');
+            element.conceptIndex = i
+            element.className = "moveable"
+            element.innerHTML = `<img src="./images/${i}.png" title="${i}: ${tooltips[i]}" width="${gridSize}" height="${gridSize}">`
+            element.style.top = (event.y - 32) + "px";
+            element.style.left = (event.x - 32) + "px";
+            if (i != "base" && isMobile()) {
+                element.style.left = (fullWidth() - 280 - 128) + "px";
+            }
+            document.body.appendChild(element);
+            let draggable = Draggable.create(element, {
+                type: "left,top",
+                onDragEnd: function (e) {
+                    var rect = element.getBoundingClientRect();
+                    let x = Math.round(rect.left / gridSize) * gridSize;
+                    let y = Math.round(rect.top / gridSize) * gridSize;
+                    element.style.left = x + "px";
+                    element.style.top = y + "px";
+                    if (x > fullWidth() - 280) {
+                        if (i == "base") {
+                            element.style.left = (fullWidth() - 280 - 128) + "px"
+                        } else
+                            removeNode(element)
+                    }
+                    saveState()
+                },
+            })[0];
+            if (startDrag)
+                draggable.startDrag(event)
+            state.push(element)
+            if (save)
+                saveState()
         }
 
         function createButton(i) {
             var buttons = document.getElementById("buttons")
             var elemDiv = document.createElement('div');
+            elemDiv.draggable = true
             elemDiv.className = "button"
             elemDiv.innerHTML = `<img src="./images/${i}.png" title="${i}: ${tooltips[i]}" width="64" height="64">`
             buttons.appendChild(elemDiv);
             elemDiv.onmousedown = e => {
                 let bounds = elemDiv.getBoundingClientRect()
-                createNode(i, event, true);
+                createNode(i, event, true, true);
             }
         }
 
@@ -375,19 +194,55 @@
             titleIndex++;
         }
 
-        sections.forEach(section => {
-            createHr(section.title)
-            for (let i = section.from; i <= section.to; i++)
-                createButton(i)
-        });
+        window.onload = () => {
 
-        createNode("base", {
-            x: 32 + 64 * Math.round((fullWidth() - 280) / 2 / 64),
-            y: 32 + 128
-        })
+            sections.forEach(section => {
+                createHr(section.title)
+                for (let i = section.from; i <= section.to; i++)
+                    createButton(i)
+            });
+
+            loadState();
+
+            if (!window.isSecureContext) {
+                let exportInput = document.getElementById("exportInputButton");
+                exportInput.parentElement.removeChild(exportInput)
+            }
+        }
 
     </script>
+</head>
 
+<body>
+
+    <div class="ui" id="uiButtonsPanel">
+        <div class="panel ui uibutton" onclick="toggleVisibility(`helpDiv`)">?</div>
+        <div class="panel ui uibutton" onclick="toggleVisibility(`wordDiv`)">W</div>
+        <div class="panel ui uibutton" onclick="toggleVisibility(`importDiv`)">I</div>
+        <div class="panel ui uibutton" onclick="toggleVisibility(`exportDiv`)">E</div>
+    </div>
+    <div class="ui" id="uiPanels">
+        <div class="panel hidden" id="helpDiv">
+            In Concept, your goal is to guess words through the association of icons.<br />
+            A player chooses a word or phrase that the other players need to guess.<br />
+            The player places concepts on board.<br />
+            The other players try to guess the chosen word.<br />
+        </div>
+        <div class="panel hidden" id="wordDiv" style="cursor: pointer;" onclick="newWordClicked()">Get a random word!</div>
+        <div class="panel hidden" id="importDiv">
+            To import, place your text here and click import:<br />
+            <input id="importInput" type="text" style="width: 270px;">
+            <button style="margin-left: 8px;" onclick="importClicked()">Import</button>
+        </div>
+        <div class="panel hidden" id="exportDiv">
+            To export, copy this text and save it somewhere:<br />
+            <input id="exportInput" type="text" style="width: 280px;" onfocus="exportFocused()">
+            <button id="exportInputButton" style="margin-left: 8px;" onclick="exportClicked()">Copy</button>
+        </div>
+    </div>
+
+
+    <div id="buttons"></div>
 
 </body>
 
