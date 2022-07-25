@@ -24,7 +24,21 @@
             text-align: center;
         }
 
-        img {
+        #patreonlink {
+            position: fixed;
+            bottom: 12px;
+            right: 12px;
+            cursor: pointer;
+            z-index: 100;
+        }
+
+        .patreonblur {
+            filter: blur(17px);
+            opacity: 75%;
+            transform: translate(4px, 4px);
+        }
+
+        #image {
             position: fixed;
             left: 0;
             height: 100%;
@@ -37,17 +51,65 @@
             top: 0px;
             width: 100%;
             text-align: center;
+            color: rgba(255, 255, 255, 0.8);
+            text-shadow: 0 0 10px #000000
+        }
+
+        #gameEnd {
+            font-size: 50px;
+            position: fixed;
+            bottom: 32px;
+            width: 100%;
+            text-align: center;
+            color: rgba(255, 255, 255, 0.8);
+            text-shadow: 0 0 10px #000000
+        }
+
+        #titleImage {
+            position: fixed;
+            left: 0;
+            top: 0;
+            width: 100%;
+            z-index: -100;
+            filter: blur(100px);
+        }
+
+        #helptext {
+            position: fixed;
+            top: 32px;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 460px;
+            padding: 16px;
+            font-size: 20px;
+
+        }
+
+        .box {
+            background-color: rgba(5, 6, 17, 0.726);
+            color: rgba(255, 255, 255, 0.8);
+            text-shadow: 0 0 10px #000000;
+            border-radius: 15px;
+            border: 2px solid rgba(14, 17, 37, 0.534);
         }
 
         h1 {
+            position: fixed;
             font: "Friz Quadrata";
             font-size: 60px;
             text-align: center;
             margin: 0;
+            width: 300px;
+            top: 32px;
+            padding: 10px 0px;
+            left: 50%;
+            transform: translateX(-50%);
         }
 
         h2 {
             margin: 0;
+            padding-top: 10px;
         }
 
         input {
@@ -105,21 +167,36 @@
 
 <body>
 
+    <a id="patreonlink" href="https://www.patreon.com/wolforce"><img src="../images/patreon128.png" width="32px"></a>
+    <a id="patreonlink" class="patreonblur" href="https://www.patreon.com/wolforce"><img src="../images/patreon128.png" width="32px"></a>
+
+    <div id="helptext" class="box">
+        Guess the League of Legends Champion Splash Arts!<br />
+        Write the name of the correct champion on the textbox.
+        You have three tries, each one yielding less points than the previous one.<br />
+        Press ENTER to start.<br />
+    </div>
     <img id="image" draggable="false">
 
     <div id="title">
-        <h1>LoL Blurs</h1>
+        <h1 id="titleHeader" class="box">LoL Blurs</h1>
         <h2 id="score"></h2>
     </div>
+    <img id="titleImage" draggable="false">
 
     <div id="init" class="bottom">
-        <button id="gameStartButton" onclick="gameStart()">GAME START</button>
+        <button id="gameStartButton" onclick="gameStart()" class="box">GAME START</button>
+    </div>
+
+    <div id="gameEnd" class="box">
+        GAME COMPLETE!
     </div>
 
     <div id="buttons" class="bottom">
-        <input id="input"></input>
-        <button onclick="submit()">SUBMIT</button>
+        <input id="input" class="box" autocomplete="off"></input>
+        <button onclick="submit()" class="box">SUBMIT</button>
     </div>
+
 
     <script>
         var champions = [
@@ -286,7 +363,7 @@
             "zyra",
         ]
         console.log(champions.length)
-        var champName, totalPoints = 0, totalPossiblePoints = 0, currentPoints = 0, inGame = false
+        var champName, totalPoints = 0, totalPossiblePoints = 0, currentPoints = 0, inGame = false, used = []
         var pointsBlurs = {
             3: "blur1",
             2: "blur2",
@@ -295,6 +372,15 @@
         }
 
         function gameReset(firstTime) {
+
+            if (used.length >= champions.length) {
+                $("#gameEnd").show()
+                $("#init").hide()
+                $("#buttons").hide()
+
+                return
+            }
+
             $("#buttons").hide()
             $("#init").show()
             inGame = false
@@ -303,19 +389,29 @@
         }
 
         function gameStart() {
+            if (used.length >= champions.length)
+                return
+
+            let champNr = parseInt(Math.random() * champions.length)
+            while (used.includes(champions[champNr]))
+                champNr = parseInt(Math.random() * champions.length)
+
             $("#buttons").show()
             $("#init").hide()
             let image = $('#image')
             image.removeClass()
             image.addClass('blur1')
-            let champNr = parseInt(Math.random() * champions.length)
             champName = champions[champNr]
+            used.push(champName)
             currentPoints = 3
             totalPossiblePoints += 3
             image.attr("src", `imgs\\${champions[champNr]}.jpg`)
             updateScore()
             $("#input").val("")
             $("#input").focus()
+            $("#helptext").hide();
+            $("#titleHeader").hide();
+            $("#titleImage").hide();
             inGame = true
         }
 
@@ -382,6 +478,9 @@
                     gameStart()
             }
         });
+
+        $("#gameEnd").hide()
+        $("#titleImage").attr("src", `imgs\\${champions[parseInt(Math.random() * champions.length)]}.jpg`)
 
         gameReset(true);
 
