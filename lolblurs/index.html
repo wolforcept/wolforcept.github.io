@@ -1,0 +1,370 @@
+<html>
+
+<head>
+    <title>LoL Blurs</title>
+
+    <script src="../lib/jquery.min.js"></script>
+
+    <style>
+        /* @font-face {
+            font-family: 'Friz Quadrata';
+            src: url('assets/Friz Quadrata Regular.ttf') format('truetype');
+        } */
+
+        @import url('assets/Friz Quadrata Regular.ttf');
+        @import url('https://fonts.googleapis.com/css2?family=Lato&family=Oswald:wght@700&display=swap');
+
+        * {
+            font-family: 'Oswald', sans-serif;
+        }
+
+        body {
+            background-color: rgb(13, 10, 17);
+            margin: 0;
+            text-align: center;
+        }
+
+        img {
+            position: fixed;
+            left: 0;
+            height: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        #title {
+            position: fixed;
+            top: 0px;
+            width: 100%;
+            text-align: center;
+        }
+
+        h1 {
+            font: "Friz Quadrata";
+            font-size: 60px;
+            text-align: center;
+            margin: 0;
+        }
+
+        h2 {
+            margin: 0;
+        }
+
+        input {
+            color: rgb(209, 209, 209);
+            background-color: black;
+            border: 0;
+            border-radius: 15px;
+            padding: 15px 20px;
+            font-size: 20px;
+        }
+
+        button {
+            color: rgb(209, 209, 209);
+            background-color: black;
+            border: 0;
+            border-radius: 15px;
+            padding: 15px 20px;
+            font-size: 20px;
+        }
+
+        button:hover {
+            color: rgb(255, 255, 255);
+            cursor: pointer;
+        }
+
+        .blur1 {
+            filter: blur(100px);
+        }
+
+        .blur2 {
+            filter: blur(60px);
+            transition: filter 1s linear;
+        }
+
+        .blur3 {
+            filter: blur(35px);
+            transition: filter 1s linear;
+        }
+
+        .unblur {
+            transition: filter 1s linear;
+        }
+
+        .bottom {
+            font-family: "Friz Quadrata";
+            font-size: 60px;
+            text-align: center;
+            position: fixed;
+            bottom: 20px;
+            width: 100%;
+            margin: 0;
+        }
+    </style>
+</head>
+
+<body>
+
+    <img id="image">
+
+    <div id="title">
+        <h1>LoL Blurs</h1>
+        <h2 id="score"></h2>
+    </div>
+
+    <div id="init" class="bottom">
+        <button onclick="gameStart()">GAME START</button>
+    </div>
+
+    <div id="buttons" class="bottom">
+        <input id="input"></input>
+        <button onclick="submit()">SUBMIT</button>
+    </div>
+
+    <script>
+        var champions = [
+            "aatrox",
+            "ahri",
+            "akali",
+            "akshan.png",
+            "alistar",
+            "amumu",
+            "anivia",
+            "annie",
+            "aphelios",
+            "ashe",
+            "aurelionsol",
+            "azir",
+            "bard",
+            "belveth",
+            "blitzcrank",
+            "brand",
+            "braum",
+            "caitlyn",
+            "camille",
+            "cassiopeia",
+            "chogath",
+            "corki",
+            "darius",
+            "diana",
+            "draven",
+            "drmundo",
+            "ekko",
+            "elise",
+            "evelynn",
+            "ezreal",
+            "fiddlesticks",
+            "fiora",
+            "fizz",
+            "galio",
+            "gangplank",
+            "garen",
+            "gnar",
+            "gragas",
+            "graves",
+            "gwen",
+            "hecarim",
+            "heimerdinger",
+            "illaoi",
+            "irelia",
+            "ivern",
+            "janna",
+            "jarvan",
+            "jax",
+            "jayce",
+            "jhin",
+            "jinx",
+            "kaisa",
+            "kalista",
+            "karma",
+            "karthus",
+            "kassadin",
+            "katarina",
+            "kayle",
+            "kayn",
+            "kennen",
+            "khazix",
+            "kindred",
+            "kled",
+            "kogmaw",
+            "leblanc",
+            "leesin",
+            "leona",
+            "lillia",
+            "lissandra",
+            "lucian",
+            "lulu",
+            "lux",
+            "malphite",
+            "malzahar",
+            "maokai",
+            "masteryi",
+            "missfortune",
+            "mordekaiser",
+            "morgana",
+            "nami",
+            "nasus",
+            "nautilus",
+            "neeko",
+            "nidalee",
+            "nilah",
+            "nocturne",
+            "nunu",
+            "olaf",
+            "oriana",
+            "ornn",
+            "pantheon",
+            "poppy",
+            "pyke",
+            "qiyana",
+            "quinn",
+            "rammus",
+            "reksai",
+            "rell",
+            "renata",
+            "renekton",
+            "rengar",
+            "riven",
+            "rumble",
+            "ryze",
+            "samira",
+            "sejuani",
+            "senna",
+            "seraphine",
+            "sett",
+            "shaco",
+            "shen",
+            "shyvana",
+            "singed",
+            "sion",
+            "sivir",
+            "skarner",
+            "sona",
+            "soraka",
+            "swain",
+            "sylas",
+            "syndra",
+            "tahmkench",
+            "taliyah",
+            "talon",
+            "taric.png",
+            "teemo",
+            "thresh",
+            "tristana",
+            "trundle",
+            "tryndamere",
+            "twistedfate",
+            "twitch",
+            "udyr",
+            "urgot",
+            "varus",
+            "vayne",
+            "veigar",
+            "velkoz",
+            "vex",
+            "vi",
+            "viego",
+            "viktor",
+            "vladimir",
+            "volibear",
+            "warwick",
+            "wukong",
+            "xayah",
+            "xayah2.png",
+            "xerath",
+            "xinzhao.png",
+            "yasuo",
+            "yone",
+            "yorick.png",
+            "yummi",
+            "zac",
+            "zed",
+            "zeri",
+            "ziggs",
+            "zilean",
+            "zoe",
+            "zyra"
+        ]
+        console.log(champions.length)
+        var imgs = []
+        var champName, totalPoints = 0, totalPossiblePoints = 0, currentPoints
+        var pointsBlurs = {
+            3: "blur1",
+            2: "blur2",
+            1: "blur3",
+            0: "unblur",
+        }
+
+        function gameReset() {
+            $("#buttons").hide()
+            $("#init").show()
+        }
+
+        function gameStart() {
+            $("#buttons").show()
+            $("#init").hide()
+            let image = $('#image')
+            image.removeClass()
+            image.addClass('blur1')
+            let champNr = parseInt(Math.random() * champions.length)
+            champName = champions[champNr]
+            currentPoints = 3
+            totalPossiblePoints += 3
+            image.attr("src", `imgs\\${champions[champNr]}.jpg`)
+            updateScore()
+            $("#input").val("")
+        }
+
+        function submit() {
+
+            if (champName.replace(/\s/g, '').toLowerCase() == $("#input").val().replace(/\s/g, '').toLowerCase()) {
+                win()
+            } else {
+                reduce()
+                if (currentPoints == 0)
+                    lose()
+            }
+            updateScore()
+        }
+
+        function reduce() {
+            currentPoints--
+            console.log("nope")
+            $("#input").val("")
+
+            let image = $('#image')
+            image.removeClass()
+            image.addClass(pointsBlurs[currentPoints])
+        }
+
+        function win() {
+            console.log("win")
+            let image = $('#image')
+            image.removeClass()
+            image.addClass("unblur")
+            totalPoints += currentPoints
+            currentPoints = 0
+            updateScore()
+            gameReset()
+        }
+
+        function lose() {
+            console.log("lose")
+            let image = $('#image')
+            gameReset()
+            updateScore()
+        }
+
+        function updateScore() {
+            if (currentPoints > 0)
+                $("#score").html("Score: " + totalPoints + "/" + totalPossiblePoints + " (+" + currentPoints + ")")
+            else
+                $("#score").html("Score: " + totalPoints + "/" + totalPossiblePoints)
+        }
+
+        gameReset();
+
+    </script>
+</body>
+
+</html>
