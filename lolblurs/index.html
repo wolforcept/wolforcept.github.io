@@ -294,10 +294,12 @@
             0: "unblur",
         }
 
-        function gameReset() {
+        function gameReset(firstTime) {
             $("#buttons").hide()
             $("#init").show()
             inGame = false
+            if (!firstTime)
+                $("#gameStartButton").html("NEXT CHAMPION")
         }
 
         function gameStart() {
@@ -381,7 +383,7 @@
             }
         });
 
-        gameReset();
+        gameReset(true);
 
     </script>
 </body>
