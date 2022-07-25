@@ -319,7 +319,13 @@
 
         function submit() {
 
-            if (champName.replace(/\s/g, '').toLowerCase() == $("#input").val().replace(/\s/g, '').toLowerCase()) {
+            let championName = champName.replace(/\s/g, '').toLowerCase()
+            let inputText = $("#input").val().replace(/\s/g, '').toLowerCase()
+
+            if (championName == "rakan") championName = "xayah"
+            if (inputText == "rakan") inputText = "xayah"
+
+            if (inputText == championName) {
                 win()
             } else {
                 reduce()
