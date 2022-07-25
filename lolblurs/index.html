@@ -113,7 +113,7 @@
     </div>
 
     <div id="init" class="bottom">
-        <button onclick="gameStart()">GAME START</button>
+        <button id="gameStartButton" onclick="gameStart()">GAME START</button>
     </div>
 
     <div id="buttons" class="bottom">
@@ -126,7 +126,7 @@
             "aatrox",
             "ahri",
             "akali",
-            "akshan.png",
+            "akshan",
             "alistar",
             "amumu",
             "anivia",
@@ -218,6 +218,7 @@
             "pyke",
             "qiyana",
             "quinn",
+            "rakan",
             "rammus",
             "reksai",
             "rell",
@@ -247,7 +248,7 @@
             "tahmkench",
             "taliyah",
             "talon",
-            "taric.png",
+            "taric",
             "teemo",
             "thresh",
             "tristana",
@@ -270,12 +271,11 @@
             "warwick",
             "wukong",
             "xayah",
-            "xayah2.png",
             "xerath",
-            "xinzhao.png",
+            "xinzhao",
             "yasuo",
             "yone",
-            "yorick.png",
+            "yorick",
             "yummi",
             "zac",
             "zed",
@@ -283,11 +283,10 @@
             "ziggs",
             "zilean",
             "zoe",
-            "zyra"
+            "zyra",
         ]
         console.log(champions.length)
-        var imgs = []
-        var champName, totalPoints = 0, totalPossiblePoints = 0, currentPoints
+        var champName, totalPoints = 0, totalPossiblePoints = 0, currentPoints = 0, inGame = false
         var pointsBlurs = {
             3: "blur1",
             2: "blur2",
@@ -298,6 +297,7 @@
         function gameReset() {
             $("#buttons").hide()
             $("#init").show()
+            inGame = false
         }
 
         function gameStart() {
@@ -313,6 +313,8 @@
             image.attr("src", `imgs\\${champions[champNr]}.jpg`)
             updateScore()
             $("#input").val("")
+            $("#input").focus()
+            inGame = true
         }
 
         function submit() {
@@ -361,6 +363,17 @@
             else
                 $("#score").html("Score: " + totalPoints + "/" + totalPossiblePoints)
         }
+
+
+        $('body').on('keypress', function (e) {
+            var code = e.keyCode || e.which;
+            if (code == 13) {
+                if (inGame)
+                    submit()
+                else
+                    gameStart()
+            }
+        });
 
         gameReset();
 
