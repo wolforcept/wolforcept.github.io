@@ -126,7 +126,7 @@ h1 {
     ▀▄▀  █  █ █ █▄▄ █▀▄ 
 */
 
-#patreonlink {
+.patreonlink {
     position: fixed;
     bottom: 12px;
     right: 12px;
