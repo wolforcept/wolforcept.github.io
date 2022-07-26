@@ -1,0 +1,44 @@
+<div id='menu' class='view'>
+
+    <div class='middle'>
+        <img id='titleImage' draggable='false'>
+    </div>
+
+    <div class='top'>
+        <div id="title" class='titleHeader box'></div>
+    </div>
+
+    <div class='middle'>
+        <div id='helpText' class='box'></div>
+    </div>
+    <div class='middle'>
+        <h2 id='finalScore' class='box'></h2>
+    </div>
+
+    <div id='menuButtons' class='bottom'>
+        <button id='gameStartButton' onclick='gameStart()' class='button box'>GAME START</button>
+        <button id='gameModeButton' onclick='changeGameMode()' class='button box'>GAME MODE: NORMAL</button>
+    </div>
+    <div class='bottom'>
+        <div id='gameEnd' class='box'>GAME COMPLETE!</div>
+    </div>
+</div>
+
+<div id='game' class='view'>
+    <div class='middle'>
+        <img id='imageAlwaysBlurry' draggable='false'>
+    </div>
+    <div class='middle'>
+        <img id='image' draggable='false'>
+    </div>
+    <div class='top'>
+        <h2 id='score' class='box'></h2>
+    </div>
+    <div class='bottom'>
+        <button id='nextChampionButton' onclick='nextChampion()' class='button box'>NEXT CHAMPION</button>
+        <div id='inputSubmitBox'>
+            <input id='input' class='box' autocomplete='off'></input>
+            <button onclick='submit()' class='button box'>SUBMIT</button>
+        </div>
+    </div>
+</div>

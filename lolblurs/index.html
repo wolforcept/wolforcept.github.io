@@ -2,9 +2,8 @@
 
 <head>
     <title>LoL Blurs</title>
-
     <script src='../lib/jquery.min.js'></script>
-    <link rel='stylesheet' type='text/css' href='style.css'>
+    <script src="../blurs/engine.js"></script>
 </head>
 
 <body>
@@ -12,65 +11,9 @@
     <a class='patreonlink' href='https://www.patreon.com/wolforce' target="_blank"><img src='../images/patreon128.png' width='32px'></a>
     <img class='patreonlink patreonblur' src='../images/patreon128.png' width='32px'>
 
-    <div id='menu' class='view'>
-
-        <div class='middle'>
-            <img id='titleImage' draggable='false'>
-        </div>
-
-        <div class='top'>
-            <div class='titleHeader box'>
-                LoL Blurs
-            </div>
-        </div>
-
-        <div class='middle'>
-            <div id='helptext' class='box'>
-                Guess the League of Legends Champion Splash Arts!<br />
-                Write the name of the correct champion on the textbox.<br />
-                You have three tries, each one yielding less points than the previous one.<br />
-                Press ENTER to start.<br />
-            </div>
-        </div>
-        <div class='middle'>
-            <h2 id='finalScore' class='box'>Final Score: 23</h2>
-        </div>
-
-        <div id='menuButtons' class='bottom'>
-            <button id='gameStartButton' onclick='gameStart()' class='button box'>GAME START</button>
-            <button id='gameModeButton' onclick='changeGameMode()' class='button box'>GAME MODE: NORMAL</button>
-        </div>
-        <div class='bottom'>
-            <div id='gameEnd' class='box'>GAME COMPLETE!</div>
-        </div>
-    </div>
-
-    <div id='game' class='view'>
-        <div class='middle'>
-            <img id='imageAlwaysBlurry' draggable='false'>
-        </div>
-        <div class='middle'>
-            <img id='image' draggable='false'>
-        </div>
-        <div class='top'>
-            <h2 id='score' class='box'></h2>
-        </div>
-        <div class='bottom'>
-            <button id='nextChampionButton' onclick='nextChampion()' class='button box'>NEXT CHAMPION</button>
-            <div id='inputSubmitBox'>
-                <input id='input' class='box' autocomplete='off'></input>
-                <button onclick='submit()' class='button box'>SUBMIT</button>
-            </div>
-        </div>
-    </div>
-
     <script>
 
-        const MAX_POINTS_NORMAL = 3, MAX_BLUR_NORMAL = 100
-        const MAX_POINTS_TIMED = 200, MAX_BLUR_TIMED = 100,
-            TIME_BEFORE_TIMED = 2000, TIMED_MILIS = 100
-
-        var champions = [
+        const champions = [
             'aatrox',
             'ahri',
             'akali',
@@ -233,200 +176,28 @@
             'zoe',
             'zyra',
         ]
-        var used = []
-        var champName
-        randomChampion = () => champions[parseInt(Math.random() * champions.length)];
 
-        var gameMode = 'normal'
-        var enterFunc = gameStart
+        initBlurs({
+            title: 'LoL Blurs',
+            description: `Guess the League of Legends Champion Splash Arts!<br />
+                          Write the name of the correct champion on the textbox.<br />
+                          You have three tries, each one yielding less points than the previous one.<br />
+                          Press ENTER to start.<br />`,
 
-        var totalPoints = 0, totalPossiblePoints = 0, currentPoints = 0
+            getImagePath: (name) => {
+                return `imgs/${name}.jpg`
+            },
 
-        function gameEnd() {
-            $('#finalScore').html(`FINAL SCORE: ${totalPoints} / ${totalPossiblePoints}`)
-            $('#menu').show()
-            $('#game').hide()
-            $('#menuButtons').hide()
-            $('#helptext').hide()
-            $('#gameEnd').show()
-            $('#finalScore').show()
-        }
+            getRandomName: () => {
+                return champions[parseInt(Math.random() * champions.length)]
+            },
 
-        function gameStart() {
-            $('#menu').hide()
-            $('#game').show()
-            gameReset()
-            nextChampion()
-        }
-
-        function gameReset() {
-            $('#nextChampionButton').show();
-            $('#inputSubmitBox').hide();
-            enterFunc = nextChampion
-        }
-
-        function changeGameMode() {
-            gameMode = gameMode == 'timed' ? 'normal' : 'timed'
-            console.log('game mode set: ' + gameMode)
-            $('#gameModeButton').html('GAME MODE: ' + gameMode.toUpperCase())
-        }
-
-        function nextChampion() {
-            $('#nextChampionButton').hide();
-            $('#inputSubmitBox').show();
-
-            if (used.length >= champions.length) {
-                gameEnd()
-                enterFunc = () => { }
-                return
+            hasEnded: (used) => {
+                return used.length == champions.length
             }
-
-            let champ = randomChampion()
-            while (used.includes(champ))
-                champ = randomChampion()
-
-            champName = champ
-            used.push(champName)
-
-
-            if (gameMode == 'normal') {
-                currentPoints = MAX_POINTS_NORMAL
-                totalPossiblePoints += MAX_POINTS_NORMAL
-                setImage('image', champ, MAX_BLUR_NORMAL)
-            }
-
-            if (gameMode == 'timed') {
-                currentPoints = MAX_POINTS_TIMED
-                totalPossiblePoints += MAX_POINTS_TIMED
-                setImage('image', champ, MAX_BLUR_TIMED)
-            }
-
-            updateScore()
-            resetInput()
-            enterFunc = submit
-
-            if (gameMode == 'timed')
-                startTimedMode()
-        }
-
-        function startTimedMode() {
-
-            function timer() {
-                currentPoints--
-                setImage('image', null, MAX_BLUR_TIMED * currentPoints / MAX_POINTS_TIMED)
-                updateScore()
-                if (currentPoints == 0)
-                    lose()
-            }
-            setTimeout(() => {
-                timerFunc = setInterval(timer, TIMED_MILIS);
-            }, TIME_BEFORE_TIMED)
-        }
-
-        function resetInput() {
-            $('#input').val('')
-            $('#input').focus()
-        }
-
-        function submit() {
-
-            let championName = champName.replace(/\s/g, '').toLowerCase()
-            let inputText = $('#input').val().replace(/\s/g, '').toLowerCase()
-
-            if (championName == 'rakan') championName = 'xayah'
-            if (inputText == 'rakan') inputText = 'xayah'
-
-            if (inputText == championName)
-                win()
-            else
-                failedSubmit()
-
-            updateScore()
-            resetInput()
-        }
-
-        function failedSubmit() {
-
-            if (gameMode == 'normal') {
-
-                currentPoints--
-
-                let currBlur = MAX_BLUR_NORMAL * currentPoints / MAX_POINTS_NORMAL
-                setImage('image', null, currBlur, 1)
-
-                if (currentPoints == 0)
-                    lose()
-            }
-
-        }
-
-        function win() {
-            setImage('image', null, null, 1)
-            totalPoints += currentPoints
-            currentPoints = 0
-            updateScore()
-            gameReset()
-            if (gameMode == 'timed')
-                clearInterval(timerFunc)
-        }
-
-        function lose() {
-            gameReset()
-            updateScore()
-            if (gameMode == 'timed')
-                clearInterval(timerFunc)
-        }
-
-        function updateScore() {
-            if (currentPoints > 0)
-                $('#score').html('Score: ' + totalPoints + '/' + totalPossiblePoints + ' (+' + currentPoints + ')')
-            else
-                $('#score').html('Score: ' + totalPoints + '/' + totalPossiblePoints)
-        }
-
-        function setImage(imageId, championName, blur, blurTransition, opacity, opacityTransition) {
-            let image = $('#' + imageId);
-
-            let transitionString = '';
-            if (blurTransition)
-                transitionString += `filter ${blurTransition}s linear`
-            if (blurTransition && opacityTransition)
-                transitionString += ' , '
-            if (opacityTransition)
-                transitionString += `opacity ${opacityTransition}s linear`
-
-            image.css('transition', transitionString ?? 'none')
-
-            image.css('filter', blur ? `blur(${blur}px)` : 'none')
-            image.css('opacity', opacity === undefined ? '100%' : opacity + '%')
-
-            if (championName)
-                image.attr('src', `imgs/${championName}.jpg`)
-
-            if (imageId != 'imageAlwaysBlurry') {
-                if (blur > 100)
-                    setImage('imageAlwaysBlurry', championName, 100, 1, 0, 0)
-                else if (blur > 1)
-                    setImage('imageAlwaysBlurry', championName, 100, 1, 100 - blur, 1)
-            }
-        }
-
-        $('body').on('keypress', function (e) {
-            var code = e.keyCode || e.which;
-            if (code == 13) {
-                enterFunc()
-            }
-        });
-
-        setImage('titleImage', randomChampion(), 100)
-
-        $('#game').hide()
-        $('#gameEnd').hide()
-        $('#finalScore').hide()
-
-        console.log('total champions: ' + champions.length)
-
+        })
     </script>
+
 </body>
 
 </html>
