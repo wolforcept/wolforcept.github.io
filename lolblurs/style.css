@@ -1,0 +1,141 @@
+/* @font-face {
+            font-family: 'Friz Quadrata';
+            src: url('assets/Friz Quadrata Regular.ttf') format('truetype');
+        } */
+
+/* @import url('../assets/Friz Quadrata Regular.ttf'); */
+@import url('https://fonts.googleapis.com/css2?family=Lato&family=Oswald:wght@700&display=swap');
+
+* {
+    font-family: 'Oswald', sans-serif;
+}
+
+body {
+    background-color: rgb(13, 10, 17);
+    margin: 0;
+    text-align: center;
+}
+
+button {
+    border: 0;
+}
+
+h1 {
+    margin: 0;
+    padding: 0;
+}
+
+.view {
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+}
+
+/*
+▄▀▀ ▄▀▄ █▄ ▄█ █▄ ▄█ ▄▀▄ █▄ █ 
+▀▄▄ ▀▄▀ █ ▀ █ █ ▀ █ ▀▄▀ █ ▀█ 
+*/
+
+.top {
+    position: fixed;
+    top: 32px;
+
+    text-align: center;
+    width: 100%;
+}
+
+.middle {
+    position: fixed;
+    top: 50%;
+    transform: translateY(-50%);
+
+    text-align: center;
+    width: 100%;
+}
+
+.bottom {
+    position: fixed;
+    bottom: 32px;
+
+    text-align: center;
+    width: 100%;
+}
+
+.box {
+    display: inline-block;
+    background-color: rgba(5, 6, 17, 0.7);
+
+    border-radius: 15px;
+    border: 2px solid rgba(14, 17, 37, 0.534);
+    padding: 15px 20px;
+
+    font-size: 20px;
+    text-align: center;
+    color: rgba(255, 255, 255, 0.8);
+    text-shadow: 2px 2px 2px #000000;
+}
+
+.button {
+    text-decoration: none;
+}
+
+.button:hover {
+    color: rgb(255, 255, 255);
+    cursor: pointer;
+}
+
+/*
+▄▀  ▄▀▄ █▄ ▄█ ██▀ 
+▀▄█ █▀█ █ ▀ █ █▄▄ 
+*/
+
+#image {
+    height: 80vh;
+}
+
+#imageAlwaysBlurry {
+    height: 80vh;
+}
+
+/*
+█▄ ▄█ ██▀ █▄ █ █ █ 
+█ ▀ █ █▄▄ █ ▀█ ▀▄█ 
+*/
+
+#titleImage {
+    height: 80vh;
+    filter: blur(100px);
+}
+
+.titleHeader {
+    font-size: 60px;
+}
+
+#gameEnd {
+    font-size: 60px;
+}
+
+#finalScore {
+    font-size: 60px;
+}
+
+/*
+    ▄▀▄ ▀█▀ █▄█ ██▀ █▀▄ 
+    ▀▄▀  █  █ █ █▄▄ █▀▄ 
+*/
+
+#patreonlink {
+    position: fixed;
+    bottom: 12px;
+    right: 12px;
+    cursor: pointer;
+    z-index: 100;
+}
+
+.patreonblur {
+    filter: blur(17px);
+    opacity: 75%;
+    transform: translate(4px, 4px);
+}

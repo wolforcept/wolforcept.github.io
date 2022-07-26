@@ -3,486 +3,429 @@
 <head>
     <title>LoL Blurs</title>
 
-    <script src="../lib/jquery.min.js"></script>
-
-    <style>
-        /* @font-face {
-            font-family: 'Friz Quadrata';
-            src: url('assets/Friz Quadrata Regular.ttf') format('truetype');
-        } */
-
-        @import url('assets/Friz Quadrata Regular.ttf');
-        @import url('https://fonts.googleapis.com/css2?family=Lato&family=Oswald:wght@700&display=swap');
-
-        * {
-            font-family: 'Oswald', sans-serif;
-        }
-
-        body {
-            background-color: rgb(13, 10, 17);
-            margin: 0;
-            text-align: center;
-        }
-
-        #patreonlink {
-            position: fixed;
-            bottom: 12px;
-            right: 12px;
-            cursor: pointer;
-            z-index: 100;
-        }
-
-        .patreonblur {
-            filter: blur(17px);
-            opacity: 75%;
-            transform: translate(4px, 4px);
-        }
-
-        #image {
-            position: fixed;
-            left: 0;
-            height: 100%;
-            left: 50%;
-            transform: translateX(-50%);
-        }
-
-        #title {
-            position: fixed;
-            top: 0px;
-            width: 100%;
-            text-align: center;
-            color: rgba(255, 255, 255, 0.8);
-            text-shadow: 0 0 10px #000000
-        }
-
-        #gameEnd {
-            font-size: 50px;
-            position: fixed;
-            bottom: 32px;
-            width: 100%;
-            text-align: center;
-            color: rgba(255, 255, 255, 0.8);
-            text-shadow: 0 0 10px #000000
-        }
-
-        #titleImage {
-            position: fixed;
-            left: 0;
-            top: 0;
-            width: 100%;
-            z-index: -100;
-            filter: blur(100px);
-        }
-
-        #helptext {
-            position: fixed;
-            top: 32px;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 460px;
-            padding: 16px;
-            font-size: 20px;
-
-        }
-
-        .box {
-            background-color: rgba(5, 6, 17, 0.726);
-            color: rgba(255, 255, 255, 0.8);
-            text-shadow: 0 0 10px #000000;
-            border-radius: 15px;
-            border: 2px solid rgba(14, 17, 37, 0.534);
-        }
-
-        h1 {
-            position: fixed;
-            font: "Friz Quadrata";
-            font-size: 60px;
-            text-align: center;
-            margin: 0;
-            width: 300px;
-            top: 32px;
-            padding: 10px 0px;
-            left: 50%;
-            transform: translateX(-50%);
-        }
-
-        h2 {
-            margin: 0;
-            padding-top: 10px;
-        }
-
-        input {
-            color: rgb(209, 209, 209);
-            background-color: black;
-            border: 0;
-            border-radius: 15px;
-            padding: 15px 20px;
-            font-size: 20px;
-        }
-
-        button {
-            color: rgb(209, 209, 209);
-            background-color: black;
-            border: 0;
-            border-radius: 15px;
-            padding: 15px 20px;
-            font-size: 20px;
-        }
-
-        button:hover {
-            color: rgb(255, 255, 255);
-            cursor: pointer;
-        }
-
-        .blur1 {
-            filter: blur(100px);
-        }
-
-        .blur2 {
-            filter: blur(60px);
-            transition: filter 1s linear;
-        }
-
-        .blur3 {
-            filter: blur(35px);
-            transition: filter 1s linear;
-        }
-
-        .unblur {
-            transition: filter 1s linear;
-        }
-
-        .bottom {
-            font-family: "Friz Quadrata";
-            font-size: 60px;
-            text-align: center;
-            position: fixed;
-            bottom: 20px;
-            width: 100%;
-            margin: 0;
-        }
-    </style>
+    <script src='../lib/jquery.min.js'></script>
+    <link rel='stylesheet' type='text/css' href='style.css'>
 </head>
 
 <body>
 
-    <a id="patreonlink" href="https://www.patreon.com/wolforce"><img src="../images/patreon128.png" width="32px"></a>
-    <a id="patreonlink" class="patreonblur" href="https://www.patreon.com/wolforce"><img src="../images/patreon128.png" width="32px"></a>
+    <a id='patreonlink' href='https://www.patreon.com/wolforce'><img src='../images/patreon128.png' width='32px'></a>
+    <a id='patreonlink' class='patreonblur' href='https://www.patreon.com/wolforce'><img src='../images/patreon128.png' width='32px'></a>
 
-    <div id="helptext" class="box">
-        Guess the League of Legends Champion Splash Arts!<br />
-        Write the name of the correct champion on the textbox.
-        You have three tries, each one yielding less points than the previous one.<br />
-        Press ENTER to start.<br />
+    <div id='menu' class='view'>
+
+        <div class='middle'>
+            <img id='titleImage' draggable='false'>
+        </div>
+
+        <div class='top'>
+            <div class='titleHeader box'>
+                LoL Blurs
+            </div>
+        </div>
+
+        <div class='middle'>
+            <div id='helptext' class='box'>
+                Guess the League of Legends Champion Splash Arts!<br />
+                Write the name of the correct champion on the textbox.<br />
+                You have three tries, each one yielding less points than the previous one.<br />
+                Press ENTER to start.<br />
+            </div>
+        </div>
+        <div class='middle'>
+            <h2 id='finalScore' class='box'>Final Score: 23</h2>
+        </div>
+
+        <div id='menuButtons' class='bottom'>
+            <button id='gameStartButton' onclick='gameStart()' class='button box'>GAME START</button>
+            <button id='gameModeButton' onclick='changeGameMode()' class='button box'>GAME MODE: NORMAL</button>
+        </div>
+        <div class='bottom'>
+            <div id='gameEnd' class='box'>GAME COMPLETE!</div>
+        </div>
     </div>
-    <img id="image" draggable="false">
 
-    <div id="title">
-        <h1 id="titleHeader" class="box">LoL Blurs</h1>
-        <h2 id="score"></h2>
+    <div id='game' class='view'>
+        <div class='middle'>
+            <img id='imageAlwaysBlurry' draggable='false'>
+        </div>
+        <div class='middle'>
+            <img id='image' draggable='false'>
+        </div>
+        <div class='top'>
+            <h2 id='score' class='box'></h2>
+        </div>
+        <div class='bottom'>
+            <button id='nextChampionButton' onclick='nextChampion()' class='button box'>NEXT CHAMPION</button>
+            <div id='inputSubmitBox'>
+                <input id='input' class='box' autocomplete='off'></input>
+                <button onclick='submit()' class='button box'>SUBMIT</button>
+            </div>
+        </div>
     </div>
-    <img id="titleImage" draggable="false">
-
-    <div id="init" class="bottom">
-        <button id="gameStartButton" onclick="gameStart()" class="box">GAME START</button>
-    </div>
-
-    <div id="gameEnd" class="box">
-        GAME COMPLETE!
-    </div>
-
-    <div id="buttons" class="bottom">
-        <input id="input" class="box" autocomplete="off"></input>
-        <button onclick="submit()" class="box">SUBMIT</button>
-    </div>
-
 
     <script>
+
+        const MAX_POINTS_NORMAL = 3, MAX_BLUR_NORMAL = 100
+        const MAX_POINTS_TIMED = 200, MAX_BLUR_TIMED = 100,
+            TIME_BEFORE_TIMED = 2000, TIMED_MILIS = 100
+
         var champions = [
-            "aatrox",
-            "ahri",
-            "akali",
-            "akshan",
-            "alistar",
-            "amumu",
-            "anivia",
-            "annie",
-            "aphelios",
-            "ashe",
-            "aurelionsol",
-            "azir",
-            "bard",
-            "belveth",
-            "blitzcrank",
-            "brand",
-            "braum",
-            "caitlyn",
-            "camille",
-            "cassiopeia",
-            "chogath",
-            "corki",
-            "darius",
-            "diana",
-            "draven",
-            "drmundo",
-            "ekko",
-            "elise",
-            "evelynn",
-            "ezreal",
-            "fiddlesticks",
-            "fiora",
-            "fizz",
-            "galio",
-            "gangplank",
-            "garen",
-            "gnar",
-            "gragas",
-            "graves",
-            "gwen",
-            "hecarim",
-            "heimerdinger",
-            "illaoi",
-            "irelia",
-            "ivern",
-            "janna",
-            "jarvan",
-            "jax",
-            "jayce",
-            "jhin",
-            "jinx",
-            "kaisa",
-            "kalista",
-            "karma",
-            "karthus",
-            "kassadin",
-            "katarina",
-            "kayle",
-            "kayn",
-            "kennen",
-            "khazix",
-            "kindred",
-            "kled",
-            "kogmaw",
-            "leblanc",
-            "leesin",
-            "leona",
-            "lillia",
-            "lissandra",
-            "lucian",
-            "lulu",
-            "lux",
-            "malphite",
-            "malzahar",
-            "maokai",
-            "masteryi",
-            "missfortune",
-            "mordekaiser",
-            "morgana",
-            "nami",
-            "nasus",
-            "nautilus",
-            "neeko",
-            "nidalee",
-            "nilah",
-            "nocturne",
-            "nunu",
-            "olaf",
-            "oriana",
-            "ornn",
-            "pantheon",
-            "poppy",
-            "pyke",
-            "qiyana",
-            "quinn",
-            "rakan",
-            "rammus",
-            "reksai",
-            "rell",
-            "renata",
-            "renekton",
-            "rengar",
-            "riven",
-            "rumble",
-            "ryze",
-            "samira",
-            "sejuani",
-            "senna",
-            "seraphine",
-            "sett",
-            "shaco",
-            "shen",
-            "shyvana",
-            "singed",
-            "sion",
-            "sivir",
-            "skarner",
-            "sona",
-            "soraka",
-            "swain",
-            "sylas",
-            "syndra",
-            "tahmkench",
-            "taliyah",
-            "talon",
-            "taric",
-            "teemo",
-            "thresh",
-            "tristana",
-            "trundle",
-            "tryndamere",
-            "twistedfate",
-            "twitch",
-            "udyr",
-            "urgot",
-            "varus",
-            "vayne",
-            "veigar",
-            "velkoz",
-            "vex",
-            "vi",
-            "viego",
-            "viktor",
-            "vladimir",
-            "volibear",
-            "warwick",
-            "wukong",
-            "xayah",
-            "xerath",
-            "xinzhao",
-            "yasuo",
-            "yone",
-            "yorick",
-            "yummi",
-            "zac",
-            "zed",
-            "zeri",
-            "ziggs",
-            "zilean",
-            "zoe",
-            "zyra",
+            'aatrox',
+            'ahri',
+            'akali',
+            'akshan',
+            'alistar',
+            'amumu',
+            'anivia',
+            'annie',
+            'aphelios',
+            'ashe',
+            'aurelionsol',
+            'azir',
+            'bard',
+            'belveth',
+            'blitzcrank',
+            'brand',
+            'braum',
+            'caitlyn',
+            'camille',
+            'cassiopeia',
+            'chogath',
+            'corki',
+            'darius',
+            'diana',
+            'draven',
+            'drmundo',
+            'ekko',
+            'elise',
+            'evelynn',
+            'ezreal',
+            'fiddlesticks',
+            'fiora',
+            'fizz',
+            'galio',
+            'gangplank',
+            'garen',
+            'gnar',
+            'gragas',
+            'graves',
+            'gwen',
+            'hecarim',
+            'heimerdinger',
+            'illaoi',
+            'irelia',
+            'ivern',
+            'janna',
+            'jarvan',
+            'jax',
+            'jayce',
+            'jhin',
+            'jinx',
+            'kaisa',
+            'kalista',
+            'karma',
+            'karthus',
+            'kassadin',
+            'katarina',
+            'kayle',
+            'kayn',
+            'kennen',
+            'khazix',
+            'kindred',
+            'kled',
+            'kogmaw',
+            'leblanc',
+            'leesin',
+            'leona',
+            'lillia',
+            'lissandra',
+            'lucian',
+            'lulu',
+            'lux',
+            'malphite',
+            'malzahar',
+            'maokai',
+            'masteryi',
+            'missfortune',
+            'mordekaiser',
+            'morgana',
+            'nami',
+            'nasus',
+            'nautilus',
+            'neeko',
+            'nidalee',
+            'nilah',
+            'nocturne',
+            'nunu',
+            'olaf',
+            'oriana',
+            'ornn',
+            'pantheon',
+            'poppy',
+            'pyke',
+            'qiyana',
+            'quinn',
+            'rakan',
+            'rammus',
+            'reksai',
+            'rell',
+            'renata',
+            'renekton',
+            'rengar',
+            'riven',
+            'rumble',
+            'ryze',
+            'samira',
+            'sejuani',
+            'senna',
+            'seraphine',
+            'sett',
+            'shaco',
+            'shen',
+            'shyvana',
+            'singed',
+            'sion',
+            'sivir',
+            'skarner',
+            'sona',
+            'soraka',
+            'swain',
+            'sylas',
+            'syndra',
+            'tahmkench',
+            'taliyah',
+            'talon',
+            'taric',
+            'teemo',
+            'thresh',
+            'tristana',
+            'trundle',
+            'tryndamere',
+            'twistedfate',
+            'twitch',
+            'udyr',
+            'urgot',
+            'varus',
+            'vayne',
+            'veigar',
+            'velkoz',
+            'vex',
+            'vi',
+            'viego',
+            'viktor',
+            'vladimir',
+            'volibear',
+            'warwick',
+            'wukong',
+            'xayah',
+            'xerath',
+            'xinzhao',
+            'yasuo',
+            'yone',
+            'yorick',
+            'yummi',
+            'zac',
+            'zed',
+            'zeri',
+            'ziggs',
+            'zilean',
+            'zoe',
+            'zyra',
         ]
-        console.log(champions.length)
-        var champName, totalPoints = 0, totalPossiblePoints = 0, currentPoints = 0, inGame = false, used = []
-        var pointsBlurs = {
-            3: "blur1",
-            2: "blur2",
-            1: "blur3",
-            0: "unblur",
-        }
+        var champions = ['kayle']
+        var used = []
+        var champName
+        randomChampion = () => champions[parseInt(Math.random() * champions.length)];
 
-        function gameReset(firstTime) {
+        var gameMode = 'normal'
+        var enterFunc = gameStart
 
-            if (used.length >= champions.length) {
-                $("#gameEnd").show()
-                $("#init").hide()
-                $("#buttons").hide()
+        var totalPoints = 0, totalPossiblePoints = 0, currentPoints = 0
 
-                return
-            }
-
-            $("#buttons").hide()
-            $("#init").show()
-            inGame = false
-            if (!firstTime)
-                $("#gameStartButton").html("NEXT CHAMPION")
+        function gameEnd() {
+            $('#finalScore').html(`FINAL SCORE: ${totalPoints} / ${totalPossiblePoints}`)
+            $('#menu').show()
+            $('#game').hide()
+            $('#menuButtons').hide()
+            $('#helptext').hide()
+            $('#gameEnd').show()
+            $('#finalScore').show()
         }
 
         function gameStart() {
-            if (used.length >= champions.length)
+            $('#menu').hide()
+            $('#game').show()
+            gameReset()
+            nextChampion()
+        }
+
+        function gameReset() {
+            $('#nextChampionButton').show();
+            $('#inputSubmitBox').hide();
+            enterFunc = nextChampion
+        }
+
+        function changeGameMode() {
+            gameMode = gameMode == 'timed' ? 'normal' : 'timed'
+            console.log('game mode set: ' + gameMode)
+            $('#gameModeButton').html('GAME MODE: ' + gameMode.toUpperCase())
+        }
+
+        function nextChampion() {
+            $('#nextChampionButton').hide();
+            $('#inputSubmitBox').show();
+
+            if (used.length >= champions.length) {
+                gameEnd()
+                enterFunc = () => { }
                 return
+            }
 
-            let champNr = parseInt(Math.random() * champions.length)
-            while (used.includes(champions[champNr]))
-                champNr = parseInt(Math.random() * champions.length)
+            let champ = randomChampion()
+            while (used.includes(champ))
+                champ = randomChampion()
 
-            $("#buttons").show()
-            $("#init").hide()
-            let image = $('#image')
-            image.removeClass()
-            image.addClass('blur1')
-            champName = champions[champNr]
+            champName = champ
             used.push(champName)
-            currentPoints = 3
-            totalPossiblePoints += 3
-            image.attr("src", `imgs\\${champions[champNr]}.jpg`)
+
+
+            if (gameMode == 'normal') {
+                currentPoints = MAX_POINTS_NORMAL
+                totalPossiblePoints += MAX_POINTS_NORMAL
+                setImage('image', champ, MAX_BLUR_NORMAL)
+            }
+
+            if (gameMode == 'timed') {
+                currentPoints = MAX_POINTS_TIMED
+                totalPossiblePoints += MAX_POINTS_TIMED
+                setImage('image', champ, MAX_BLUR_TIMED)
+            }
+
             updateScore()
-            $("#input").val("")
-            $("#input").focus()
-            $("#helptext").hide();
-            $("#titleHeader").hide();
-            $("#titleImage").hide();
-            inGame = true
+            resetInput()
+            enterFunc = submit
+
+            if (gameMode == 'timed')
+                startTimedMode()
+        }
+
+        function startTimedMode() {
+
+            function timer() {
+                currentPoints--
+                setImage('image', null, MAX_BLUR_TIMED * currentPoints / MAX_POINTS_TIMED)
+                updateScore()
+                if (currentPoints == 0)
+                    lose()
+            }
+            setTimeout(() => {
+                timerFunc = setInterval(timer, TIMED_MILIS);
+            }, TIME_BEFORE_TIMED)
+        }
+
+        function resetInput() {
+            $('#input').val('')
+            $('#input').focus()
         }
 
         function submit() {
 
             let championName = champName.replace(/\s/g, '').toLowerCase()
-            let inputText = $("#input").val().replace(/\s/g, '').toLowerCase()
+            let inputText = $('#input').val().replace(/\s/g, '').toLowerCase()
 
-            if (championName == "rakan") championName = "xayah"
-            if (inputText == "rakan") inputText = "xayah"
+            if (championName == 'rakan') championName = 'xayah'
+            if (inputText == 'rakan') inputText = 'xayah'
 
-            if (inputText == championName) {
+            if (inputText == championName)
                 win()
-            } else {
-                reduce()
+            else
+                failedSubmit()
+
+            updateScore()
+            resetInput()
+        }
+
+        function failedSubmit() {
+
+            if (gameMode == 'normal') {
+
+                currentPoints--
+
+                let currBlur = MAX_BLUR_NORMAL * currentPoints / MAX_POINTS_NORMAL
+                setImage('image', null, currBlur, 1)
+
                 if (currentPoints == 0)
                     lose()
             }
-            updateScore()
-        }
 
-        function reduce() {
-            currentPoints--
-            console.log("nope")
-            $("#input").val("")
-
-            let image = $('#image')
-            image.removeClass()
-            image.addClass(pointsBlurs[currentPoints])
         }
 
         function win() {
-            console.log("win")
-            let image = $('#image')
-            image.removeClass()
-            image.addClass("unblur")
+            setImage('image', null, null, 1)
             totalPoints += currentPoints
             currentPoints = 0
             updateScore()
             gameReset()
+            if (gameMode == 'timed')
+                clearInterval(timerFunc)
         }
 
         function lose() {
-            console.log("lose")
-            let image = $('#image')
             gameReset()
             updateScore()
+            if (gameMode == 'timed')
+                clearInterval(timerFunc)
         }
 
         function updateScore() {
             if (currentPoints > 0)
-                $("#score").html("Score: " + totalPoints + "/" + totalPossiblePoints + " (+" + currentPoints + ")")
+                $('#score').html('Score: ' + totalPoints + '/' + totalPossiblePoints + ' (+' + currentPoints + ')')
             else
-                $("#score").html("Score: " + totalPoints + "/" + totalPossiblePoints)
+                $('#score').html('Score: ' + totalPoints + '/' + totalPossiblePoints)
         }
 
+        function setImage(imageId, championName, blur, blurTransition, opacity, opacityTransition) {
+            let image = $('#' + imageId);
+
+            let transitionString = '';
+            if (blurTransition)
+                transitionString += `filter ${blurTransition}s linear`
+            if (blurTransition && opacityTransition)
+                transitionString += ' , '
+            if (opacityTransition)
+                transitionString += `opacity ${opacityTransition}s linear`
+
+            image.css('transition', transitionString ?? 'none')
+
+            image.css('filter', blur ? `blur(${blur}px)` : 'none')
+            image.css('opacity', opacity === undefined ? '100%' : opacity + '%')
+
+            if (championName)
+                image.attr('src', `imgs/${championName}.jpg`)
+
+            if (imageId != 'imageAlwaysBlurry') {
+                if (blur > 100)
+                    setImage('imageAlwaysBlurry', championName, 100, 1, 0, 0)
+                else if (blur > 1)
+                    setImage('imageAlwaysBlurry', championName, 100, 1, 100 - blur, 1)
+            }
+        }
 
         $('body').on('keypress', function (e) {
             var code = e.keyCode || e.which;
             if (code == 13) {
-                if (inGame)
-                    submit()
-                else
-                    gameStart()
+                enterFunc()
             }
         });
 
-        $("#gameEnd").hide()
-        $("#titleImage").attr("src", `imgs\\${champions[parseInt(Math.random() * champions.length)]}.jpg`)
+        setImage('titleImage', randomChampion(), 100)
 
-        gameReset(true);
+        $('#game').hide()
+        $('#gameEnd').hide()
+        $('#finalScore').hide()
+
+        console.log('total champions: ' + champions.length)
 
     </script>
 </body>
