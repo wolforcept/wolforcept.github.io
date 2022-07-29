@@ -2,104 +2,266 @@
 <html lang="en-gb">
 
 <head>
-	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-	<link rel="icon" href="hearthwell.png">
-	<link href="stylesheet.css" rel="stylesheet">
-	<title>Hearth Well</title>
-	<style>
-
-		.main {
-			text-align: center;
-		}
-
-		.main a {
-			color: black;
-			font-weight: bold;
-			text-decoration: none;
-		}
-
-		.main td {
-			width: 30%;
-		}
-	</style>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <link rel="icon" href="images/icon2.png">
+    <link href="stylesheet.css" rel="stylesheet">
+    <title>WolforcePT</title>
+    <script src='./lib/jquery.min.js'></script>
+    <script src='./patreon.js'></script>
 </head>
 
 <body>
-	<!--  <object class="patron" type="text/html" data="patron.html"></!-->
-	<a href="https://www.patreon.com/bePatron?u=23491431"><img class="patron" src="../patreon.svg"></a>
-	<object style="border:0; padding:0; width:100%; height: 34px;" type="text/html" data="../navbar.html"></object>
-	<hr>
-	<table class="main">
-		<tr>
-			<td>
-				<a href="mechanics/">
-					<table>
-						<tr><img src="mechanics/alloyfurnace.png" height="128px"></tr>
-						<tr>
-							<h1>Mechanics</h1>
-						</tr>
-					</table>
-				</a>
-			</td>
-			<td>
-				<a href="hearthwell/">
-					<table>
-						<tr><img src="hearthwell.png" height="128px"></tr>
-						<tr>
-							<h1>Hearth Well</h1>
-						</tr>
-					</table>
-				</a>
-			</td>
-			<td>
-				<a href="vaultopic/">
-					<table>
-						<tr><img src="vaultopic/icon.png" height="128px"></tr>
-						<tr>
-							<h1>Vaultopic</h1>
-						</tr>
-					</table>
-				</a>
-			</td>
-		</tr>
-		<tr>
 
-			<td>
-				<a href="groves/">
-					<table>
-						<tr><img src="groves/old.png" height="128px"></tr>
-						<tr>
-							<h1>Groves</h1>
-						</tr>
-					</table>
-				</a>
-			</td>
+    <div id="nav">
+        <div id="nav-image"><a href="https://wolforcept.github.io/"><img src="./images/icon128.png"></a></div>
+        <div id="nav-title">WolforcePT</div>
+    </div>
 
+    <div id="content">
 
-			<td>
-				<a href="pristeel/">
-					<table>
-						<tr><img src="pristeel/pristeel.png" height="128px"></tr>
-						<tr>
-							<h1>Pristeel</h1>
-						</tr>
-					</table>
-				</a>
-			</td>
+    </div>
 
-			
-			<td>
-				<a href="https://www.curseforge.com/minecraft/mc-mods/miner-golems">
-					<table>
-						<tr><img src="images/minergolems_logo128.png" height="128px"></tr>
-						<tr>
-							<h1>Miner Golems</h1>
-						</tr>
-					</table>
-				</a>
-			</td>
-		</tr>
-	</table>
+    <script>
+        var pages = [
+            {
+                title: 'Minecraft Mods',
+                cards: [
+                    {
+                        name: 'Hearthwell',
+                        url: 'https://www.curseforge.com/minecraft/mc-mods/hearth-well',
+                        image: './images/hearthwell128.png'
+                    },
+                    {
+                        name: 'MCTCG',
+                        url: 'https://www.curseforge.com/minecraft/mc-mods/mctcg',
+                        image: './images/mctcg128.png'
+                    },
+                    {
+                        name: 'Grey Goo',
+                        url: 'https://www.curseforge.com/minecraft/mc-mods/grey-goo',
+                        image: './images/greygoo128.png'
+                    },
+                    {
+                        name: 'Groves',
+                        url: 'https://www.curseforge.com/minecraft/mc-mods/groves',
+                        image: './images/groves128.png'
+                    },
+                    {
+                        name: 'Mechanics',
+                        url: 'https://www.curseforge.com/minecraft/mc-mods/mechanics-crafting-ways',
+                        image: './images/mechanics128.png'
+                    },
+                    {
+                        name: 'Megabuilds',
+                        url: 'https://www.curseforge.com/minecraft/mc-mods/mega-builds',
+                        image: './images/megabuilds128.png'
+                    },
+                    {
+                        name: 'Miner Golems',
+                        url: 'https://www.curseforge.com/minecraft/mc-mods/miner-golems',
+                        image: './images/minergolems128.png'
+                    },
+                    {
+                        name: 'Player Tabs',
+                        url: 'https://www.curseforge.com/minecraft/mc-mods/player-tabs',
+                        image: './images/playertabs128.png'
+                    },
+                    {
+                        name: 'Pristeel',
+                        url: 'https://www.curseforge.com/minecraft/mc-mods/pristeel',
+                        image: './images/pristeel128.png'
+                    },
+                    {
+                        name: 'Simple Shops',
+                        url: 'https://www.curseforge.com/minecraft/mc-mods/simple-shops',
+                        image: './images/simpleshops128.png'
+                    },
+                    {
+                        name: 'Spirit Death',
+                        url: 'https://www.curseforge.com/minecraft/mc-mods/spirit-death',
+                        image: './images/spiritdeath128.png'
+                    },
+                    {
+                        name: 'Vaultopic',
+                        url: 'https://www.curseforge.com/minecraft/mc-mods/vaultopic-early-inventory-management',
+                        image: './images/vaultopic128.png'
+                    },
+                ]
+            },
+
+            {
+                title: 'Web Games',
+                cards: [
+                    {
+                        name: 'PokeIdler',
+                        url: './pokeidler',
+                        image: './images/pokeball.png',
+                        pixelated: true
+                    },
+                    {
+                        name: 'Concept',
+                        url: 'https://wolforce.herokuapp.com/concept/',
+                        image: './Concept/images/29.png'
+                    },
+                    {
+                        name: 'LoL Blurs',
+                        url: './lolblurs',
+                        image: './images/lolblurs128.png'
+                    },
+                    {
+                        name: 'Mover',
+                        url: './mover',
+                        image: './mover/icon.png'
+                    },
+                    {
+                        name: 'AutoEP',
+                        url: './AutoEP',
+                        image: './images/autoep400.png'
+                    },
+                ]
+            },
+
+            {
+                title: 'Software',
+                cards: [
+                    {
+                        name: 'aTV',
+                        url: './aTV',
+                        image: './aTV/screenshot.png'
+                    },
+                ]
+            },
+
+            {
+                title: 'Links',
+                cards: [
+                    {
+                        name: 'Youtube',
+                        url: 'https://www.youtube.com/channel/wolforce',
+                        image: './images/youtube.jpg'
+                    },
+                    {
+                        name: 'Patreon',
+                        url: 'https://www.patreon.com/wolforce',
+                        image: './images/patreon.svg'
+                    },
+                    {
+                        name: 'Twitter',
+                        url: 'https://twitter.com/wolforcept',
+                        image: './images/twitter.png'
+                    },
+                    {
+                        name: 'Deviantart',
+                        url: 'https://www.deviantart.com/wolforce',
+                        image: './images/deviantart512.png'
+                    },
+                    {
+                        name: 'Twitch',
+                        url: 'https://www.twitch.tv/wolforce',
+                        image: './images/twitch.jpg',
+                    },
+                    {
+                        name: 'Soundcloud',
+                        url: 'https://soundcloud.com/wolforce',
+                        image: './images/soundcloud.png',
+                    },
+                    {
+                        name: 'Steam',
+                        url: './other/circles',
+                        image: './images/steam.webp',
+                    },
+                    {
+                        name: 'Curseforge',
+                        url: './ActNatal2020',
+                        image: './images/curseforge400.jpg',
+                    },
+                    {
+                        separator: true,
+                        title: 'Other useful links',
+                    },
+                    {
+                        name: 'Desmos Graphic Calculator',
+                        url: 'https://www.desmos.com/calculator',
+                        image: './images/desmos.png',
+                    },
+                ]
+            },
+
+            {
+                title: 'Other',
+                cards: [
+                    // {
+                    //     name: 'Color Picker',
+                    //     url: './ColorPicker',
+                    //     image: './ColorPicker/belem.png'
+                    // },
+                    {
+                        name: 'Gartic Fun',
+                        url: './garticfun',
+                        image: 'https://garticphone.com/download/garticphone.png'
+                    },
+                    {
+                        name: 'Circles',
+                        url: './other/circles',
+                        image: 'https://cdn.teachercreated.com/covers/5127.png'
+                    },
+                    // {
+                    //     name: 'Cards',
+                    //     url: './other/cards.html',
+                    //     image: 'https://cdn.teachercreated.com/covers/5127.png'
+                    // },
+                    {
+                        name: 'Actividade Natal',
+                        url: './ActNatal2020',
+                        image: './ActNatal2020/belem.png'
+                    },
+                ]
+            },
+
+            {
+                title: "About",
+                url: './about.html'
+            },
+        ]
+
+        let nav = $('#nav')
+        let content = $("#content")
+
+        pages.forEach(page => {
+            let div = $(`<div class="link">${page.title}</div>`)
+            let _onClickLink = onClickLink(page)
+            div.click(_onClickLink)
+            page.click = _onClickLink
+            nav.append(div)
+        });
+
+        function onClickLink(page) {
+            return (ev) => {
+                content.empty()
+                if (page.url !== undefined)
+                    content.load(page.url)
+                else
+                    page.cards.forEach(card => {
+                        let div
+                        if (card.separator)
+                            div = $(`<div class="separator">${card.title}</h3>`)
+                        else
+                            div = $(`
+                            <a href="${card.url}" target="_blank">
+                                <div class="card${card.pixelated ? ' pixelated' : ''}">
+                                    <img src="${card.image}">
+                                    <div class="cardGradient"></div>
+                                    <span class="title">${card.name}</span>
+                                </div>
+                            </a>`)
+                        content.append(div)
+                    });
+            }
+        }
+
+        pages[0].click()
+    </script>
+
 </body>
 
 </html>

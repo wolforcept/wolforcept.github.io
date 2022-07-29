@@ -1,106 +1,269 @@
-@import url('https://fonts.googleapis.com/css?family=Bree+Serif|Lato|Martel|Montserrat|Open+Sans|Oxygen|Raleway|Roboto&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Lato&family=Oswald:wght@700&display=swap');
 
-/*
-font-family: 'Bree Serif', serif;
-font-family: 'Martel', serif;
-font-family: 'Lato', sans-serif;
-font-family: 'Roboto', sans-serif;
-font-family: 'Raleway', sans-serif;
-font-family: 'Montserrat', sans-serif;
-font-family: 'Open Sans', sans-serif;
+:root {
+
+    --card-width: 128px;
+    --card-height: 128px;
+    --card-margin: 8px;
+
+    --nav-width: 196px;
+    --nav-height-temp: calc(var(--card-margin) * 3);
+    --nav-height: calc(var(--nav-height-temp) + 40px);
+    --nav-image-width: 128px;
+
+    --font-size: 16px;
+    --font-size-semititle: 18px;
+    --font-size-title: 24px;
+
+    --text-color: rgb(255, 255, 255, 0.85);
+    --background-color: rgb(5, 20, 32);
+
+    --background-color-transparent: rgba(var(var(--background-color)), 0);
+    --background-color-semi-transparent: rgba(var(var(--background-color)), 0.2);
+
+    --link-background-color: rgba(255, 255, 255, 0.1);
+    --link-background-hover-color: rgba(255, 255, 255, 0.2);
+    --link-text-color: rgba(255, 255, 255, 0.85);
+    --link-text-hover-color: rgba(255, 255, 255, 1);
+
+    --card-text-color: var(--link-text-color);
+    --card-text-hover-color: var(--link-text-hover-color);
+}
+
+
+@media only screen and (hover: none) and (pointer: coarse) {
+
+    :root {
+        --nav-width: 30vw;
+        --nav-height: 95vw;
+        --nav-image-width: 30vw;
+        --card-width: 30vw;
+        --card-height: 40vw;
+
+        --font-size: 3vw;
+        --font-size-semititle: 4vw;
+        --font-size-title: 5vw;
+    }
+
+}
+
+* {
+    font-family: 'Lato', sans-serif;
+}
+
+body {
+    margin: 0;
+    background-color: var(--background-color);
+    min-width: 540px;
+    font-size: var(--font-size);
+}
+
+a {
+    text-decoration: none;
+}
+
+p {
+    color: var(--text-color);
+}
+
+h3 {
+    color: var(--text-color);
+}
+
+/* 
+█▄ █ ▄▀▄ █ █ 
+█ ▀█ █▀█ ▀▄▀  
+ */
+
+#nav {
+    float: left;
+
+    width: var(--nav-width);
+
+    padding: 16px;
+
+    box-sizing: content-box;
+}
+
+#nav-image {
+    text-align: center;
+    margin-bottom: 16px;
+}
+
+#nav-image img {
+    width: var(--nav-image-width);
+}
+
+#nav-title {
+    color: var(--text-color);
+    font-size: var(--font-size-title);
+    width: 100%;
+    text-align: center;
+    margin-bottom: 16px;
+}
+
+
+.link {
+    padding: 8px 16px;
+    margin-bottom: 16px;
+
+    background-color: var(--link-background-color);
+    color: var(--link-text-color);
+    text-shadow: 1px 1px 2px rgb(0, 0, 0);
+
+    border-radius: 16px;
+    cursor: pointer;
+    box-sizing: content-box;
+
+    transition: .5s;
+}
+
+.link:hover {
+    color: var(--link-text-hover-color);
+    background-color: var(--link-background-hover-color);
+    padding-left: 22px;
+}
+
+/* 
+▄▀▀ ▄▀▄ █▀▄ █▀▄ ▄▀▀ 
+▀▄▄ █▀█ █▀▄ █▄▀ ▄█▀ 
 */
 
-body{
-	background-color: #EEEEEE;
-	padding-left: 5%;
-	padding-right: 5%;
-}
-.bordered img {
-	border: 1px solid #000;
-	background-color: #FFF;
-}
-* {
-	font-family: 'Open Sans', sans-serif;
-}
-h1, h2, h3{
-	font-family: 'Raleway', sans-serif;
+#content {
+    padding: 16px;
+    scroll-behavior: smooth;
 }
 
+.card {
+    position: relative;
+    display: inline-block;
 
-.bold{
-	font-weight: bold;
-}
-table {
-	width: 100%;
-	border-spacing: 25px;
-} 
-table {
-	margin: 0 auto;
-}
-.coring {
-	border-spacing: 0px;
-	border-collapse: collapse;
-}
-.coring td{
-	border: 1px solid #000;
-	padding: 8px;
-}
-.coring .titles,.titles td{
-	border: 0;
+    width: var(--card-width);
+    height: var(--card-height);
+
+    margin: var(--card-margin);
+    border-radius: 16px;
+
+    overflow: hidden;
 }
 
-/**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**/
-
-code {
-	font-family: 'Oxygen Mono', monospace;
-	font-size: 16px;
-}
-.title {
-	font-size: 28px;
-	font-weight: bold;
-	color: #000;
-}
-.title2 {
-	font-size: 18px;
-	font-weight: bold;
-	color: #3355DD;
-}
-.ddd {
-	font-weight: bold;
-	color: #339955;
-}
-.chg {
-	font-weight: bold;
-	color: #F19E0E;
-}
-.rmv {
-	font-weight: bold;
-	color: #DD5533;
-}
-.fxd {
-	font-weight: bold;
-	color: #883399;
-}
-.discord {
-	font-weight: bold !important;
-	color: #666666 !important; 
-}
-.bolden {
-	font-weight: bold;
-}
-pre {
- white-space: pre-wrap;       /* css-3 */
- white-space: -moz-pre-wrap;  /* Mozilla, since 1999 */
- white-space: -pre-wrap;      /* Opera 4-6 */
- white-space: -o-pre-wrap;    /* Opera 7 */
- word-wrap: break-word;       /* Internet Explorer 5.5+ */
+.card .title {
+    transition: 2s;
+    color: transparent;
+    text-align: center;
 }
 
-.patron {
-	position: fixed;
-	right: 10px;
-	bottom: 10px;
-	width: 96px;
-	height: 96px;
-	margin: 0;
+.card:hover .title {
+    transition: .5s;
+    color: var(--card-text-hover-color);
+    text-shadow: 1px 1px 2px rgb(0, 0, 0);
 }
+
+.card .title {
+    position: absolute;
+
+    width: 100%;
+
+    bottom: 0px;
+    left: 0;
+
+    padding-bottom: 8px;
+    padding-top: 8px;
+}
+
+.card img {
+    position: absolute;
+    left: 0;
+    top: 0;
+    z-index: -10;
+    width: 100%;
+}
+
+.card .cardGradient {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(0deg, var(--background-color) 0%, rgba(0, 0, 0, 0) 100%);
+    opacity: 0;
+    transition: 3s;
+}
+
+.card:hover .cardGradient {
+    transition: .5s;
+    opacity: 1;
+}
+
+.pixelated {
+    image-rendering: pixelated;
+}
+
+.separator {
+    color: var(--text-color);
+    font-size: var(--font-size-semititle);
+    border-color: rgba(87, 96, 180, 0.2);
+    width: 100vw;
+}
+
+@media only screen and (hover: none) and (pointer: coarse) {
+
+    #nav {
+        position: fixed;
+        height: 100vh;
+        /* height: 35.1vh; */
+    }
+
+    #content {
+        margin-left: 30vw;
+        width: 66vw;
+        overflow: scroll;
+    }
+
+    .card {
+        margin: 1%;
+        float: right;
+        height: 35vw;
+    }
+
+    .cardGradient {
+        opacity: 1;
+    }
+
+    .card .title {
+        color: white;
+    }
+
+    .separator {
+        float: right;
+        text-align: right;
+        padding-right: 2vw;
+    }
+
+}
+
+/* @media screen and (max-width: 500px) {
+
+    body {
+        overflow: scroll;
+    }
+
+    #nav {
+        position: fixed;
+        width: calc(100% - 144px);
+    }
+
+    #nav-image {
+        position: fixed;
+        margin-left: 0;
+        right: 16px;
+    }
+
+    .link {
+        float: left;
+        margin-right: 8px;
+    }
+
+    #content {
+        position: fixed;
+        top: 128px;
+    }
+} */

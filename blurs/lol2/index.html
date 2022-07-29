@@ -2,12 +2,17 @@
 
 <head>
     <title>LoL Blurs</title>
-    <script src='../lib/jquery.min.js'></script>
-    <script src="../blurs/engine.js"></script>
-    <script src="../patreon.js"></script>
+    <script src='../../lib/jquery.min.js'></script>
+    <script src="../engine.js"></script>
 </head>
 
 <body>
+
+    <div id="content"></div>
+
+    <div id="extraButtons" class="bottom2">
+        <button class="box">TEST</button>
+    </div>
 
     <script>
 
@@ -192,7 +197,9 @@
 
             hasEnded: (used) => {
                 return used.length == champions.length
-            }
+            },
+
+            nextRoundText: 'NEXT CHAMPION'
         })
     </script>
 
