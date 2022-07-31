@@ -14,18 +14,8 @@ class NormalMode {
         return _blur;
     }
 
-    initGameMode() {
-        this.game.currentPoints = 0
-        this.game.totalPoints = 0
-        this.game.totalPossiblePoints = 0
-    }
-
     startRound() {
-        this.game.totalPossiblePoints += this.maxPoints
-        this.game.currentName = this.game.getRandomName()
         this.game.currentPoints = 3
-        updateScore(this.game)
-        setImage('image', this.game.getImagePath(this.game.currentName), this.getBlur())
     }
 
     submit() {
@@ -48,36 +38,78 @@ class NormalMode {
         if (this.game.currentPoints == 0)
             this.game.lose()
     }
-
 }
 
-// class TimedMode {
-//     name = "TIMED"
+class TimedMode {
 
-//     startTimedMode() {
+    game
+    maxBlur = 120
+    maxPoints = 1000
+    timeBefore = 100
+    timeInterval = 20
+    name = "TIMED"
+    timerFunc
 
-//         setImage('image', null, getTimedBlur())
+    constructor(game) {
+        this.game = game
+    }
 
-//         function timer() {
-//             currentPoints--
-//             setImage('image', null, getTimedBlur())
-//             updateScore(this.game)
-//             if (currentPoints == 0)
-//                 lose()
-//         }
-//         setTimeout(() => {
-//             timerFunc = setInterval(timer, TIMED_MILIS);
-//         }, TIME_BEFORE_TIMED)
-//     }
-// }
+    getBlur() {
+        let _blur = this.maxBlur * this.game.currentPoints / this.maxPoints
+        return _blur;
+    }
+
+    initGameMode() {
+    }
+
+    startRound() {
+        this.game.currentPoints = this.maxPoints
+        this.startTimer()
+    }
+
+    submit() {
+        let name = this.game.currentName.replace(/\s/g, '').toLowerCase()
+        let inputText = $('#input').val().replace(/\s/g, '').toLowerCase()
+
+        if (name == 'rakan') name = 'xayah'
+        if (inputText == 'rakan') inputText = 'xayah'
+
+        if (inputText == name)
+            this.game.win()
+        updateScore(this.game)
+    }
+
+    startTimer() {
+
+        let timer = () => {
+            this.game.currentPoints--
+            setImage('image', null, this.getBlur())
+            updateScore(this.game)
+            if (this.game.currentPoints == 0)
+                this.game.lose()
+        }
+        setTimeout(() => {
+            this.timerFunc = setInterval(timer, this.timeInterval);
+        }, this.timeBefore)
+    }
+
+    win() {
+        clearInterval(this.timerFunc)
+    }
+
+    lose() {
+        clearInterval(this.timerFunc)
+    }
+}
 
 class BlurGame {
 
+    gameModes = [new NormalMode(this), new TimedMode(this)]
+
     enterFunc
     list
-    used = []
+    used
 
-    gameModes = [new NormalMode(this)]
     gameMode
     totalPoints = 0
     totalPossiblePoints = 0
@@ -121,7 +153,12 @@ class BlurGame {
         $('#menu').hide()
         $('#game').show()
         $('#score').show()
-        this.gameMode.initGameMode()
+        this.used = []
+        this.currentPoints = 0
+        this.totalPoints = 0
+        this.totalPossiblePoints = 0
+        if (this.gameMode.initGameMode)
+            this.gameMode.initGameMode()
         this.startRound(this)
     }
 
@@ -129,9 +166,20 @@ class BlurGame {
         console.log('START ROUND!');
         $('#nextRoundButton').hide()
         $('#inputSubmitBox').show()
-        updateScore(this)
-        this.gameMode.startRound(this)
+
+        this.totalPossiblePoints += this.gameMode.maxPoints
+        this.currentName = this.getRandomName()
+        while (this.used.includes(this.currentName))
+            this.currentName = this.getRandomName()
+        this.used.push(this.currentName)
+        console.log(this.used);
+
+        if (this.gameMode.startRound)
+            this.gameMode.startRound()
         this.enterFunc = this.submitClicked
+
+        setImage('image', this.getImagePath(this.currentName), this.gameMode.getBlur())
+        updateScore(this)
     }
 
     endRound() {
@@ -140,6 +188,8 @@ class BlurGame {
         $('#inputSubmitBox').hide()
         updateScore(this)
         this.enterFunc = this.nextRoundClicked
+        if (this.gameMode.endRound)
+            this.gameMode.endRound()
     }
 
     win() {
@@ -149,16 +199,28 @@ class BlurGame {
         this.currentPoints = 0
         updateScore(this)
         this.endRound()
-        if (this.gameMode == 'timed')
-            clearInterval(timerFunc)
+        if (this.gameMode.win)
+            this.gameMode.win()
     }
 
     lose() {
         console.log('LOSE');
         this.endRound()
         updateScore(this)
-        if (this.gameMode == 'timed')
-            clearInterval(timerFunc)
+        if (this.gameMode.lose)
+            this.gameMode.lose()
+    }
+
+    gameEnded() {
+        console.log('GAME ENDED')
+        this.enterFunc = this.gameCompleteClicked
+        $('#finalScore').html(`FINAL SCORE: ${this.totalPoints} / ${this.totalPossiblePoints}`)
+        $('#menu').show()
+        $('#game').hide()
+        $('#menuButtons').hide()
+        $('#helpText').hide()
+        $('#gameEnd').show()
+        $('#finalScore').show()
     }
 
     // █ █▄ █ █▀▄ █ █ ▀█▀ ▄▀▀ 
@@ -171,7 +233,11 @@ class BlurGame {
     }
 
     nextRoundClicked() {
-        this.startRound()
+        if (this.hasEnded(this.used))
+            this.gameEnded()
+        else {
+            this.startRound()
+        }
         resetInput()
     }
 
@@ -182,14 +248,24 @@ class BlurGame {
     }
 
     changeGameModeClicked() {
-        let newIndex = this.gameModes.findIndex(x => x == _gameMode) + 1
+        let newIndex = this.gameModes.findIndex(x => x == this.gameMode) + 1
         if (newIndex >= this.gameModes.length)
             newIndex = 0
         this.gameMode = this.gameModes[newIndex]
 
-        setGameModeButton(this.gameMode.name)
+        this.setGameModeButton(this.gameMode.name)
 
         console.log("CHANGE GAME MODE: " + this.gameMode)
+    }
+
+    gameCompleteClicked() {
+        this.enterFunc = this.gameStartClicked
+        $('#finalScore').hide()
+        $('#menu').show()
+        $('#menuButtons').show()
+        $('#helpText').show()
+        $('#gameEnd').hide()
+        $('#finalScore').hide()
     }
 
     // ▄▀▄ █ █ ▀█▀ █▀▄ █ █ ▀█▀ ▄▀▀ 

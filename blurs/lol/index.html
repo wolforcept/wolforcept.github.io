@@ -4,6 +4,7 @@
     <title>LoL Blurs</title>
     <script src='../../lib/jquery.min.js'></script>
     <script src="../engine.js"></script>
+    <script src='../../patreon.js'></script>
 </head>
 
 <body>
@@ -16,7 +17,7 @@
 
     <script>
 
-        const champions = [
+        var champions = [
             'aatrox',
             'ahri',
             'akali',
@@ -179,7 +180,7 @@
             'zoe',
             'zyra',
         ]
-
+        champions = ['vi', 'vex']
         var blurGame = new BlurGame({
             title: 'LoL Blurs',
             description: `Guess the League of Legends Champion Splash Arts!<br />
