@@ -16,8 +16,8 @@
     </div>
 
     <div id='menuButtons' class='bottom'>
-        <button id='gameStartButton' onclick='gameStartClicked()' class='button box'>GAME START</button>
-        <button id='gameModeButton' onclick='changeGameModeClicked()' class='button box'>GAME MODE: NORMAL</button>
+        <button id='gameStartButton' onclick='blurGame.gameStartClicked()' class='button box'>GAME START</button>
+        <button id='gameModeButton' onclick='blurGame.changeGameModeClicked()' class='button box'>GAME MODE: NORMAL</button>
     </div>
     <div class='bottom'>
         <div id='gameEnd' class='box'>GAME COMPLETE!</div>
@@ -35,10 +35,10 @@
         <h2 id='score' class='box'></h2>
     </div>
     <div class='bottom'>
-        <button id='nextRoundButton' onclick='nextRoundClicked()' class='button box'>NEXT ROUND</button>
+        <button id='nextRoundButton' onclick='blurGame.nextRoundClicked()' class='button box'>NEXT ROUND</button>
         <div id='inputSubmitBox'>
             <input id='input' class='box' autocomplete='off'></input>
-            <button onclick='submitClicked()' class='button box'>SUBMIT</button>
+            <button onclick='blurGame.submitClicked()' class='button box'>SUBMIT</button>
         </div>
     </div>
 </div>

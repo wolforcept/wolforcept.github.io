@@ -57,6 +57,14 @@ h1 {
     width: 100%;
 }
 
+.bottom2 {
+    position: fixed;
+    bottom: 100px;
+
+    text-align: center;
+    width: 100%;
+}
+
 .box {
     display: inline-block;
     background-color: rgba(5, 6, 17, 0.7);
@@ -113,4 +121,23 @@ h1 {
 
 #finalScore {
     font-size: 60px;
+}
+
+/*
+    ▄▀▄ ▀█▀ █▄█ ██▀ █▀▄ 
+    ▀▄▀  █  █ █ █▄▄ █▀▄ 
+*/
+
+.patreonlink {
+    position: fixed;
+    bottom: 12px;
+    right: 12px;
+    cursor: pointer;
+    z-index: 100;
+}
+
+.patreonblur {
+    filter: blur(17px);
+    opacity: 75%;
+    transform: translate(4px, 4px);
 }
