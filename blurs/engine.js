@@ -115,16 +115,18 @@ class BlurGame {
     totalPossiblePoints = 0
     currentPoints = 0
     currentName
+    blurMultiplier
 
     hasEnded() { }
     getImagePath() { }
     getRandomName() { }
 
-    constructor({ title, description, getImagePath, getRandomName, hasEnded, nextRoundText }) {
+    constructor({ title, description, getImagePath, getRandomName, hasEnded, nextRoundText, blurMultiplier }) {
 
         this.getImagePath = getImagePath
         this.getRandomName = getRandomName
         this.hasEnded = hasEnded
+        this.blurMultiplier = blurMultiplier ? blurMultiplier : 1
 
         this.gameMode = this.gameModes[0]
 
@@ -293,7 +295,7 @@ function setImage(imageId, path, blur, blurTransition, opacity, opacityTransitio
 
     image.css('transition', transitionString ?? 'none')
 
-    image.css('filter', blur ? `blur(${blur}px)` : 'none')
+    image.css('filter', blur ? `blur(${parseInt(blur * blurGame.blurMultiplier)}px)` : 'none')
     image.css('opacity', opacity === undefined ? '100%' : opacity + '%')
 
     if (path)
