@@ -4,10 +4,15 @@
     <meta charset="utf-8">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <title>Unity WebGL Player | Cobra 2</title>
+    <style>
+      body{
+        background-color: rgb(10, 10, 19);
+      }
+    </style>
   </head>
   <body style="text-align: center">
     <canvas id="unity-canvas" width=960 height=600 style="width: 960px; height: 600px; background: #231F20"></canvas>
-    <script src="Build/buildweb3.loader.js"></script>
+    <script src="Build/buildweb.loader.js"></script>
     <script>
       if (/iPhone|iPad|iPod|Android/i.test(navigator.userAgent)) {
         // Mobile device style: fill the whole browser client area with the game canvas:
@@ -18,9 +23,9 @@
       }
 
       createUnityInstance(document.querySelector("#unity-canvas"), {
-        dataUrl: "Build/buildweb3.data",
-        frameworkUrl: "Build/buildweb3.framework.js",
-        codeUrl: "Build/buildweb3.wasm",
+        dataUrl: "Build/buildweb.data",
+        frameworkUrl: "Build/buildweb.framework.js",
+        codeUrl: "Build/buildweb.wasm",
         streamingAssetsUrl: "StreamingAssets",
         companyName: "DefaultCompany",
         productName: "Cobra 2",
