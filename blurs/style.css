@@ -101,6 +101,20 @@ h1 {
     height: 80vh;
 }
 
+#autocomplete {
+    position: absolute;
+    width: 240px;
+    bottom: 80px;
+    transform: translateX(-247px);
+    display: inline-block;
+}
+
+.autocompletePart {
+    top: auto;
+    width: 100%;
+    padding: 0;
+}
+
 /*
 █▄ ▄█ ██▀ █▄ █ █ █ 
 █ ▀ █ █▄▄ █ ▀█ ▀▄█ 

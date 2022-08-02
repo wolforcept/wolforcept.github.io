@@ -107,7 +107,7 @@ class BlurGame {
     gameModes = [new NormalMode(this), new TimedMode(this)]
 
     enterFunc
-    list
+    allNames
     used
 
     gameMode
@@ -121,12 +121,13 @@ class BlurGame {
     getImagePath() { }
     getRandomName() { }
 
-    constructor({ title, description, getImagePath, getRandomName, hasEnded, nextRoundText, blurMultiplier }) {
+    constructor({ title, description, getImagePath, getRandomName, hasEnded, nextRoundText, blurMultiplier, allNames }) {
 
         this.getImagePath = getImagePath
         this.getRandomName = getRandomName
         this.hasEnded = hasEnded
         this.blurMultiplier = blurMultiplier ? blurMultiplier : 1
+        this.allNames = allNames
 
         this.gameMode = this.gameModes[0]
 
@@ -134,7 +135,16 @@ class BlurGame {
 
         $('head').append($('<link rel="stylesheet" type="text/css" />').attr('href', '../style.css'));
 
-        $('body').on('keypress', e => { if ((e.keyCode || e.which) == 13) this.enterFunc() })
+        $('body').on('keypress', e => {
+            if ((e.keyCode || e.which) == 13)
+                this.enterFunc()
+        })
+
+        $('body').on('keyup', e => {
+            setTimeout(() => {
+                onkey(e)
+            }, 1);
+        })
 
         $('#content').load('../content.html', () => {
             setImage('titleImage', getImagePath(this.getRandomName()), 100)
@@ -270,6 +280,8 @@ class BlurGame {
         $('#finalScore').hide()
     }
 
+
+
     // ▄▀▄ █ █ ▀█▀ █▀▄ █ █ ▀█▀ ▄▀▀ 
     // ▀▄▀ ▀▄█  █  █▀  ▀▄█  █  ▄█▀ 
 
@@ -319,6 +331,48 @@ function updateScore(game) {
 function resetInput() {
     $('#input').val('')
     $('#input').focus()
+    onkey()
+}
+
+function setInput(input) {
+    $('#input').val(input)
+    $('#input').focus()
+    onkey()
+}
+
+var selectedAutocomplete = 0
+
+async function onkey(e) {
+
+    if (e) {
+
+        let key = e.originalEvent.keyCode
+
+        if (key == 38) {// up
+
+            
+            return
+        }
+
+        if (key == 40) {// up 
+
+            return
+        }
+    }
+
+    let inputText = $('#input').val()
+    let ac = $('#autocomplete')
+    ac.empty()
+
+    if (!e || !inputText)
+        return
+
+    let names = blurGame.allNames.filter(x => x.startsWith(inputText))
+    names.slice(0, Math.min(names.length, 5))
+        .forEach(name => {
+            let part = $(`<button class='button box autocompletePart' onclick='setInput("${name}")'>${name}</button>`)
+            ac.append(part)
+        });
 }
 
 
