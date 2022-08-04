@@ -1,17 +1,11 @@
 <html>
 
 <head>
-    <title>LoL Blurs</title>
+    <title>Poke Blurs</title>
     <script src='../../lib/jquery.min.js'></script>
     <script src="../engine.js"></script>
     <script src='../../patreon.js'></script>
     <script src='../../backbutton.js'></script>
-
-    <style>
-        img {
-            image-rendering: pixelated;
-        }
-    </style>
 </head>
 
 <body>
@@ -24,67 +18,47 @@
 
     <script>
 
-        var blurGame;
+        var allPokemon
+        var blurGame
 
         fetch('https://pokeapi.co/api/v2/pokemon/?limit=151').then(x => x.json().then(
             ret => {
-                const allPokemon = ret.results.map(x => x.name)
+                allPokemon = ret.results.map(x => x.name)
                 console.log(allPokemon)
 
-                var imgs = {}
-                var nextName = allPokemon[parseInt(Math.random() * allPokemon.length)];
-
-                async function getImage(name) {
-                    let p = await fetch('https://pokeapi.co/api/v2/pokemon/' + nextName)
-                    let p2 = await p.json()
-                    return p2.sprites.front_default
-                }
-
-                function getRandomName() {
-                    temp = nextName
-                    nextName = allPokemon[parseInt(Math.random() * allPokemon.length)]
-                    getImage(nextName).then(x => imgs[nextName] = x)
-                    return temp
-                }
-
-                function getPokemonImage(name) {
-                    return imgs[name]
-                }
-
-                getImage(nextName)
-                    .then(x => {
-                        imgs[nextName] = x
-                        console.log(imgs)
-                        blurGame = new BlurGame({
-                            title: 'Poke Blurs',
-                            description: `Guess the Pokemon!<br />
-                          Write the name of the correct pokemon on the textbox.<br />
+                blurGame = new BlurGame({
+                    title: 'LoL Blurs',
+                    description: `Guess the League of Legends Champion Splash Arts!<br />
+                          Write the name of the correct champion on the textbox.<br />
                           You have three tries, each one yielding less points than the previous one.<br />
                           Press ENTER to start.<br />`,
 
-                            getImagePath: (name) => {
-                                return imgs[name]
-                            },
+                    getImagePath: async (name) => {
+                        let p = await fetch('https://pokeapi.co/api/v2/pokemon/' + name)
+                        let p2 = await p.json()
+                        return p2.sprites.front_default
+                    },
 
-                            getRandomName,
+                    getRandomName: () => {
+                        return allPokemon[parseInt(Math.random() * allPokemon.length)]
+                    },
 
-                            hasEnded: (used) => {
-                                return used.length == allPokemon.length
-                            },
+                    hasEnded: (used) => {
+                        return used.length == allPokemon.length
+                    },
 
-                            nextRoundText: 'NEXT POKEMON',
+                    nextRoundText: 'NEXT CHAMPION',
 
-                            blurMultiplier: .3,
+                    allNames: allPokemon,
 
-                            allNames: allPokemon
-                        })
-                    })
+                    blurMultiplier: .9,
 
-                function debug() {
-                    champions = ['mew', 'mewtwo']
-                }
-            }
-        ))
+                })
+            }))
+
+        function debug() {
+            allPokemon = ['pikachu', 'raichu']
+        }
     </script>
 
 </body>

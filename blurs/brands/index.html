@@ -1,0 +1,71 @@
+<html>
+
+<head>
+    <title>Brand Blurs</title>
+    <script src='../../lib/jquery.min.js'></script>
+    <script src="../engine.js"></script>
+    <script src='../../patreon.js'></script>
+    <script src='../../backbutton.js'></script>
+</head>
+
+<body>
+
+    <div id="content"></div>
+
+    <!-- <div id="extraButtons" class="bottom2">
+        <button class="box">TEST</button>
+    </div> -->
+
+    <script>
+
+        // https://list.ly/api/v4/meta?url=http://linkedin.com
+
+        // fetch('https://list.ly/api/v4/meta?url=http://linkedin.com').then(
+        //     x => {
+        //         const reader = response.body.getReader();
+
+        //         console.log(x)
+
+        //         console.log(x.headers.forEach(x => console.log(x)))
+        //         console.log(x.headers.forEach(x => console.log(x)))
+        //     }
+        // )
+
+        // Fetch the original image
+        fetch('https://list.ly/api/v4/meta?url=http://linkedin.com').then(x => console.log(x))
+
+
+        champions = ['vex']
+
+        var blurGame = new BlurGame({
+            title: 'Brand Blurs',
+            description: `Guess the Brands Logos!<br />
+                          Write the name of the correct brand on the textbox.<br />
+                          You have three tries, each one yielding less points than the previous one.<br />
+                          Press ENTER to start.<br />`,
+
+            getImagePath: async (name) => {
+                return `../lol/imgs/${name}.jpg`
+            },
+
+            getRandomName: () => {
+                return champions[parseInt(Math.random() * champions.length)]
+            },
+
+            hasEnded: (used) => {
+                return used.length == champions.length
+            },
+
+            nextRoundText: 'NEXT BRAND',
+
+            allNames: champions
+        })
+
+        function debug() {
+            champions = ['vi', 'vex']
+        }
+    </script>
+
+</body>
+
+</html>
