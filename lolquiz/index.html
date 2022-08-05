@@ -219,10 +219,6 @@
                 let newDiv = $(`<div class="question"><h3>${title}</h3>${text}</div>`)
                 questions.append(newDiv)
                 newDiv[0].scrollIntoView({ behavior: 'smooth', block: 'center' })
-
-                // questions.stop().animate({
-                //     scrollIntoView: true
-                // }, 800);
             }
 
             function createAnswerDiv(answer, color) {
