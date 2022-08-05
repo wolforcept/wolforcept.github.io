@@ -4,7 +4,7 @@ const navLinks = [
     { title: 'Software', url: './software.html', },
     { title: 'Links', url: './links.html', },
     { title: 'Other', url: './other.html', },
-    { title: 'About', url: './about.html', },
+    { title: 'About', url: './index.html', },
 ]
 
 let nav = $(`

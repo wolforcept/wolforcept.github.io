@@ -1,0 +1,280 @@
+<html>
+
+<head>
+    <title>LoL Guess</title>
+    <script src='../lib/jquery.min.js'></script>
+    <script src='../patreon.js'></script>
+    <script src='../backbutton.js'></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Lato&family=Oswald:wght@400&display=swap');
+
+        :root {
+            --back-color: rgb(10, 17, 26);
+            --text-color: rgba(224, 227, 255, 0.85);
+            --color-dark: rgba(0, 0, 0, 0.247);
+        }
+
+        * {
+            font-family: 'Lato', sans-serif;
+        }
+
+        ::placeholder {
+            color: rgba(18, 18, 41, 0.144);
+        }
+
+        /* width */
+        ::-webkit-scrollbar {
+            width: 10px;
+        }
+
+        /* Track */
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        /* Handle */
+        ::-webkit-scrollbar-thumb {
+            background: var(--color-dark);
+        }
+
+        /* Handle on hover */
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--color-dark);
+        }
+
+        body {
+            background-color: var(--back-color);
+            text-align: center;
+        }
+
+        input,
+        button {
+            text-align: center;
+            display: inline;
+            vertical-align: middle;
+            color: var(--text-color);
+            background-color: rgb(6, 10, 15);
+            font-size: x-large;
+            padding: 0px 10px 4px 10px;
+            border: 2px solid rgba(255, 255, 255, 0.205);
+            border-radius: 16px;
+            margin: auto;
+            margin-top: 20px;
+        }
+
+        input {
+            width: 500px;
+        }
+
+        h1 {
+            text-align: center;
+            color: var(--text-color);
+            font-family: 'Oswald', sans-serif;
+            margin: 0 0 10px 0;
+            height: 50px;
+        }
+
+        h3 {
+            margin: 0 0 10px 0;
+        }
+
+        #content {
+            width: 700px;
+            margin: auto;
+            height: calc(100vh - 150px);
+            overflow-x: hidden;
+            overflow-y: scroll;
+        }
+
+        .question {
+            color: var(--text-color);
+            padding: 20px 20px 0 20px;
+            font-size: large;
+            margin: 0;
+        }
+
+        .answer {
+            margin: 0;
+            color: var(--text-color);
+            padding: 5px;
+            font-size: large;
+        }
+
+        .separator {
+            border-bottom: 2px solid rgba(255, 255, 255, 0.151);
+        }
+    </style>
+</head>
+
+<body>
+
+    <h1>LoL Quiz</h1>
+
+    <div id="content">
+        <div id="questions"></div>
+    </div>
+    <div style="position: fixed; bottom: 20px; width: 100%">
+        <button id="skip">Skip</button>
+        <input placeholder="your answer here">
+        <button id="submit">Submit</button>
+    </div>
+
+    <script>
+
+        const jsonData = fetch('./championData.json').then(x => x.json()).then(champions => init(champions, Object.keys(champions)));
+
+        function init(champions, championNames) {
+            console.log({ champions, championNames })
+
+            var currentAnswer
+            var score = 0
+
+            let input = $('input');
+            let submitButton = $('#submit');
+            let skipButton = $('#skip');
+            let questions = $('#questions');
+
+            input.keydown(e => { if ((e.keyCode || e.which) == 13) submit() })
+            submitButton.click(e => submit())
+            skipButton.click(e => skip())
+
+            // ▄▀▄ █ █ ██▀ ▄▀▀ ▀█▀ █ ▄▀▄ █▄ █    ▀█▀ ▀▄▀ █▀▄ ██▀ ▄▀▀ 
+            // ▀▄█ ▀▄█ █▄▄ ▄█▀  █  █ ▀▄▀ █ ▀█     █   █  █▀  █▄▄ ▄█▀ 
+
+            let questionTypes = [
+
+                () => {
+                    let championName = championNames[Math.floor(Math.random() * championNames.length)]
+                    let champion = champions[championName]
+                    let lore = champion.lore.replaceAll(champion.name, '??????')
+                    createQuestionDiv("Guess the champion based on the champion's lore:", lore)
+                    currentAnswer = championName
+                },
+
+                () => {
+                    let championName = championNames[Math.floor(Math.random() * championNames.length)]
+                    let champion = champions[championName]
+                    let i = Math.floor(Math.random() * champion.spells.length)
+                    let spell = champion.spells[i]
+                    let spellDescription = spell.description.replaceAll(champion.name, '??????')
+                    createQuestionDiv(`Guess the champion based on the champion's ability description: (${(['Q', 'W', 'E', 'R'])[i]})`, spellDescription)
+                    currentAnswer = championName
+                },
+
+                () => {
+                    let championName = championNames[Math.floor(Math.random() * championNames.length)]
+                    let champion = champions[championName]
+                    let spell = champion.spells[Math.floor(Math.random() * champion.spells.length)]
+                    let spellDescription = spell.description.replaceAll(champion.name, '??????')
+                    createQuestionDiv("Guess the champion's ability's name based on its description:", spellDescription)
+                    currentAnswer = spell.name
+                },
+
+                () => {
+                    let championName = championNames[Math.floor(Math.random() * championNames.length)]
+                    let champion = champions[championName]
+                    let spell = champion.spells[Math.floor(Math.random() * champion.spells.length)]
+                    let spellDescription = `Q: ${champion.spells[0].name}<br />
+                    W: ${champion.spells[1].name}<br />
+                    E: ${champion.spells[2].name}`
+                    createQuestionDiv("Guess the champion based on its abilities names:", spellDescription)
+                    currentAnswer = championName
+                },
+
+            ]
+
+            // ██▀ █▄ █ ▄▀  █ █▄ █ ██▀ 
+            // █▄▄ █ ▀█ ▀▄█ █ █ ▀█ █▄▄ 
+
+            function submit() {
+                if (input.val().toLowerCase().replaceAll(' ', '') == currentAnswer.toLowerCase().replaceAll(' ', '')) {
+                    createAnswerDiv(`Answer "${input.val()}" is correct! +1 Point`, '#23bd28')
+                    createQuestion()
+                    score++
+                    updateScore()
+                } else {
+                    if (input.val())
+                        createAnswerDiv(`Answer "${input.val()}" is incorrect!`, '#998888')
+                }
+                input.val('')
+            }
+
+            function skip() {
+                score -= 3
+                updateScore()
+                createAnswerDiv(`Skipped. Correct answer was "${currentAnswer}". -5 Points`, '#e34622')
+                createSeparator()
+                createQuestion()
+                input.val('')
+            }
+
+            function createQuestion() {
+                questionTypes[Math.floor(Math.random() * questionTypes.length)]()
+            }
+
+            // █▄█ ▀█▀ █▄ ▄█ █   
+            // █ █  █  █ ▀ █ █▄▄ 
+
+            function createQuestionDiv(title, text) {
+                let newDiv = $(`<div class="question"><h3>${title}</h3>${text}</div>`)
+                questions.append(newDiv)
+                newDiv[0].scrollIntoView({ behavior: 'smooth', block: 'center' })
+
+                // questions.stop().animate({
+                //     scrollIntoView: true
+                // }, 800);
+            }
+
+            function createAnswerDiv(answer, color) {
+                let newDiv = $(`<div class="answer" style="color: ${color}">${answer}</div>`)
+                questions.append(newDiv)
+                newDiv[0].scrollIntoView({ behavior: 'smooth', block: 'center' })
+            }
+
+            function createSeparator() {
+                let newDiv = $(`<div class="separator"></div>`)
+                questions.append(newDiv)
+                newDiv[0].scrollIntoView({ behavior: 'smooth', block: 'center' })
+            }
+
+            function updateScore() {
+                $('h1').html('Score: ' + score)
+            }
+            createQuestion()
+        }
+
+        function getChampionImage(name, i = 0) {
+            return `http://ddragon.leagueoflegends.com/cdn/img/champion/splash/${name}_${i}.jpg`
+        }
+
+        async function downloadData(version = '12.14.1') {
+
+            let data = await fetch(`http://ddragon.leagueoflegends.com/cdn/${version}/data/en_US/champion.json`)
+            data = await data.json()
+
+            let names = Object.keys(data.data)
+
+            data = (await Promise.all(names.map(name =>
+                fetch(`http://ddragon.leagueoflegends.com/cdn/12.14.1/data/en_US/champion/${name}.json`)
+            )))
+            data = await Promise.all(data.map(response => response.json()))
+
+            let championData = {}
+            data.forEach(loaded => {
+                let name = Object.keys(loaded.data).filter(x => x != 'format' && x != 'type' && x != 'version')[0]
+                championData[name] = loaded.data[name]
+            })
+
+            console.log(championData)
+
+            $('body').append($('<a href="data:' +
+                "text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(championData))
+                + '" download="data.json">DOWNLOAD NEW CHAMPION DATA JSON</a>'))
+
+        }
+
+    </script>
+
+</body>
+
+</html>
