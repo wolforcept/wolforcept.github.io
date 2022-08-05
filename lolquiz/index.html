@@ -164,10 +164,9 @@
                 () => {
                     let championName = championNames[Math.floor(Math.random() * championNames.length)]
                     let champion = champions[championName]
-                    let spell = champion.spells[Math.floor(Math.random() * champion.spells.length)]
-                    let spellDescription = spell.description.replaceAll(champion.name, '??????')
-                    createQuestionDiv("Guess the champion's ability's name based on its description:", spellDescription)
-                    currentAnswer = spell.name
+                    let spellDescription = champion.spells[3].description.replaceAll(champion.name, '??????')
+                    createQuestionDiv("Guess the champion's ultimate ability based on its description:", spellDescription)
+                    currentAnswer = champion.spells[3].name
                 },
 
                 () => {
@@ -187,7 +186,7 @@
             // █▄▄ █ ▀█ ▀▄█ █ █ ▀█ █▄▄ 
 
             function submit() {
-                if (input.val().toLowerCase().replaceAll(' ', '') == currentAnswer.toLowerCase().replaceAll(' ', '')) {
+                if (match(input.val(), currentAnswer)) {
                     createAnswerDiv(`Answer "${input.val()}" is correct! +1 Point`, '#23bd28')
                     createQuestion()
                     score++
@@ -202,7 +201,7 @@
             function skip() {
                 score -= 3
                 updateScore()
-                createAnswerDiv(`Skipped. Correct answer was "${currentAnswer}". -5 Points`, '#e34622')
+                createAnswerDiv(`Skipped. Correct answer was "${currentAnswer}". -3 Points`, '#e34622')
                 createSeparator()
                 createQuestion()
                 input.val('')
@@ -210,6 +209,12 @@
 
             function createQuestion() {
                 questionTypes[Math.floor(Math.random() * questionTypes.length)]()
+            }
+
+            function match(text1, text2) {
+                let t1 = text1.toLowerCase().replace(/[^\w\s!?]/g, '');
+                let t2 = text2.toLowerCase().replace(/[^\w\s!?]/g, '');
+                return t1 == t2
             }
 
             // █▄█ ▀█▀ █▄ ▄█ █   
