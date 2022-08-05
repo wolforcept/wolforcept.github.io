@@ -148,7 +148,7 @@
                     let champion = champions[championName]
                     let lore = champion.lore.replaceAll(champion.name, '??????')
                     createQuestionDiv("Guess the champion based on the champion's lore:", lore)
-                    currentAnswer = championName
+                    currentAnswer = champion.name
                 },
 
                 () => {
@@ -158,13 +158,13 @@
                     let spell = champion.spells[i]
                     let spellDescription = spell.description.replaceAll(champion.name, '??????')
                     createQuestionDiv(`Guess the champion based on the champion's ability description: (${(['Q', 'W', 'E', 'R'])[i]})`, spellDescription)
-                    currentAnswer = championName
+                    currentAnswer = champion.name
                 },
 
                 () => {
                     let championName = championNames[Math.floor(Math.random() * championNames.length)]
                     let champion = champions[championName]
-                    let spellDescription = champion.spells[3].description.replaceAll(champion.name, '??????')
+                    let spellDescription = champion.spells[3].description
                     createQuestionDiv("Guess the champion's ultimate ability based on its description:", spellDescription)
                     currentAnswer = champion.spells[3].name
                 },
@@ -177,7 +177,7 @@
                     W: ${champion.spells[1].name}<br />
                     E: ${champion.spells[2].name}`
                     createQuestionDiv("Guess the champion based on its abilities names:", spellDescription)
-                    currentAnswer = championName
+                    currentAnswer = champion.name
                 },
 
             ]
@@ -212,8 +212,8 @@
             }
 
             function match(text1, text2) {
-                let t1 = text1.toLowerCase().replace(/[^\w\s!?]/g, '');
-                let t2 = text2.toLowerCase().replace(/[^\w\s!?]/g, '');
+                let t1 = text1.toLowerCase().replace(' ', '').replace(/[^\w\s!?]/g, '');
+                let t2 = text2.toLowerCase().replace(' ', '').replace(/[^\w\s!?]/g, '');
                 return t1 == t2
             }
 
