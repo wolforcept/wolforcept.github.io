@@ -25,6 +25,13 @@
 
 <body>
 
+    <style>
+        img {
+            max-width: 400px;
+            max-height: 400px;
+        }
+    </style>
+
     <div id="content"></div>
 
     <!-- <div id="extraButtons" class="bottom2">
@@ -42,7 +49,13 @@
             .then(data => { console.log(data); })
 
 
-        champions = ['vex']
+        let links = {
+            'google': 'google.com',
+            'amazon': 'amazon.com',
+            'youtube': 'youtube.com',
+            'lego': 'lego.com',
+        }
+        let names = Object.keys(links)
 
         var blurGame = new BlurGame({
             title: 'Brand Blurs',
@@ -52,26 +65,24 @@
                           Press ENTER to start.<br />`,
 
             getImagePath: async (name) => {
-                let response = await fetch('https://list.ly/api/v4/meta?url=http://linkedin.com')
-                let json = await response.json()
-                return json.metadata.images[0]
+                return `https://logo.clearbit.com/` + links[name]
             },
 
             getRandomName: () => {
-                return champions[parseInt(Math.random() * champions.length)]
+                return names[parseInt(Math.random() * names.length)]
             },
 
             hasEnded: (used) => {
-                return used.length == champions.length
+                return used.length == names.length
             },
 
             nextRoundText: 'NEXT BRAND',
-
-            allNames: champions
+            blurMultiplier: .5,
+            allNames: names
         })
 
         function debug() {
-            champions = ['vi', 'vex']
+            names = ['google', 'amazon']
         }
     </script>
 

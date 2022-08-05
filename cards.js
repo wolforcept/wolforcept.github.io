@@ -3,7 +3,7 @@ function addCards(cards) {
     cards.forEach(card => {
         let div
         if (card.separator)
-            div = $(`<div class="separator">${card.title}</h3>`)
+            div = $(`<div class="separator">${card.title}</div>`)
         else
             div = $(`
                     <a href="${card.url}" target="_blank">

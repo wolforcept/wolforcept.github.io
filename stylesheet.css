@@ -202,7 +202,7 @@ h3 {
     color: var(--text-color);
     font-size: var(--font-size-semititle);
     border-color: rgba(87, 96, 180, 0.2);
-    width: 100vw;
+    width: 100%;
 }
 
 @media only screen and (hover: none) and (pointer: coarse) {
