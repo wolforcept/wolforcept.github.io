@@ -56,6 +56,7 @@ body {
     background-color: var(--background-color);
     min-width: 540px;
     font-size: var(--font-size);
+    display: flex;
 }
 
 a {
@@ -76,12 +77,11 @@ h3 {
  */
 
 #nav {
+    order: 1;
     float: left;
-
-    width: var(--nav-width);
+    min-width: var(--nav-width);
 
     padding: 16px;
-
     box-sizing: content-box;
 }
 
@@ -130,6 +130,7 @@ h3 {
 */
 
 #content {
+    order: 2;
     padding: 16px;
     scroll-behavior: smooth;
 }

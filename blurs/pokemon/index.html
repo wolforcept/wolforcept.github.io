@@ -27,10 +27,11 @@
                 console.log(allPokemon)
 
                 blurGame = new BlurGame({
-                    title: 'LoL Blurs',
-                    description: `Guess the League of Legends Champion Splash Arts!<br />
-                          Write the name of the correct champion on the textbox.<br />
-                          You have three tries, each one yielding less points than the previous one.<br />
+                    title: 'Poke Blurs',
+                    description: `Guess the Pokemon!<br />
+                          Write the name of the correct pokemon on the textbox.<br />
+                          In normal mode you have three tries, each one yielding less points than the previous one.<br />
+                          In timed mode you have infinite tries, but limited time to win.<br />
                           Press ENTER to start.<br />`,
 
                     getImagePath: async (name) => {

@@ -6,6 +6,21 @@
     <script src="../engine.js"></script>
     <script src='../../patreon.js'></script>
     <script src='../../backbutton.js'></script>
+
+    <style>
+        img {
+            image-rendering: crisp-edges;
+            image-rendering: -moz-crisp-edges;
+            /* Firefox */
+            image-rendering: -o-crisp-edges;
+            /* Opera */
+            image-rendering: -webkit-optimize-contrast;
+            /* Webkit (non-standard naming) */
+            -ms-interpolation-mode: nearest-neighbor;
+            /* IE (non-standard property) */
+        }
+    </style>
+
 </head>
 
 <body>
@@ -18,21 +33,13 @@
 
     <script>
 
-        // https://list.ly/api/v4/meta?url=http://linkedin.com
+        fetch('https://list.ly/api/v4/meta?url=http://linkedin.com')
+            .then(response => response.json())
+            .then(data => { console.log(data); })
 
-        // fetch('https://list.ly/api/v4/meta?url=http://linkedin.com').then(
-        //     x => {
-        //         const reader = response.body.getReader();
-
-        //         console.log(x)
-
-        //         console.log(x.headers.forEach(x => console.log(x)))
-        //         console.log(x.headers.forEach(x => console.log(x)))
-        //     }
-        // )
-
-        // Fetch the original image
-        fetch('https://list.ly/api/v4/meta?url=http://linkedin.com').then(x => console.log(x))
+        fetch('http://ddragon.leagueoflegends.com/cdn/12.14.1/data/en_US/champion.json')
+            .then(response => response.json())
+            .then(data => { console.log(data); })
 
 
         champions = ['vex']
@@ -45,7 +52,9 @@
                           Press ENTER to start.<br />`,
 
             getImagePath: async (name) => {
-                return `../lol/imgs/${name}.jpg`
+                let response = await fetch('https://list.ly/api/v4/meta?url=http://linkedin.com')
+                let json = await response.json()
+                return json.metadata.images[0]
             },
 
             getRandomName: () => {
