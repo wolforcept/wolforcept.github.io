@@ -93,6 +93,10 @@ h3 {
     background-color: var(--link-background-hover-color);
 }
 
+.link.active {
+    background-color: var(--link-lighter-background-color);
+}
+
 /* 
 █▄ █ ▄▀▄ █ █ 
 █ ▀█ █▀█ ▀▄▀  

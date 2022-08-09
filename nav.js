@@ -10,7 +10,8 @@ function createElement() {
     ]
 
     function createLink(link) {
-        return html`<div class='link' onclick='window.location.href = \"${link.url}\"'>${link.title}</div>`
+        let classes = getCurrentHashLoc().startsWith(link.url.substring(1)) ? "link active" : "link"
+        return html`<div class='${classes}' onclick='window.location.href = \"${link.url}\"'>${link.title}</div>`
     }
 
     return html`
