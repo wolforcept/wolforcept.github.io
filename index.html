@@ -2,27 +2,41 @@
 <html lang="en-gb">
 
 <head>
+    <title>WolforcePT</title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <link rel="icon" href="images/icon2.png">
     <link href="stylesheet.css" rel="stylesheet">
-    <title>WolforcePT</title>
+    <script type="application/javascript" src="https://unpkg.com/react@17.0.2/umd/react.production.min.js"></script>
+    <script type="application/javascript" src="https://unpkg.com/react-dom@17.0.2/umd/react-dom.production.min.js"></script>
+    <script type="application/javascript" src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
     <script src='./lib/jquery.min.js'></script>
+
+    <script src="myweblib.js">
+    </script>
 
     <style>
         h1 {
             color: white;
         }
     </style>
+
 </head>
 
 <body>
-    <script src='./nav.js'></script>
-    <script src='./patreon.js'></script>
+
+    <my-nav></my-nav>
 
     <div id="content">
-        <h1>About:</h1>
-        <p>This site serves as an index for all my projects.</p>
+        <my--minecraftmods newpage="true"></my--minecraftmods>
+        <my--webgames newpage="true"></my--webgames>
+        <my--software newpage="true"></my--software>
+        <my--links newpage="true"></my--links>
+        <my--other newpage="true"></my--other>
+        <my--about newpage="true"></my--about>
     </div>
+
+    <my-patreonbutton></my-patreonbutton>
+
 </body>
 
 </html>

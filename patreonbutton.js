@@ -6,3 +6,5 @@ let link = $(linkHtml)
 body.append(link)
 body.append(linkBack)
 console.log("[page] patreon added")
+
+function createElement() { }

@@ -25,6 +25,8 @@
     --link-background-hover-color: rgba(255, 255, 255, 0.2);
     --link-text-color: rgba(255, 255, 255, 0.85);
     --link-text-hover-color: rgba(255, 255, 255, 1);
+    --link-darker-background-color: rgba(255, 255, 255, 0.2);
+    --link-lighter-background-color: rgba(255, 255, 255, 0.2);
 
     --card-text-color: var(--link-text-color);
     --card-text-hover-color: var(--link-text-hover-color);
@@ -71,38 +73,6 @@ h3 {
     color: var(--text-color);
 }
 
-/* 
-█▄ █ ▄▀▄ █ █ 
-█ ▀█ █▀█ ▀▄▀  
- */
-
-#nav {
-    order: 1;
-    float: left;
-    min-width: var(--nav-width);
-
-    padding: 16px;
-    box-sizing: content-box;
-}
-
-#nav-image {
-    text-align: center;
-    margin-bottom: 16px;
-}
-
-#nav-image img {
-    width: var(--nav-image-width);
-}
-
-#nav-title {
-    color: var(--text-color);
-    font-size: var(--font-size-title);
-    width: 100%;
-    text-align: center;
-    margin-bottom: 16px;
-}
-
-
 .link {
     padding: 8px 16px;
     margin-bottom: 16px;
@@ -113,7 +83,7 @@ h3 {
 
     border-radius: 16px;
     cursor: pointer;
-    box-sizing: content-box;
+    box-sizing: border-box;
 
     transition: .5s;
 }
@@ -121,6 +91,38 @@ h3 {
 .link:hover {
     color: var(--link-text-hover-color);
     background-color: var(--link-background-hover-color);
+}
+
+/* 
+█▄ █ ▄▀▄ █ █ 
+█ ▀█ █▀█ ▀▄▀  
+ */
+
+.nav {
+    float: left;
+    min-width: var(--nav-width);
+
+    padding: 16px;
+}
+
+.nav-image {
+    text-align: center;
+    margin-bottom: 16px;
+}
+
+.nav-image img {
+    width: var(--nav-image-width);
+}
+
+.nav-title {
+    color: var(--text-color);
+    font-size: var(--font-size-title);
+    width: 100%;
+    text-align: center;
+    margin-bottom: 16px;
+}
+
+.nav .link:hover {
     padding-left: 22px;
 }
 
@@ -129,8 +131,7 @@ h3 {
 ▀▄▄ █▀█ █▀▄ █▄▀ ▄█▀ 
 */
 
-#content {
-    order: 2;
+.content {
     padding: 16px;
     scroll-behavior: smooth;
 }
@@ -204,6 +205,63 @@ h3 {
     border-color: rgba(87, 96, 180, 0.2);
     width: 100%;
 }
+
+/* 
+█▀▄ ▄▀▄ ▄▀  ██▀ ▄▀▀ 
+█▀  █▀█ ▀▄█ █▄▄ ▄█▀  
+*/
+
+.page {
+    color: var(--text-color);
+    display: flex;
+    flex-direction: row;
+    margin: 32px 16px 016px;
+}
+
+.page .left {
+    margin-right: 32px;
+}
+
+.page h1 {
+    margin: 0 0 16px 0;
+    padding: 0;
+}
+
+.page .right {
+    display: flex;
+    flex-direction: column;
+    padding: 16px;
+}
+
+.page .right .image {
+    width: 128px;
+    float: right;
+}
+
+.page .right .link {
+    float: right;
+    width: 128px;
+    margin-top: 16px;
+    text-align: center;
+
+    background-color: var(--link-background-color);
+    color: var(--link-text-color);
+    text-shadow: 1px 1px 2px rgb(0, 0, 0);
+
+    border-radius: 16px;
+
+    border-bottom: 4px solid var(--link-darker-background-color);
+}
+
+.page .right .link:hover {
+    transform: translateY(4px);
+    border-bottom: 0 solid var(--link-darker-background-color);
+}
+
+/* 
+▄▀▄ ▀█▀ █▄█ ██▀ █▀▄ 
+▀▄▀  █  █ █ █▄▄ █▀▄  
+*/
 
 @media only screen and (hover: none) and (pointer: coarse) {
 

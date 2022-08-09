@@ -1,26 +1,25 @@
-const navLinks = [
-    { title: 'Minecraft Mods', url: './minecraftmods.html', },
-    { title: 'Web Games', url: './webgames.html', },
-    { title: 'Software', url: './software.html', },
-    { title: 'Links', url: './links.html', },
-    { title: 'Other', url: './other.html', },
-    { title: 'About', url: './index.html', },
-]
+function createElement() {
 
-let nav = $(`
-    <div id="nav">
-        <div id="nav-image"><a href="https://wolforcept.github.io/"><img src="./images/icon128.png"></a></div>
-        <div id="nav-title">WolforcePT</div>
+    const navLinks = [
+        { title: 'Minecraft Mods', url: '#minecraftmods', },
+        { title: 'Web Games', url: '#webgames', },
+        { title: 'Software', url: '#software', },
+        { title: 'Links', url: '#links', },
+        { title: 'Other', url: '#other', },
+        { title: 'About', url: '#about', },
+    ]
+
+    function createLink(link) {
+        return html`<div class='link' onclick='window.location.href = \"${link.url}\"'>${link.title}</div>`
+    }
+
+    return html`
+    <div class="nav-image">
+        <a href="#about">
+            <img src="./images/icon128.png">
+        </a>
     </div>
-    `)
-
-navLinks.forEach(link => {
-    let div = $(`<div class="link">${link.title}</div>`)
-    let _onClickLink = () => window.location.href = link.url;
-    // window.location.replace(link.url);
-    div.click(_onClickLink)
-    link.click = _onClickLink
-    nav.append(div)
-});
-
-$('body').append(nav)
+    <div class="nav-title">WolforcePT</div>
+    ${navLinks.map(link => createLink(link)).join('')}
+    `
+}
