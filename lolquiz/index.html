@@ -199,9 +199,9 @@
             }
 
             function skip() {
-                score -= 3
+                score -= 1
                 updateScore()
-                createAnswerDiv(`Skipped. Correct answer was "${currentAnswer}". -3 Points`, '#e34622')
+                createAnswerDiv(`Skipped. Correct answer was "${currentAnswer}". -1 Points`, '#e34622')
                 createSeparator()
                 createQuestion()
                 input.val('')
