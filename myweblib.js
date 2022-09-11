@@ -38,7 +38,7 @@ async function my(comp, hash) {
             }
 
             else if (!hash.split('-').includes(name)) {
-                console.log({ name, hash })
+                // console.log({ name, hash })
                 comp.remove()
             }
 

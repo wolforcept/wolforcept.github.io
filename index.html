@@ -4,6 +4,8 @@
 <head>
     <title>WolforcePT</title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta name="msapplication-tap-highlight" content="no" />
+
     <link rel="icon" href="images/icon2.png">
     <link href="stylesheet.css" rel="stylesheet">
     <script type="application/javascript" src="https://unpkg.com/react@17.0.2/umd/react.production.min.js"></script>
@@ -11,8 +13,8 @@
     <script type="application/javascript" src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
     <script src='./lib/jquery.min.js'></script>
 
-    <script src="myweblib.js">
-    </script>
+    <script src="myweblib.js"></script>
+    <script src="news.js"></script>
 
     <style>
         h1 {
@@ -27,6 +29,13 @@
     <my-nav></my-nav>
 
     <div id="content">
+        <my--default id="newsPage">
+            <div id="newsContainer">
+                <h1>News</h1>
+            </div>
+            <img id="newsImage" src="images/mig.png"></img>
+        </my--default>
+
         <my--minecraftmods newpage="true"></my--minecraftmods>
         <my--webgames newpage="true"></my--webgames>
         <my--software newpage="true"></my--software>
