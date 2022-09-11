@@ -66,7 +66,7 @@ body {
     min-width: 540px;
     font-size: var(--font-size);
     display: flex;
-    overflow: hidden;
+    overflow: visible;
 }
 
 a {
@@ -144,6 +144,7 @@ h3 {
 */
 
 #content {
+    width: 100%;
     scroll-behavior: smooth;
     overflow: scroll;
     max-height: 100vh;
@@ -277,14 +278,17 @@ h3 {
 */
 
 #newsPage {
+    width: 100%;
     display: flex;
     flex-direction: row;
+    justify-content: space-between;
 }
 
 #newsImage {
     /* display: none; */
     height: calc(100vh - 40px);
-    float: right;
+    max-height: 500px;
+    align-items: right;
     padding: 20px 10px 0 0;
 }
 
@@ -295,7 +299,6 @@ h3 {
 }
 
 #newsContainer {
-    width: 100%;
     margin-right: 10px;
     padding-right: 10px;
     color: white;
@@ -333,6 +336,10 @@ h3 {
 */
 
 @media only screen and (hover: none) and (pointer: coarse) {
+
+    #content {
+        overflow: visible;
+    }
 
     #nav {
         position: fixed;
