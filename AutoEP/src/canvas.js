@@ -77,8 +77,8 @@ var p5instance = function (p) {
     p.draw = function () {
         let hitboxColor = p.color(255, 255, 255, 150);
         p.background(0, 0, 33);
-        if (gamestate.objs) {
-            gamestate.objs.forEach(obj => {
+        if (gamestate && gamestate.forEach) {
+            gamestate.forEach(obj => {
                 // p.color(obj.color ? obj.color : p.color(255, 255, 255))
                 let xx = screenx + obj.x - obj.w / 2;
                 let yy = screeny + obj.y - obj.h / 2;

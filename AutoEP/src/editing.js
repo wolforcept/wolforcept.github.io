@@ -76,7 +76,7 @@ function editingSave() {
     if (editingType) {
         editingType.content = editor.getValue();
         if (editingType.name)
-            sendMessage("type", editingType);
+            sendMessage("type_set", editingType);
         else
             sendMessage("global", editingType);
         saved = true;
@@ -109,23 +109,23 @@ function editing_close() {
         closeEditor();
 }
 
-function findOrCreateMethod(name, argumentsString, modifiers) {
+function findOrCreateMethod(name, argumentsString) {
     var lines = editor.session.doc.getAllLines();
     var row = (function () {
-        let regex = RegExp(`\\s*public${modifiers??""} void ${name}\\W`);
+        let regex = RegExp(`\\s*${name}\\W`);
         for (var i = 0, l = lines.length; i < l; i++) {
             if (lines[i].match(regex))
                 return i;
         }
         return undefined;
     })();
-    console.log(`found ${name} in row ${row}`);
+    // console.log(`found ${name} in row ${row}`);
 
-    if (row !== 0 && !row) {
+    if (row === undefined) {
         let alltext = editor.getValue();
         alltext += `
 
-public${modifiers??""} void ${name} (${argumentsString ?? ""}) {
+${name} (${argumentsString ?? ""}) {
 
 }`
         editor.setValue(alltext);
@@ -242,7 +242,7 @@ function reloadTypes(typeList, selectedType) {
     if (typeList)
         typeList.forEach(typeName => {
             let classes = typeName == selectedType ? "list_type selected" : "list_type";
-            let listItem = $(`<div class='${classes}' onclick='sendMessage("chat", "/edit ${typeName}");'>${typeName}</div>`);
+            let listItem = $(`<div class='${classes}' onclick='sendMessage("chat", "/type edit ${typeName}");'>${typeName}</div>`);
             list.append(listItem);
         });
 }

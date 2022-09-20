@@ -26,16 +26,15 @@ function connect(address, username, password) {
 
     socket.onmessage = function (event) {
         let message = JSON.parse(event.data);
-        if (message.type != "gamestate")
-            console.log({ message });
 
         switch (message.type) {
             case "gamestate": {
-                gamestate = JSON.parse(message.payload);
+                gamestate = JSON.parse(message.payload).split("%%%").map(x => JSON.parse(x))
+                console.log(gamestate)
                 break;
             }
-            case "type": {
-                // console.log(message);
+            case "type_edit": {
+                console.log(message);
                 startEditing(JSON.parse(message.payload));
                 break;
             }
@@ -48,6 +47,9 @@ function connect(address, username, password) {
                 console.log(message.payload)
                 loadAsset(message.payload, message.raw);
                 break;
+            }
+            default: {
+                console.log({ unknownMessage: message });
             }
         }
     };

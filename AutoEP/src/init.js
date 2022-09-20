@@ -25,20 +25,20 @@ $(document).ready(async function () {
         "Collision:collision"
     ].forEach(element => {
         let args = element.split(":");
-        createMenuItem("events_submenu", args[0], function () { findOrCreateMethod(args[1], args[2], args[3]); });
+        createMenuItem("events_submenu", args[0], function () { findOrCreateMethod(args[1], args[2]); });
     });
 
     // static events
     [
-        "Game Start:globalGameStarted:: static",
-        "Player Joined:globalPlayerJoined: username : static",
-        "Key Pressed:globalKeyPressed: username, keyCode : static",
-        "Key Released:globalKeyReleased: username, keyCode : static",
-        "Mouse Button Pressed:globalMousePressed: username, mx, my, button : static",
-        "Mouse Button Released:globalMouseReleased: username, mx, my, button : static"
+        "Game Start:static onGameStart",
+        "Player Joined:static onPlayerJoined: username",
+        "Key Pressed:static onKeyPressed: username, keyCode",
+        "Key Released:static onKeyReleased: username, keyCode",
+        "Mouse Button Pressed:static onMousePressed: username, mx, my, button",
+        "Mouse Button Released:static onMouseReleased: username, mx, my, button"
     ].forEach(element => {
         let args = element.split(":");
-        createMenuItem("global_events_submenu", args[0], function () { findOrCreateMethod(args[1], args[2], args[3]); });
+        createMenuItem("global_events_submenu", args[0], function () { findOrCreateMethod(args[1], args[2]); });
     });
 
     toggleShortcut("Save");
@@ -127,7 +127,7 @@ function onConnected() {
 }
 
 function edit() {
-    sendMessage("chat", "/edit");
+    sendMessage("chat", "/type edit");
 }
 
 function restart() {
