@@ -8,6 +8,7 @@ chatUnfocus();
 function chatFocus() {
     $("#textbox_wrapper").fadeIn()
     $("#textbox_input").focus()
+    $("#textbox_input").blur(chatFadeoutAfterSecs)
 }
 
 function chatUnfocus() {
