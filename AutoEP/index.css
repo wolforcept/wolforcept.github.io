@@ -12,7 +12,10 @@ body {
     overflow: hidden;
 }
 
-input:focus, select:focus, textarea:focus, button:focus {
+input:focus,
+select:focus,
+textarea:focus,
+button:focus {
     outline: none;
 }
 
@@ -34,7 +37,8 @@ a {
 
 a:hover {
     color: #0000;
-    text-shadow: 0 0 5px #1c82d6FF;}
+    text-shadow: 0 0 5px #1c82d6FF;
+}
 
 /*
  █   ▄▀▄ ▄▀  █ █▄ █   ▄▀▀ ▄▀▀ █▀▄ ██▀ ██▀ █▄ █
@@ -74,12 +78,17 @@ a:hover {
     padding: 4px 0;
     font-weight: bold;
     font-size: large;
-    background: linear-gradient(90deg, /**/
-    #1c82d600 0%, /**/
-    #1c82d6FF 40%, /**/
-    #1c82d6AA 60%, /**/
-    #1c82d600 100%/**/
-    );
+    background: linear-gradient(90deg,
+            /**/
+            #1c82d600 0%,
+            /**/
+            #1c82d6FF 40%,
+            /**/
+            #1c82d6AA 60%,
+            /**/
+            #1c82d600 100%
+            /**/
+        );
     -webkit-user-select: none;
     -moz-user-select: none;
     -ms-user-select: none;
@@ -105,7 +114,9 @@ a:hover {
     width: 100%;
 }
 
-#login_text, #autoconnect, #login_text_failed {
+#login_text,
+#autoconnect,
+#login_text_failed {
     display: inline-block;
     color: white;
     font-weight: bold;
@@ -175,6 +186,32 @@ a:hover {
     /* margin: 5px; */
     overflow: hidden;
     /* box-sizing: border-box; */
+}
+
+#textbox_wrapper {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 500px;
+    height: 300px;
+    margin: 16px 16px;
+    display: flex;
+    flex-direction: column;
+
+    color: white;
+}
+
+#textbox_input {
+    background-color: rgba(255, 255, 255, 0.055);
+}
+
+#textbox_chat {
+    word-wrap: break-word;
+    flex: auto;
+    background-color: rgba(255, 255, 255, 0.055);
+    margin-bottom: 8px;
+    overflow-y: scroll;
+    overflow-x: hidden;
 }
 
 /*
@@ -302,6 +339,7 @@ a:hover {
     from {
         color: #55FF55;
     }
+
     to {
         color: bbc2d3;
     }
@@ -456,7 +494,8 @@ a:hover {
     display: none;
 }
 
-#newtab_arrow, #newtab_text {
+#newtab_arrow,
+#newtab_text {
     color: #AAAAFF;
     position: absolute;
     top: 0;
@@ -473,7 +512,8 @@ a:hover {
     display: none;
 }
 
-#newtab_text:hover, #newtab_arrow:hover+#newtab_text {
+#newtab_text:hover,
+#newtab_arrow:hover+#newtab_text {
     display: block;
     color: #FFFF;
 }

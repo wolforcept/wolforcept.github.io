@@ -39,7 +39,7 @@ function connect(address, username, password) {
             }
             case "chat": {
                 console.log(JSON.parse(message.payload));
-                chatbox.chatMessageReceived(JSON.parse(message.payload));
+                chatMessageReceived(JSON.parse(message.payload));
                 break;
             }
             case "assets": {
@@ -55,6 +55,5 @@ function connect(address, username, password) {
 }
 
 function sendMessage(type, message) {
-    console.log(message);
     socket.send(JSON.stringify({ "type": type, "payload": JSON.stringify(message) }));
 }
