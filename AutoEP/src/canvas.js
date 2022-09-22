@@ -48,8 +48,11 @@ var p5instance = function (p) {
         canvas.mousePressed(function () {
             // if (editingType)
             //     return;
-            sendMessage("input_mouseReleased", { "mx": p.mouseX - screenx, "my": p.mouseY - screeny, "button": p.mouseButton });
+            sendMessage("input_mousePressed", { "mx": p.mouseX - screenx, "my": p.mouseY - screeny, "button": p.mouseButton });
             return true;
+        })
+        canvas.mouseReleased(function(){
+            sendMessage("input_mouseReleased", { "mx": p.mouseX - screenx, "my": p.mouseY - screeny, "button": p.mouseButton });
         })
         canvas.elt.oncontextmenu = function (e) {
             e.preventDefault();
@@ -84,9 +87,10 @@ var p5instance = function (p) {
                 let yy = screeny + obj.y - obj.h / 2;
                 if (obj.img && assets[obj.img]) {
                     p.image(assets[obj.img], xx, yy, obj.w, obj.h)
-                } else {
+                }
+                else {
                     p.stroke(hitboxColor);
-                    p.strokeWeight(01);
+                    p.strokeWeight(1);
                     p.noFill();
                     p.rect(xx, yy, obj.w, obj.h)
                 }
@@ -116,7 +120,7 @@ var p5instance = function (p) {
     p.keyPressed = function (key) {
         if (editor.isFocused())
             return;
-        // console.log(key);
+
         if (chatbox.isVisible) {
             if (key.code == "Enter") {
                 let chatMessage = chatbox.elt.value;
@@ -178,6 +182,19 @@ var p5instance = function (p) {
             return;
         }
         sendMessage("input_keyPressed", key.code);
+        return false;
+    }
+
+    p.keyReleased = function (key) {
+
+        if (editor.isFocused())
+            return;
+
+        if (chatbox.isVisible || key.key == "/" || key.code == "Enter") {
+            return;
+        }
+
+        sendMessage("input_keyReleased", key.code);
         return false;
     }
 

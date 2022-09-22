@@ -30,7 +30,6 @@ function connect(address, username, password) {
         switch (message.type) {
             case "gamestate": {
                 gamestate = JSON.parse(message.payload).split("%%%").map(x => JSON.parse(x))
-                console.log(gamestate)
                 break;
             }
             case "type_edit": {
@@ -39,13 +38,12 @@ function connect(address, username, password) {
                 break;
             }
             case "chat": {
-                console.log(message.payload);
-                chatbox.chatMessageReceived(message.payload);
+                console.log(JSON.parse(message.payload));
+                chatbox.chatMessageReceived(JSON.parse(message.payload));
                 break;
             }
-            case "asset": {
-                console.log(message.payload)
-                loadAsset(message.payload, message.raw);
+            case "assets": {
+                loadAssets(JSON.parse(message.payload));
                 break;
             }
             default: {
