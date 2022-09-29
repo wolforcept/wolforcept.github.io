@@ -280,17 +280,20 @@ h3 {
 
 #newsPage {
     width: 100%;
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
+    margin-right: 10px;
+    padding-right: 10px;
+    color: white;
+    overflow-y: visible;
+    max-height: 98vh;
 }
 
 #newsImage {
+    float: right;
     /* display: none; */
     height: calc(100vh - 40px);
     max-height: 500px;
     align-items: right;
-    padding: 20px 10px 0 0;
+    padding: 20px;
 }
 
 @media only screen and (max-width: 1000px) {
@@ -299,18 +302,22 @@ h3 {
     }
 }
 
-#newsContainer {
-    margin-right: 10px;
-    padding-right: 10px;
-    color: white;
-    overflow-y: scroll;
-    max-height: 90vh;
-}
-
 .newsPiece {
+    display: grid;
+    gap: 1rem;
+    grid-template-areas:
+        "a b"
+        "c d"
+        "e f"
+    ;
     padding-bottom: 20px;
     margin-bottom: 20px;
     border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.newsPiece a {
+    color: #a0e6ff;
+    float: right;
 }
 
 .newsPiece:last-child {
@@ -318,16 +325,24 @@ h3 {
     border-bottom: none;
 }
 
-.newsPiece .title {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
+/* - news piece parts - */
+
+.newsPiece .titleText {
+    grid-area: a;
     font-size: var(--font-size-semititle);
     font-weight: bold;
 }
 
-.newsPiece .modInfo a {
-    color: #a0e6ff;
+.newsPiece .titleDate {
+    grid-area: b;
+    font-size: var(--font-size-semititle);
+    font-weight: bold;
+}
+
+.newsPiece img {
+    grid-area: d;
+    max-width: 200px;
+    float: right;
 }
 
 
@@ -368,12 +383,22 @@ h3 {
         padding-right: 2vw;
     }
 
-    .newsPiece .title {
-        flex-direction: column;
+    .newsPiece {
+        display: block;
+        font-size: var(--font-size);
     }
 
-    .newsPiece .title .titleDate {
-        font-size: var(--font-size);
+    /* .newsPiece .titleText, .newsPiece .titleDate {
+        text-align: center;
+    } */
+
+    .newsPiece .titleDate {
+        font-weight: normal;
+    }
+
+    .newsPiece img {
+        float: none;
+        max-width: calc(100% - 16px);
     }
 
 }
