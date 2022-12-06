@@ -54,6 +54,24 @@
 
     <script>
 
+        function addToLog(message) {
+            let myconsole = document.getElementById("myconsole");
+            myconsole.innerText = myconsole.innerText + "\n" + message
+        }
+
+        window.onerror = function (message, source, lineno, colno, error) {
+            addToLog(message);
+        }
+
+        var oldLog = console.log;
+        console.log = function (message) {
+            addToLog(message);
+            oldLog.apply(console, arguments);
+        };
+
+    </script>
+
+    <script>
 
         // █ █ ▀█▀ █ █   ▄▀▀ 
         // ▀▄█  █  █ █▄▄ ▄█▀ 
@@ -121,22 +139,9 @@
             }, 500);
         }
 
+    </script>
 
-        function addToLog(message) {
-            let myconsole = document.getElementById("myconsole");
-            myconsole.innerText = myconsole.innerText + "\n" + message
-        }
-
-        window.onerror = function (message, source, lineno, colno, error) {
-            addToLog(message);
-        }
-
-        var oldLog = console.log;
-        console.log = function (message) {
-            addToLog(message);
-            oldLog.apply(console, arguments);
-        };
-
+    <script>
 
         // █▀▄ ▄▀▄ ▀█▀ ▄▀▄ 
         // █▄▀ █▀█  █  █▀█ 
@@ -229,6 +234,9 @@
         ]
 
 
+    </script>
+
+    <script>
 
         // █▄ ▄█ ██▀ █▄ █ █ █ 
         // █ ▀ █ █▄▄ █ ▀█ ▀▄█ 
@@ -296,29 +304,29 @@
                 })
 
                 const innerInfo = $(html`
-            <div class="inner-info">
-            
-                <div class="separator"></div>
-            
-                <div class="short-description">${shortDescription}</div>
-            
-            
-                <div class="separator"></div>
-            
-                <span><img src="./assets/svg/clock.svg" style="height:3vw"> Missions: ${missions.length}</span>
-                <div class="separator"></div>
-            
-                <!-- <div style="display: grid; column-gap: 2vw; row-gap: 0.5vw;"> -->
-                <!-- <div style="grid-column: 1"> -->
-                <span><img src="./assets/svg/person.svg" style="height:3vw"> Required Champions:</span>
-                <div>
-                    ${requiredChampions.map(c => html`
-                    <img src="./assets/images/champions/icons/${c}.jpg" style="width: 5vw; transform: translateY(1vw)"> ${c}
-                    `).join('<br />')}<br />
-                </div>
-                <div class="separator"></div>
-            </div>
-        `)
+                    <div class="inner-info">
+                    
+                        <div class="separator"></div>
+                    
+                        <div class="short-description">${shortDescription}</div>
+                    
+                    
+                        <div class="separator"></div>
+                    
+                        <span><img src="./assets/svg/clock.svg" style="height:3vw"> Missions: ${missions.length}</span>
+                        <div class="separator"></div>
+                    
+                        <!-- <div style="display: grid; column-gap: 2vw; row-gap: 0.5vw;"> -->
+                        <!-- <div style="grid-column: 1"> -->
+                        <span><img src="./assets/svg/person.svg" style="height:3vw"> Required Champions:</span>
+                        <div>
+                            ${requiredChampions.map(c => html`
+                            <img src="./assets/images/champions/icons/${c}.jpg" style="width: 5vw; transform: translateY(1vw)"> ${c}
+                            `).join('<br />')}<br />
+                        </div>
+                        <div class="separator"></div>
+                    </div>
+                `)
                 item.append(innerInfo);
 
                 const startButton = $(html`<div class="start-game-button">Start Game</div>`)
@@ -339,6 +347,9 @@
         // ▄▀  ▄▀▄ █▄ ▄█ ██▀ 
         // ▀▄█ █▀█ █ ▀ █ █▄▄ 
 
+    </script>
+
+    <script>
 
 
         // ▄▀  █ █ █ 
@@ -451,6 +462,10 @@
             transition('.game', '.menu')
         }
 
+    </script>
+
+    <script>
+
         // ▄▀  ▄▀▄ █▄ ▄█ ██▀ 
         // ▀▄█ █▀█ █ ▀ █ █▄▄ 
 
@@ -540,11 +555,15 @@
                 GAME.objectiveClicked(i);
         }
 
+    </script>
+
+    <script>
+
         // $(_ => {
         //     makeMenu();
         //     startGame(campaigns[0]);
         // })
-        $(makeMenu)
+        $(() => makeMenu())
     </script>
 
 </body>
