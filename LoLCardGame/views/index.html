@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>LoL Card Game</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../assets/style/style.css">
+    <script type="text/javascript" src="../node_modules/androidjs/lib/androidjs.js"></script>
+    <script type="text/javascript" src="../assets/lib/jquery-3.3.1.slim.min.js"></script>
+    <script type="text/javascript" src="../assets/scripts/utils.js"></script>
+    <script type="text/javascript" src="../assets/scripts/data.js"></script>
+    <script type="text/javascript" src="../assets/scripts/menu.js"></script>
+    <script type="text/javascript" src="../assets/scripts/game.js"></script>
+</head>
+
+<body>
+
+    <div class="menu transition">
+        <div class="title">LoL Card Game</div>
+        <div class="subtitle">Available Campaigns:</div>
+    </div>
+
+    <div class="game transition" style="display: none;">
+
+        <div class="box top">
+            <img src="../assets/svg/bar.svg">
+            <img src="../assets/svg/test.svg" class="back">
+            <div class="text">0</div>
+        </div>
+        <div class="box title"></div>
+        <div class="box flavor-text"></div>
+        <div class="box">
+            <div class="loading" onclick="movementClicked()">
+                <div class="text">
+                    <span class="nr"></span>
+                    <img src="../assets/images/movement.png">
+                </div>
+                <div class="inner"></div>
+            </div>
+        </div>
+
+        <table class="box objectives">
+        </table>
+
+        <div class="box bottom">
+            <img src="../assets/svg/bar.svg">
+            <img src="../assets/svg/bar.svg" class="back">
+            <div class="text">3/5</div>
+        </div>
+
+        <div class="map">
+            <div class="img"><img id="mapImage" src="../assets/images/map.png"></div>
+            <div class="pins"></div>
+        </div>
+    </div>
+
+    <script>
+        // $(_ => {
+        //     makeMenu();
+        //     startGame(campaigns[0]);
+        // })
+        $(makeMenu)
+    </script>
+
+</body>
+
+</html>

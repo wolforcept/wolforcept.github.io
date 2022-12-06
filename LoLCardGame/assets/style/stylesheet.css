@@ -1,0 +1,413 @@
+@font-face {
+    font-family: 'Mythica';
+    src: url('../assets/mythica.woff');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'stonecross';
+    src: url('../assets/stonecross.ttf'), format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+:root {
+    --color-background: #262329;
+    --color-main-text: #ffffff;
+    --color-sub-text: #afdbce;
+
+    --color-menu-item: #1d1b1f;
+
+    --color-loading-back: #121013;
+    --color-loading-front: #105319;
+
+    --color-objective-melee: #ffa194;
+    --color-objective-ranged: #94ff94;
+    --color-objective-magic: #f49efc;
+    --color-objective-utility: #fdff86;
+    --color-objective-runeterra: #d9f1e8;
+
+    --font-size-menu-title: 7vw;
+    --font-size-menu-text: 4vw;
+    --font-size-top: 6vw;
+    --font-size-title: 8vw;
+    --font-size-subtitle: 5vw;
+    --font-size-objective: 12vw;
+
+    --width-menu-item: 75vw;
+
+    --width-objective: 35vw;
+    --height-objective: 18vw;
+
+    --width-objective-image: 14vw;
+
+    --border-radius: 2vw;
+    --box-shadow: 1vw 1vw 1vw #00000088;
+    --text-shadow: .5vw .5vw 1vw #00000088;
+}
+
+
+* {
+    font-family: 'Mythica';
+}
+
+html,
+body,
+.game,
+.menu {
+    width: 100%;
+    min-height: 100%;
+    margin: 0;
+    padding: 0;
+    z-index: -999;
+    background: var(--color-background);
+}
+
+/* 
+    █▄ ▄█ ██▀ █▄ █ █ █ 
+    █ ▀ █ █▄▄ █ ▀█ ▀▄█ 
+*/
+
+.menu {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    align-items: center;
+    /* justify-content: center; */
+
+    background-image: url("../assets/images/map.png");
+    background-position: -600px;
+    background-attachment: fixed;
+}
+
+.menu * {
+    opacity: 100%;
+}
+
+.menu .title,
+.subtitle {
+    width: 100%;
+    text-align: center;
+    font-size: var(--font-size-title);
+    text-shadow: var(--text-shadow);
+    color: var(--color-main-text);
+    margin-top: 6vw;
+    margin-bottom: 3vw;
+}
+
+.menu .subtitle {
+    font-size: var(--font-size-subtitle);
+    color: var(--color-sub-text);
+}
+
+.menu .item {
+    text-align: center;
+    margin: 2vw;
+    color: var(--color-main-text);
+    background-color: var(--color-menu-item);
+    width: var(--width-menu-item);
+    padding: 2vw 2vw 3vw 2vw;
+    border-radius: var(--border-radius);
+    cursor: pointer;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.menu .item .info {
+    width: 100%;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.menu .item .inner-info {
+    font-size: var(--font-size-menu-text);
+    width: 100%;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.menu .item .inner-info .separator {
+    height: 3vw;
+}
+
+.menu .item.disabled {
+    opacity: 50%;
+    color: black;
+    cursor: default;
+}
+
+.menu .item.open .inner-info {
+    display: flex;
+}
+
+.menu .item.open .info {
+    display: none;
+}
+
+.menu .item:not(.open) .inner-info {
+    display: none;
+}
+
+.menu .item:not(.open) .info {
+    display: flex;
+}
+
+.menu .item .start-game-button {
+    color: black;
+    background-color: var(--color-objective-runeterra);
+    width: 30vw;
+    border-radius: var(--border-radius);
+    padding-bottom: 1vw;
+    font-size: var(--font-size-menu-text);
+    cursor: pointer;
+}
+
+.menu .item .name {
+    font-size: var(--font-size-menu-title);
+}
+
+.menu .item .info {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    font-size: var(--font-size-menu-text);
+}
+
+.menu .item .info img {
+    width: 3.2vw;
+    transform: translateY(.3vw);
+}
+
+.menu .item .info span {
+    flex-grow: 1;
+}
+
+.corner-image {
+    position: absolute;
+    width: 10vw;
+}
+
+.corner-image.top {
+    top: 0;
+}
+
+.corner-image.bottom {
+    bottom: 0;
+}
+
+.corner-image.left {
+    left: 0;
+}
+
+.corner-image.right {
+    right: 0;
+}
+
+/*
+    ▄▀  ▄▀▄ █▄ ▄█ ██▀ 
+    ▀▄█ █▀█ █ ▀ █ █▄▄ 
+*/
+
+.game {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    align-items: center;
+    justify-content: center;
+}
+
+.box {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+}
+
+.top {
+    margin: auto;
+    margin-bottom: 2vw;
+}
+
+.top .text {
+    font-family: 'Mythica';
+    font-weight: normal;
+    font-size: var(--font-size-top);
+    color: var(--color-main-text);
+    z-index: 10;
+    margin-top: 1vw;
+}
+
+.top img {
+    width: 50vw;
+    position: absolute;
+    top: 0;
+    z-index: 0;
+}
+
+.top img.back {
+    width: 50vw;
+    position: absolute;
+    top: 0;
+    z-index: -1;
+    filter: blur(1vw);
+    opacity: 50%;
+    transform: translate(1vw, 1vw);
+}
+
+.game .title {
+    font-weight: normal;
+    font-size: var(--font-size-title);
+    color: white;
+    margin-bottom: 1vw;
+    text-shadow: var(--text-shadow);
+}
+
+.loading {
+    background-color: var(--color-loading-back);
+    width: 60vw;
+    height: 10vw;
+    border-radius: var(--border-radius);
+    margin-bottom: 1vw;
+    box-shadow: var(--box-shadow);
+}
+
+.loading .inner {
+    background-color: var(--color-loading-front);
+    width: 50%;
+    height: 100%;
+    border-radius: var(--border-radius);
+    -webkit-transition: width 100ms ease-in-out, height 100ms ease-in-out;
+    -moz-transition: width 100ms ease-in-out, height 100ms ease-in-out;
+    -o-transition: width 100ms ease-in-out, height 100ms ease-in-out;
+    transition: width 100ms ease-in-out, height 100ms ease-in-out;
+}
+
+/* .loading .inner:hover {
+    color-background: rgb(16, 83, 25);
+    width: 100%;
+    height: 3vw;
+    border-radius: var(--border-radius); 1vw;
+
+} */
+
+.objectives {
+    border-spacing: 4vw;
+}
+
+.objective {
+    width: var(--width-objective);
+    max-height: var(--height-objective);
+    border-radius: var(--border-radius);
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    vertical-align: middle;
+    align-items: center;
+    box-shadow: var(--box-shadow);
+}
+
+.objective .number {
+    margin-left: 2vw;
+    text-align: center;
+    color: black;
+    font-size: var(--font-size-objective);
+    font-weight: bold;
+    /* width: var(--width-objective); */
+    transform: translateY(-1vw);
+    flex-grow: 1;
+}
+
+.objective .img {
+    margin: 2vw;
+    width: var(--width-objective-image);
+    height: var(--width-objective-image);
+    background-repeat: no-repeat;
+    background-size: var(--width-objective-image) var(--width-objective-image);
+}
+
+
+
+.objective.melee {
+    background-color: var(--color-objective-melee);
+}
+
+.objective.melee .img {
+    background-image: url("../assets/images/melee.png");
+}
+
+
+
+.objective.ranged {
+    background-color: var(--color-objective-ranged);
+}
+
+.objective.ranged .img {
+    background-image: url("../assets/images/range.png");
+}
+
+
+
+.objective.magic {
+    background-color: var(--color-objective-magic);
+}
+
+.objective.magic .img {
+    background-image: url("../assets/images/magic.png");
+}
+
+
+
+.objective.utility {
+    background-color: var(--color-objective-utility);
+}
+
+.objective.utility .img {
+    background-image: url("../assets/images/utility.png");
+}
+
+
+
+.objective.runeterra {
+    background-color: var(--color-objective-runeterra);
+}
+
+.objective.runeterra .img {
+    background-image: url("../assets/images/runeterra.png");
+}
+
+.map {
+    flex-grow: 1;
+    position: relative;
+    width: 100%;
+
+    box-shadow: 0 0 3vw 3vw var(--color-background) inset;
+
+    background-image: url('../assets/images/map.png');
+    background-repeat: no-repeat;
+
+    background-position: -500px -500px;
+    /* transform: translate(-2vw); */
+
+}
+
+.map .pin {
+    width: 3vw;
+    height: 3vw;
+    background-color: #221c2b;
+    position: absolute;
+    top: 100px;
+    left: 200px;
+    border-radius: var(--border-radius);
+    border: .15vw solid white;
+    z-index: 10;
+}
+
+.map svg {
+    position: absolute;
+    top: 0px;
+    left: 0px;
+}

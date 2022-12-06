@@ -1,0 +1,375 @@
+@charset "UTF-8";
+/**/
+/**/
+/**/
+/**/
+/**/
+@font-face {
+  font-family: "Mythica";
+  src: url("mythica.woff");
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: "stonecross";
+  src: url("stonecross.ttf"), format("truetype");
+  font-weight: normal;
+  font-style: normal;
+}
+* {
+  font-family: "Mythica";
+}
+
+html,
+body,
+.game,
+.menu {
+  width: 100%;
+  min-height: 100%;
+  margin: 0;
+  padding: 0;
+  z-index: -999;
+  background: #262329;
+}
+
+.transition {
+  transition: opacity 500ms linear;
+}
+
+/* 
+    █▄ ▄█ ██▀ █▄ █ █ █ 
+    █ ▀ █ █▄▄ █ ▀█ ▀▄█ 
+*/
+.menu {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  align-items: center;
+  /* justify-content: center; */
+  background-image: url("../images/map.png");
+  background-position: -600px;
+  background-attachment: fixed;
+}
+.menu * {
+  opacity: 100%;
+}
+.menu .title,
+.menu .subtitle {
+  width: 100%;
+  text-align: center;
+  font-size: 8vw;
+  text-shadow: 0.5vw 0.5vw 1vw rgba(0, 0, 0, 0.5333333333);
+  color: #ffffff;
+  margin-top: 6vw;
+  margin-bottom: 3vw;
+}
+.menu .subtitle {
+  font-size: 5vw;
+  color: #afdbce;
+}
+.menu .item {
+  text-align: center;
+  margin: 2vw;
+  color: #ffffff;
+  background-color: #1d1b1f;
+  width: 75vw;
+  padding: 2vw 2vw 3vw 2vw;
+  border-radius: 2vw;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+.menu .item.disabled {
+  opacity: 30%;
+  color: black;
+  cursor: default;
+}
+.menu .item.disabled img {
+  filter: brightness(0%);
+}
+.menu .item.open .info {
+  display: none;
+}
+.menu .item.open .inner-info {
+  display: flex;
+}
+.menu .item .info {
+  display: flex;
+  width: 100%;
+  flex-direction: row;
+  justify-content: space-between;
+}
+.menu .item .inner-info {
+  display: none;
+  font-size: 4vw;
+  width: 100%;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+}
+.menu .item .inner-info .separator {
+  height: 3vw;
+}
+.menu .item .start-game-button {
+  color: black;
+  background-color: #d9f1e8;
+  width: 30vw;
+  border-radius: 2vw;
+  padding-bottom: 1vw;
+  font-size: 4vw;
+  cursor: pointer;
+}
+.menu .item .name {
+  font-size: 7vw;
+}
+.menu .item .info {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  font-size: 4vw;
+}
+.menu .item .info img {
+  width: 3.2vw;
+  transform: translateY(0.3vw);
+}
+.menu .item .info span {
+  flex-grow: 1;
+}
+
+/*
+    ▄▀  ▄▀▄ █▄ ▄█ ██▀ 
+    ▀▄█ █▀█ █ ▀ █ █▄▄ 
+*/
+.game {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  align-items: center;
+  justify-content: space-evenly;
+  height: 100%;
+}
+.game .box {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+}
+.game .top {
+  margin: auto;
+  margin-bottom: 4vw;
+}
+.game .top .text {
+  font-family: "Mythica";
+  font-weight: normal;
+  font-size: 6vw;
+  color: #ffffff;
+  z-index: 10;
+  margin-top: 1vw;
+}
+.game .top img {
+  width: 50vw;
+  position: absolute;
+  top: 0;
+  z-index: 2;
+}
+.game .top img.back {
+  width: 50vw;
+  position: absolute;
+  top: 0;
+  z-index: 1;
+  filter: blur(1vw);
+  opacity: 50%;
+  transform: translate(1vw, 1vw);
+}
+.game .title {
+  font-weight: normal;
+  text-align: center;
+  font-size: 8vw;
+  color: white;
+  margin-bottom: 1vw;
+  text-shadow: 0.5vw 0.5vw 1vw rgba(0, 0, 0, 0.5333333333);
+}
+.game .flavor-text {
+  font-weight: normal;
+  text-align: center;
+  font-size: 4vw;
+  font-style: italic;
+  color: white;
+  margin-bottom: 4vw;
+  text-shadow: 0.5vw 0.5vw 1vw rgba(0, 0, 0, 0.5333333333);
+}
+.game .loading {
+  position: relative;
+  background-color: #121013;
+  width: 60vw;
+  height: 16vw;
+  border-radius: 2vw;
+  margin-bottom: 4vw;
+  box-shadow: 1vw 1vw 1vw rgba(0, 0, 0, 0.5333333333);
+}
+.game .loading .text {
+  display: flex;
+  width: 100%;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  height: inherit;
+}
+.game .loading .text .nr {
+  font-size: 9vw;
+  transform: translateY(-0.6vw);
+}
+.game .loading .text img {
+  width: 14vw;
+}
+.game .loading.walking .text {
+  display: none;
+}
+.game .loading.done {
+  opacity: 10%;
+}
+.game .loading .inner {
+  background-color: #88dbdb;
+  height: 100%;
+  border-radius: 2vw;
+  transition: width 100ms linear;
+}
+.game .objectives {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  margin-bottom: 4vw;
+}
+.game .objectives .objective {
+  width: 35vw;
+  max-height: 18vw;
+  border-radius: 2vw;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  vertical-align: middle;
+  align-items: center;
+  box-shadow: 1vw 1vw 1vw rgba(0, 0, 0, 0.5333333333);
+  margin: 4vw;
+  padding: 0 1vw;
+}
+.game .objectives .objective.hidden {
+  opacity: 10%;
+}
+.game .objectives .objective .number {
+  text-align: center;
+  color: black;
+  font-size: 12vw;
+  font-weight: bold;
+  /* width: $width-objective); */
+  transform: translateY(-1vw);
+  flex-grow: 1;
+}
+.game .objectives .objective .img {
+  margin: 1.5vw;
+  width: 14vw;
+  height: 14vw;
+  background-repeat: no-repeat;
+  background-size: 14vw 14vw;
+}
+.game .objectives .objective.melee {
+  background-color: #ffa194;
+}
+.game .objectives .objective.melee .img {
+  background-image: url("../images/melee.png");
+}
+.game .objectives .objective.ranged {
+  background-color: #94ff94;
+}
+.game .objectives .objective.ranged .img {
+  background-image: url("../images/range.png");
+}
+.game .objectives .objective.magic {
+  background-color: #f49efc;
+}
+.game .objectives .objective.magic .img {
+  background-image: url("../images/magic.png");
+}
+.game .objectives .objective.utility {
+  background-color: #fdff86;
+}
+.game .objectives .objective.utility .img {
+  background-image: url("../images/utility.png");
+}
+.game .objectives .objective.runeterra {
+  background: linear-gradient(-45deg, #dee8f5 0%, #f8e5e5 100%);
+}
+.game .objectives .objective.runeterra .img {
+  background-image: url("../images/runeterra.png");
+}
+.game .bottom {
+  transform: translateY(5vw);
+  margin-top: -5vw;
+  position: relative;
+  margin: auto;
+  margin-bottom: 4vw;
+  z-index: 30;
+}
+.game .bottom .text {
+  font-family: "Mythica";
+  font-weight: normal;
+  font-size: 6vw;
+  color: #ffffff;
+  z-index: 1;
+  margin-top: 1vw;
+}
+.game .bottom img {
+  width: 50vw;
+  position: absolute;
+  top: 0;
+  transform: scaleY(-1);
+}
+.game .bottom img.back {
+  width: 50vw;
+  position: absolute;
+  top: 0;
+  z-index: -1;
+  filter: blur(1vw);
+  opacity: 50%;
+  transform: scaleY(-1) translate(1vw, -1vw);
+}
+.game .map {
+  position: relative;
+  width: inherit;
+  height: 50vw;
+  box-shadow: 0 0 3vw 3vw #262329 inset;
+}
+.game .map .img,
+.game .map .pins {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+}
+.game .map .img {
+  overflow: hidden;
+}
+.game .map .pin {
+  width: 5vw;
+  height: 5vw;
+  position: absolute;
+  border-radius: 5vw;
+  border: 0.15vw solid white;
+  z-index: 10;
+  transform: translate(-50%, -50%);
+}
+.game .map .pin.current {
+  background-color: #d9f1e8;
+}
+.game .map .pin.done {
+  background-color: #89e7c5;
+}
+.game .map .pin.not-done {
+  background-color: #262329;
+}
+.game .map svg {
+  position: absolute;
+}/*# sourceMappingURL=style.css.map */

@@ -1,0 +1,455 @@
+@import 'stylevars';
+
+@font-face {
+    font-family: 'Mythica';
+    src: url('mythica.woff');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'stonecross';
+    src: url('stonecross.ttf'), format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+* {
+    font-family: $font;
+}
+
+html,
+body,
+.game,
+.menu {
+    width: 100%;
+    min-height: 100%;
+    margin: 0;
+    padding: 0;
+    z-index: -999;
+    background: $color-background;
+}
+
+.transition {
+    -webkit-transition: opacity 500ms linear;
+    -moz-transition: opacity 500ms linear;
+    -o-transition: opacity 500ms linear;
+    transition: opacity 500ms linear;
+}
+
+/* 
+    █▄ ▄█ ██▀ █▄ █ █ █ 
+    █ ▀ █ █▄▄ █ ▀█ ▀▄█ 
+*/
+
+.menu {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    align-items: center;
+    /* justify-content: center; */
+
+    background-image: $image-map;
+    background-position: -600px;
+    background-attachment: fixed;
+
+    * {
+        opacity: 100%;
+    }
+
+    .title,
+    .subtitle {
+        width: 100%;
+        text-align: center;
+        font-size: $font-size-title;
+        text-shadow: $text-shadow;
+        color: $color-main-text;
+        margin-top: 6vw;
+        margin-bottom: 3vw;
+    }
+
+    .subtitle {
+        font-size: $font-size-subtitle;
+        color: $color-sub-text;
+    }
+
+    .item {
+        text-align: center;
+        margin: 2vw;
+        color: $color-main-text;
+        background-color: $color-menu-item;
+        width: $width-menu-item;
+        padding: 2vw 2vw 3vw 2vw;
+        border-radius: $border-radius;
+        cursor: pointer;
+
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+
+        &.disabled {
+            opacity: $opacity-menu-hidden;
+            color: black;
+            cursor: default;
+
+            img {
+                filter: brightness(0%);
+            }
+        }
+
+        &.open .info {
+            display: none;
+        }
+
+        &.open .inner-info {
+            display: flex;
+        }
+
+        .info {
+            display: flex;
+            width: 100%;
+            flex-direction: row;
+            justify-content: space-between;
+        }
+
+        .inner-info {
+            display: none;
+            font-size: $font-size-menu-text;
+            width: 100%;
+            flex-direction: column;
+            align-items: center;
+            justify-content: space-between;
+
+            .separator {
+                height: 3vw;
+            }
+        }
+
+        .start-game-button {
+            color: black;
+            background-color: $color-objective-runeterra;
+            width: 30vw;
+            border-radius: $border-radius;
+            padding-bottom: 1vw;
+            font-size: $font-size-menu-text;
+            cursor: pointer;
+        }
+
+        .name {
+            font-size: $font-size-menu-title;
+        }
+
+        .info {
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+            font-size: $font-size-menu-text;
+
+            img {
+                width: 3.2vw;
+                transform: translateY(.3vw);
+            }
+
+            span {
+                flex-grow: 1;
+            }
+        }
+
+    }
+
+}
+
+/*
+    ▄▀  ▄▀▄ █▄ ▄█ ██▀ 
+    ▀▄█ █▀█ █ ▀ █ █▄▄ 
+*/
+
+.game {
+
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    align-items: center;
+    justify-content: space-evenly;
+    height: 100%;
+
+    .box {
+        display: flex;
+        justify-content: center;
+        width: 100%;
+    }
+
+    .top {
+        margin: auto;
+        margin-bottom: 4vw;
+
+        .text {
+            font-family: 'Mythica';
+            font-weight: normal;
+            font-size: $font-size-top;
+            color: $color-main-text;
+            z-index: 10;
+            margin-top: 1vw;
+        }
+
+        img {
+            width: 50vw;
+            position: absolute;
+            top: 0;
+            z-index: 2;
+
+            &.back {
+                width: 50vw;
+                position: absolute;
+                top: 0;
+                z-index: 1;
+                filter: blur(1vw);
+                opacity: $opacity-blurred-back;
+                transform: translate(1vw, 1vw);
+            }
+        }
+    }
+
+    .title {
+        font-weight: normal;
+        text-align: center;
+        font-size: $font-size-title;
+        color: white;
+        margin-bottom: 1vw;
+        text-shadow: $text-shadow;
+    }
+
+    .flavor-text {
+        font-weight: normal;
+        text-align: center;
+        font-size: $font-size-flavor-text;
+        font-style: italic;
+        color: white;
+        margin-bottom: 4vw;
+        text-shadow: $text-shadow;
+    }
+
+    .loading {
+        position: relative;
+        background-color: $color-loading-back;
+        width: $width-loading;
+        height: $height-loading;
+        border-radius: $border-radius;
+        margin-bottom: 4vw;
+        box-shadow: $box-shadow;
+
+        .text {
+
+            display: flex;
+            width: 100%;
+            flex-direction: row;
+            justify-content: center;
+            align-items: center;
+            position: absolute;
+            height: inherit;
+
+            .nr {
+                font-size: $font-size-movement;
+                transform: translateY(-0.6vw);
+            }
+
+            img {
+                width: $width-objective-image;
+            }
+
+        }
+
+        &.walking {
+
+            .text {
+                display: none;
+            }
+        }
+
+        &.done {
+            opacity: $opacity-objective-done;
+        }
+
+        .inner {
+            background-color: $color-loading-front;
+            height: 100%;
+            border-radius: $border-radius;
+            -webkit-transition: width 100ms linear;
+            -moz-transition: width 100ms linear;
+            -o-transition: width 100ms linear;
+            transition: width 100ms linear;
+        }
+    }
+
+    .objectives {
+
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        margin-bottom: 4vw;
+
+        .objective {
+            width: $width-objective;
+            max-height: $height-objective;
+            border-radius: $border-radius;
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            vertical-align: middle;
+            align-items: center;
+            box-shadow: $box-shadow;
+            margin: 4vw;
+            padding: 0 1vw;
+
+            &.hidden {
+                opacity: $opacity-objective-done;
+            }
+
+            .number {
+                text-align: center;
+                color: black;
+                font-size: $font-size-objective;
+                font-weight: bold;
+                /* width: $width-objective); */
+                transform: translateY(-1vw);
+                flex-grow: 1;
+            }
+
+            .img {
+                margin: 1.5vw;
+                width: $width-objective-image;
+                height: $width-objective-image;
+                background-repeat: no-repeat;
+                background-size: $width-objective-image $width-objective-image;
+            }
+
+            &.melee {
+                background-color: $color-objective-melee;
+
+                .img {
+                    background-image: url("../images/melee.png");
+                }
+            }
+
+            &.ranged {
+                background-color: $color-objective-ranged;
+
+                .img {
+                    background-image: url("../images/range.png");
+                }
+            }
+
+            &.magic {
+                background-color: $color-objective-magic;
+
+                .img {
+                    background-image: url("../images/magic.png");
+                }
+            }
+
+            &.utility {
+                background-color: $color-objective-utility;
+
+                .img {
+                    background-image: url("../images/utility.png");
+                }
+            }
+
+            &.runeterra {
+                // background-color: $color-objective-runeterra;
+                background: linear-gradient(-45deg, #dee8f5 0%, #f8e5e5 100%);
+
+                .img {
+                    background-image: url("../images/runeterra.png");
+                }
+            }
+        }
+    }
+
+    .bottom {
+        transform: translateY(5vw);
+        margin-top: -5vw;
+        position: relative;
+        margin: auto;
+        margin-bottom: 4vw;
+        z-index: 30;
+
+        .text {
+            font-family: 'Mythica';
+            font-weight: normal;
+            font-size: $font-size-top;
+            color: $color-main-text;
+            z-index: 1;
+            margin-top: 1vw;
+        }
+
+        img {
+            width: 50vw;
+            position: absolute;
+            top: 0;
+            -webkit-transform: scaleY(-1);
+            transform: scaleY(-1);
+
+            &.back {
+                width: 50vw;
+                position: absolute;
+                top: 0;
+                z-index: -1;
+                filter: blur(1vw);
+                opacity: $opacity-blurred-back;
+                transform: scaleY(-1) translate(1vw, -1vw);
+            }
+        }
+    }
+
+    .map {
+        // display: flex;
+        // flex-grow: 1;
+        position: relative;
+        width: inherit;
+        height: 50vw;
+
+        box-shadow: 0 0 3vw 3vw $color-background inset;
+
+        .img,
+        .pins {
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+        }
+
+        .img {
+            overflow: hidden;
+        }
+
+        .pin {
+            width: $width-pin;
+            height: $width-pin;
+            position: absolute;
+            border-radius: $width-pin;
+            border: .15vw solid white;
+            z-index: 10;
+
+            transform: translate(-50%, -50%);
+
+            &.current {
+                background-color: $color-pin-current;
+            }
+
+            &.done {
+                background-color: $color-pin-done;
+            }
+
+            &.not-done {
+                background-color: $color-pin-not-done;
+            }
+        }
+
+        svg {
+            position: absolute;
+        }
+    }
+}
