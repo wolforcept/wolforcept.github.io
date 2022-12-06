@@ -46,8 +46,8 @@ function makeMenuItem(campaign) {
     <div class="item ${!isEnabled ? ' disabled' : ''}">
         <div class="name">${title}</div>
         <div class="info">
-            <span><img src="../assets/svg/clock.svg"> ${missions?.length | 0}</span>
-            <span><img src="../assets/svg/person.svg"> ${characterString}</span>
+            <span><img src="./assets/svg/clock.svg"> ${missions?.length | 0}</span>
+            <span><img src="./assets/svg/person.svg"> ${characterString}</span>
         </div>
     </div>
     `)
@@ -70,15 +70,15 @@ function makeMenuItem(campaign) {
             
                 <div class="separator"></div>
             
-                <span><img src="../assets/svg/clock.svg" style="height:3vw"> Missions: ${missions.length}</span>
+                <span><img src="./assets/svg/clock.svg" style="height:3vw"> Missions: ${missions.length}</span>
                 <div class="separator"></div>
             
                 <!-- <div style="display: grid; column-gap: 2vw; row-gap: 0.5vw;"> -->
                 <!-- <div style="grid-column: 1"> -->
-                <span><img src="../assets/svg/person.svg" style="height:3vw"> Required Champions:</span>
+                <span><img src="./assets/svg/person.svg" style="height:3vw"> Required Champions:</span>
                 <div>
                     ${requiredChampions.map(c => html`
-                    <img src="../assets/images/champions/icons/${c}.jpg" style="width: 5vw; transform: translateY(1vw)"> ${c}
+                    <img src="./assets/images/champions/icons/${c}.jpg" style="width: 5vw; transform: translateY(1vw)"> ${c}
                     `).join('<br />')}<br />
                 </div>
                 <div class="separator"></div>

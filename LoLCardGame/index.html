@@ -14,6 +14,8 @@
 
 <body>
 
+    <div id="myconsole" style="padding: 5px 10px; color:gray; background-color: black; width: 100%; height: 300px; z-index:99999">testconsole</div>
+
     <div class="menu transition">
         <div class="title">LoL Card Game</div>
         <div class="subtitle">Available Campaigns:</div>
@@ -53,7 +55,24 @@
         </div>
     </div>
 
+
     <script>
+
+        function addToLog(message) {
+            let myconsole = document.getElementById("myconsole");
+            myconsole.innerText = myconsole.innerText + "\n" + message
+        }
+
+        window.onerror = function (message, source, lineno, colno, error) {
+            addToLog(message);
+        }
+
+        var oldLog = console.log;
+        console.log = function (message) {
+            addToLog(message);
+            oldLog.apply(console, arguments);
+        };
+
         // $(_ => {
         //     makeMenu();
         //     startGame(campaigns[0]);
