@@ -2,7 +2,7 @@ function createElement() {
     return html`
         <h1>Web Games</h1>
         <my-card title='PokeIdler'  url='./pokeidler' 			pixelated='true'	image='./images/pokeball.png'></my-card>
-        <my-card title='Concept'    url='https://wolforce.herokuapp.com/concept/' 	image='./images/concept.png'></my-card>
+        <my-card title='Concept'    url='./concept/' 	                            image='./images/concept2.png'></my-card>
         <my-card title='LoL Blurs'  url='./blurs/lol' 								image='./images/lolblurs128.png'></my-card>
         <my-card title='LoL Quiz'   url='./lolquiz' 								image='./images/webgames/lolquiz.png'></my-card>
         <my-card title='Poke Blurs' url='./blurs/pokemon' 							image='./images/webgames/pokeblurs.png'></my-card>
