@@ -1,9 +1,9 @@
 function displayNews() {
 
     news({
-        title: "Net Blocker", date: "February 2023", content:
-            `Felt the need for a quick app to add rules to the Firewall, but didn't find anything simple for my taste, so I made one.
-`},
+        title: "Net Blocker", date: "February 2023", link: '#software-netblocker', content:
+            `Felt the need for a quick app to add rules to the Firewall, but didn't find anything simple for my taste, so I made one.`
+    },
         { src: "images/netblocker.png", height: 64, float: "right" }
     )
 
@@ -35,7 +35,7 @@ function displayNews() {
 
 }
 
-function news({ title, date, content }, image, modInfo) {
+function news({ title, date, content, link }, image, modInfo) {
 
     let container = $("#newsPage")
 
@@ -52,6 +52,10 @@ function news({ title, date, content }, image, modInfo) {
     if (modInfo)
         buildString += html`<div class="modInfo"><a href="https://www.curseforge.com/minecraft/mc-mods/${modInfo.modid}">
         Download from Curseforge</a><br></div>`
+
+    if (link)
+        buildString += html`<div class="modInfo"><a href="${link}">
+        Download</a><br></div>`
 
     buildString += html`</div>`
     container.append($(buildString))

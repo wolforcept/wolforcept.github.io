@@ -38,10 +38,10 @@ function createElement() {
         </my--mutedtray>
         
         <my--netblocker>
-            <my-simplepage title="Net Blocker"
-                description="A small app to add application rules to the firewall."
+            <my-simplepage title="Net Blocker" description="A small app to add application rules to the firewall."
                 image="./images/netblocker.png" download="./downloads/netblocker/netblocker.zip">
             </my-simplepage>
+            <img src="./images/netblocker_printscreen1.png">
         </my--netblocker>
     `
 }
