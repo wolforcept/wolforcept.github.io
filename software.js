@@ -6,6 +6,7 @@ function createElement() {
             <my-card title="Folder Saver" url="#software-foldersaver" image="./images/foldersaver.png"></my-card>
             <my-card title="MFT" url="#software-mft" image="./images/mft.png"></my-card>
             <my-card title="Muted Tray" url="#software-mutedtray" image="./images/mutedtray.png"></my-card>
+            <my-card title="Net Blocker" url="#software-netblocker" image="./images/netblocker.png"></my-card>
         </my--default>
         
         <my--atv>
@@ -35,5 +36,12 @@ function createElement() {
                 image="./images/mutedtray.png" download="./downloads/mutedtray/mutedtray.zip">
             </my-simplepage>
         </my--mutedtray>
+        
+        <my--netblocker>
+            <my-simplepage title="Net Blocker"
+                description="A small app to add application rules to the firewall."
+                image="./images/netblocker.png" download="./downloads/netblocker/netblocker.zip">
+            </my-simplepage>
+        </my--netblocker>
     `
 }

@@ -1,6 +1,13 @@
 function displayNews() {
 
     news({
+        title: "Net Blocker", date: "February 2023", content:
+            `Felt the need for a quick app to add rules to the Firewall, but didn't find anything simple for my taste, so I made one.
+`},
+        { src: "images/netblocker.png", height: 64, float: "right" }
+    )
+
+    news({
         title: "Hearth Well... 2?", date: "September 2022", content:
             `I have released a Beta Version of Hearth Well for 1.18<br>
     Hearth Well is a skyblock mod, not dissimilar from sky resources or xnihilo, but a lot more magical. The objective is also to get the vanilla resources, but through more magical means.<br>
@@ -9,7 +16,7 @@ function displayNews() {
     Ill continue to develop it, and I will experiment with some short release cycles, with a couple features.<br>
     Disclaimer: Everything in the mod right now is subject to change!
 `},
-        { src: "images/mods/hearthwell/logo1.png", maxHeight: 190, float: "right" },
+        { src: "images/mods/hearthwell/logo1.png", float: "right" },
         { modId: "hearth-well" }
     )
 
@@ -38,7 +45,7 @@ function news({ title, date, content }, image, modInfo) {
             <div class="titleDate">${date}</div>
     `
     if (image)
-        buildString += '<img src="' + image.src + '">';
+        buildString += `<img ${image.height ? `style="max-height:${image.height}px"` : ''} src="${image.src}">`;
 
     buildString += html`<p>${content}</p>`
 
