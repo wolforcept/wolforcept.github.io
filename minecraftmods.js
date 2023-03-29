@@ -13,5 +13,8 @@ function createElement() {
     <my-card title="Simple Shops"   url="https://www.curseforge.com/minecraft/mc-mods/simple-shops" 						image="./images/simpleshops128.png"></my-card>
     <my-card title="Spirit Death"   url="https://www.curseforge.com/minecraft/mc-mods/spirit-death" 						image="./images/spiritdeath128.png"></my-card>
     <my-card title="Vaultopic"      url="https://www.curseforge.com/minecraft/mc-mods/vaultopic-early-inventory-management" image="./images/vaultopic128.png"></my-card>
+
+    <div class="separator">Other Links</div>
+    <my-card title='Minecraft Screenshots' url='./minecraft' image='./images/camera.png'></my-card>
     `
 }

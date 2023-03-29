@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]>      <html class="no-js"> <!--<![endif]-->
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title></title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js" integrity="sha256-oP6HI9z1XaZNBrJURtCoUT5SUnxFr8s3BzRl+cbzUq8=" crossorigin="anonymous"></script>
+    <style>
+        body {
+            margin: 0;
+            padding: 10px;
+            background-color: rgb(37, 40, 46);
+        }
+
+        .buttons {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            text-align: center;
+        }
+
+        .button {
+            display: inline-block;
+            background-color: rgb(54, 62, 75);
+            padding: 6px 12px;
+            margin: 20px 10px;
+            border-radius: 8px;
+            color: rgb(168, 180, 187);
+            cursor: pointer;
+        }
+
+        .content {
+            /* background-color: rgb(54, 62, 75); */
+            padding: 6px 12px;
+            border-radius: 8px;
+            text-align: center;
+        }
+
+        .content img,
+        .content video,
+        .content iframe {
+            max-width: 90%;
+            margin: 5%;
+            image-rendering: pixelated;
+        }
+    </style>
+</head>
+
+<body>
+    <!--[if lt IE 7]>
+            <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="#">upgrade your browser</a> to improve your experience.</p>
+        <![endif]-->
+
+    <div class="buttons"></div>
+    <div class="content"></div>
+    <script src="files.js"></script>
+    <script>
+
+        var currentScreen;
+        var folders = {}
+        files.forEach(file => {
+            if (file.endsWith('.js') || file.endsWith('.py') || file.endsWith('.bat') || file.endsWith('.html') || file.endsWith('.css'))
+                return;
+            var folder
+            if (file.startsWith('./'))
+                folder = 'root'
+            else
+                folder = file.substring(0, file.indexOf('/'))
+            if (!folders[folder])
+                folders[folder] = []
+            folders[folder].push(file)
+        });
+        Object.keys(folders).forEach(folderName => {
+            var div = $('<div></div>')
+            folders[folderName].forEach(path => {
+                var img = $(`<img src='${path}'>`)
+                if (path.endsWith('mp4'))
+                    img = $(`<video controls>
+                                <source src="${path}" type="video/mp4">
+                                Your browser does not support the video tag.
+                            </video>`)
+                if (path.endsWith(`.yt`)) {
+                    const link = `https://www.youtube.com/embed/` + path.substring(path.indexOf('/') + 1, path.indexOf('.'))
+                    // img = $(`<a href="https://www.youtube.com/watch?v=${path.substring(path.indexOf('/') + 1, path.indexOf('.'))}">${path}</a>`)
+                    img = $(`<iframe width="560" height="315" src="${link}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>`)
+                }
+                div.append(img)
+            });
+            var button = $(`<div class='button'>${folderName}</div>`)
+            button.click(() => {
+                if (currentScreen)
+                    currentScreen.hide()
+                currentScreen = div
+                div.show()
+            })
+            $('.buttons').append(button)
+            $('.content').append(div)
+
+            if (folderName != 'root') {
+                div.hide()
+            } else {
+                currentScreen = div
+            }
+        })
+
+        // console.log(folders)
+    </script>
+</body>
+
+</html>
