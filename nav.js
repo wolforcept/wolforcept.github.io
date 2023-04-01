@@ -6,7 +6,7 @@ function createElement() {
         { title: 'Games', url: '#webgames', },
         { title: 'Software', url: '#software', },
         { title: 'Links', url: '#links', },
-        // { title: 'Other', url: '#other', },
+        { title: 'Other', url: '#other', },
         // { title: 'About', url: '#about', },
     ]
 

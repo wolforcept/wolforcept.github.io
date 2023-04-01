@@ -5,10 +5,30 @@
 
     <script src="../lib/jquery.min.js"></script>
 
+    <style>
+        * {
+            background-color: rgb(5, 20, 32);
+            color: white;
+        }
+
+        button {
+            background-color: rgb(36, 45, 53);
+            border: 0;
+            padding: 10px 20px;
+            margin: 5px;
+            border-radius: 4px;
+            box-shadow: 2px 4px 3px black;
+            cursor: pointer;
+        }
+    </style>
+
     <script>
         var games = [
             { nImgs: 8, description: `20 Mar 2021<br>O Perna de Pau era o rafa, o chulé era o sá, e o "coolnickname" achamos que é o Gui.` },
-            { nImgs: 6, description: `20 Mar 2021<br>Convencemos todas as pessoas a meter um nome perceptível kekw. O pedro fugiu.` }
+            { nImgs: 6, description: `20 Mar 2021<br>Convencemos todas as pessoas a meter um nome perceptível kekw. O pedro fugiu.` },
+            { nImgs: 10, description: `19 Mar 2023<br>Miguel, Joao, Rafa, Claudia.` },
+            { nImgs: 16, description: `1 Abr 2023<br>Ana, Maria, Sá, Miguel, Madalena, Rafa, Claudia, Joao.` },
+            { nImgs: 9, description: `1 Abr 2023<br>Ana, Maria, Sá, Miguel, Madalena, Rafa, Claudia, Joao, André.` },
         ];
 
         $(() => {
