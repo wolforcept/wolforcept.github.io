@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wolforce's Kanban</title>
+    <link rel="shortcut icon" href="../images/icon.png" type="image/x-icon">
+    <link rel="stylesheet" type="text/css" href="index.css">
+
+    <script src="../lib/jquery.min.js"></script>
+
+    <script>
+        oncontextmenu = (e) => {
+            e.preventDefault()
+            var menu = document.createElement("div")
+            menu.id = "contextMenu"
+            menu.style = `position: fixed; top:${e.pageY - 10}px;left:${e.pageX - 40}px`
+            menu.onmouseleave = () => contextMenu.outerHTML = ''
+            menu.innerHTML = "<p onclick='alert(`1 It is!`)'>Choose 1</p><p onclick='alert(`2 It is!`)'>Choose 2</p><p onclick='alert(`3 It is!`)'>Choose 3</p><p onclick='alert(`Thank you!`)'>No thanks</p>"
+            document.body.appendChild(menu)
+        }
+    </script>
+</head>
+
+<body>
+</body>
+
+</html>
