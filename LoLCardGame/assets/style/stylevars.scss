@@ -1,0 +1,65 @@
+$font: 'Mythica';
+$font-caps: 'stonecross';
+
+$color-background: #262329;
+$color-main-text: #ffffff;
+$color-sub-text: #afdbce;
+
+$color-menu-item: #1d1b1f;
+
+$color-loading-back: #121013;
+$color-loading-front: #88dbdb;
+
+$color-objective-melee: #ffa194;
+$color-objective-ranged: #94ff94;
+$color-objective-magic: #f49efc;
+$color-objective-utility: #fdff86;
+$color-objective-runeterra: #d9f1e8;
+
+$color-pin-current: #d9f1e8;
+$color-pin-done: #89e7c5;
+$color-pin-not-done: #262329;
+
+/**/
+$opacity-blurred-back: 50%;
+$opacity-menu-hidden: 30%;
+$opacity-objective-done: 10%;
+
+/**/
+$font-size-menu-title: 7vw;
+$font-size-menu-text: 4vw;
+$font-size-top: 6vw;
+$font-size-title: 8vw;
+$font-size-flavor-text: 4vw;
+$font-size-subtitle: 5vw;
+$font-size-objective: 12vw;
+$font-size-movement: 9vw;
+
+/**/
+$width-menu-item: 75vw;
+
+$width-objective: 35vw;
+$height-objective: 18vw;
+$width-objective-image: 14vw;
+
+$width-loading: 60vw;
+$height-loading: 16vw;
+
+$width-pin: 5vw;
+
+/**/
+$border-radius: 2vw;
+$border-white: .01vw solid white;
+$box-shadow: 1vw 1vw 1vw #00000088;
+$text-shadow: .5vw .5vw 1vw #00000088;
+$image-map: url("../images/map.png");
+
+/**/
+$image-melee: url("../images/melee.png");
+$image-magic: url("../images/magic.png");
+$image-range: url("../images/range.png");
+$image-utility: url("../images/utility.png");
+$image-runeterra: url("../images/runeterra.png");
+
+$svg-person: url("../svg/person.svg");
+$svg-clock: url("../svg/clock.svg");

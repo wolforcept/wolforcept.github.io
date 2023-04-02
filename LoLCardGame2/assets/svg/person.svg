@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg"
+ xmlns:xlink="http://www.w3.org/1999/xlink" width="200" height="180">
+    <circle cx="100" cy="50" r="50" fill="white" />
+    <circle cx="100" cy="180" r="100" fill="white" />
+</svg>

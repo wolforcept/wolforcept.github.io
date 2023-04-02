@@ -1,0 +1,572 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>LoL Card Game</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./assets/style/style.css">
+    <script type="text/javascript" src="./assets/lib/jquery-3.3.1.slim.min.js"></script>
+</head>
+
+<body>
+
+    <div id="myconsole" style="padding: 5px 10px; color:gray; background-color: black; width: 100%; height: 300px; z-index:99999">testconsole</div>
+
+    <div class="menu transition">
+        <div class="title">LoL Card Game</div>
+        <div class="subtitle">Available Campaigns:</div>
+    </div>
+
+    <div class="game transition" style="display: none;">
+
+        <div class="box top">
+            <img src="./assets/svg/bar.svg">
+            <img src="./assets/svg/test.svg" class="back">
+            <div class="text">0</div>
+        </div>
+        <div class="box title"></div>
+        <div class="box flavor-text"></div>
+        <div class="box">
+            <div class="loading" onclick="movementClicked()">
+                <div class="text">
+                    <span class="nr"></span>
+                    <img src="./assets/images/movement.png">
+                </div>
+                <div class="inner"></div>
+            </div>
+        </div>
+
+        <table class="box objectives">
+        </table>
+
+        <div class="box bottom">
+            <img src="./assets/svg/bar.svg">
+            <img src="./assets/svg/bar.svg" class="back">
+            <div class="text">3/5</div>
+        </div>
+
+        <div class="map">
+            <div class="img"><img id="mapImage" src="./assets/images/map.png"></div>
+            <div class="pins"></div>
+        </div>
+    </div>
+
+
+    <script>
+
+        function addToLog(message) {
+            let myconsole = document.getElementById("myconsole");
+            myconsole.innerText = myconsole.innerText + "\n" + message
+        }
+
+        window.onerror = function (message, source, lineno, colno, error) {
+            addToLog(message);
+        }
+
+        var oldLog = console.log;
+        console.log = function (message) {
+            addToLog(message);
+            oldLog.apply(console, arguments);
+        };
+
+    </script>
+
+    <script>
+
+        // █ █ ▀█▀ █ █   ▄▀▀ 
+        // ▀▄█  █  █ █▄▄ ▄█▀ 
+
+        function setTimer(callback, interval, keepCondition) {
+            var i = 0;
+            (async () => callback(i++))()
+            var expected = Date.now() + interval;
+            setTimeout(step, interval);
+            function step() {
+                var dt = Date.now() - expected; // the drift (positive for overshooting)
+                if (dt > interval) {
+                    // something really bad happened. Maybe the browser (tab) was inactive?
+                    // possibly special handling to avoid futile "catch up" run
+                }
+                (async () => callback(i++))()
+                expected += interval;
+                if (keepCondition && keepCondition())
+                    setTimeout(step, Math.max(0, interval - dt)); // take into account drift
+            }
+        }
+
+        function getTime() {
+
+            var today = new Date();
+            var day = today.getDay();
+            var daylist = ["Sunday", "Monday", "Tuesday", "Wednesday ", "Thursday", "Friday", "Saturday"];
+            var hour = today.getHours();
+            var minute = today.getMinutes();
+            var second = today.getSeconds();
+            var prepand = (hour >= 12) ? " PM " : " AM ";
+            hour = (hour >= 12) ? hour - 12 : hour;
+            if (hour === 0 && prepand === ' PM ') {
+                if (minute === 0 && second === 0) {
+                    hour = 12;
+                    prepand = ' Noon';
+                }
+                else {
+                    hour = 12;
+                    prepand = ' PM';
+                }
+            }
+            if (hour === 0 && prepand === ' AM ') {
+                if (minute === 0 && second === 0) {
+                    hour = 12;
+                    prepand = ' Midnight';
+                }
+                else {
+                    hour = 12;
+                    prepand = ' AM';
+                }
+            }
+
+            return { weekday: daylist[day], hour, minute, second }
+        }
+
+
+        function transition(id1, id2, callback) {
+            $('.transition').css('opacity', 0)
+            setTimeout(() => {
+                $(id1).hide();
+                $(id2).show();
+                $('.transition').css('opacity', 1)
+                callback && callback()
+            }, 500);
+        }
+
+    </script>
+
+    <script>
+
+        // █▀▄ ▄▀▄ ▀█▀ ▄▀▄ 
+        // █▄▀ █▀█  █  █▀█ 
+
+        const champions = ["Aatrox", "Ahri", "Akali", "Alistar", "Amumu", "Anivia", "Annie", "Aphelios", "Ashe", "AurelionSol", "Azir", "Bard", "Blitzcrank", "Brand", "Braum", "Caitlyn", "Camille", "Cassiopeia", "Chogath", "Corki", "Darius", "Diana", "Draven", "DrMundo", "Ekko", "Elise", "Evelynn", "Ezreal", "Fiddlesticks", "Fiora", "Fizz", "Galio", "Gangplank", "Garen", "Gnar", "Gragas", "Graves", "Hecarim", "Heimerdinger", "Illaoi", "Irelia", "Ivern", "Janna", "JarvanIV", "Jax", "Jayce", "Jhin", "Jinx", "Kaisa", "Kalista", "Karma", "Karthus", "Kassadin", "Katarina", "Kayle", "Kayn", "Kennen", "Khazix", "Kindred", "Kled", "KogMaw", "Leblanc", "LeeSin", "Leona", "Lissandra", "KSante", "Lucian", "Lulu", "Lux", "Malphite", "Malzahar", "Maokai", "MasterYi", "MissFortune", "Wukong", "Mordekaiser", "Morgana", "Nami", "Nasus", "Nautilus", "Neeko", "Nidalee", "Nilah", "Nocturne", "Nunu", "Olaf", "Orianna", "Ornn", "Pantheon", "Poppy", "Pyke", "Qiyana", "Quinn", "Rakan", "Rammus", "RekSai", "Renekton", "Rengar", "Riven", "Rumble", "Ryze", "Sejuani", "Senna", "Sett", "Shaco", "Shen", "Shyvana", "Singed", "Sion", "Sivir", "Skarner", "Sona", "Soraka", "Swain", "Sylas", "Syndra", "TahmKench", "Taliyah", "Talon", "Taric", "Teemo", "Thresh", "Tristana", "Trundle", "Tryndamere", "TwistedFate", "Twitch", "Udyr", "Urgot", "Varus", "Vayne", "Veigar", "Velkoz", "Viktor", "Vi", "Vladimir", "Volibear", "Warwick", "Xayah", "Xerath", "XinZhao", "Yasuo", "Yorick", "Yuumi", "Zac", "Zed", "Ziggs", "Zilean", "Zoe", "Zyra"]
+
+        const campaigns = [
+
+            {
+                title: 'Freljord\'s Voidrift',
+                shortDescription: 'Highly magical campain, with low movement requirement.',
+                requiredChampions: ['Lissandra', 'Volibear', 'Trundle'],
+                rules: 'asd',
+                zoom: 500,
+                position: { x: 2400, y: 0 },
+                missions: [
+                    {
+                        title: 'Battle of the Frozen Flats',
+                        flavorText: "The armies meet on the flats of the Freljord. Lissandra retreats and prepares her final magic.",
+                        movement: 2,
+                        position: { x: 3400, y: 600 },
+                        objectives: [{ nr: 8, type: 'melee' }, { nr: 8, type: 'melee' }, { nr: 10, type: 'ranged' }]
+                    },
+                    {
+                        title: 'At the gates of the Frostguard Citadel',
+                        flavorText: "Avora's and Serylda's armies have found their way to Lissandra's castle. Now they need to break inside and put an end to the madness.",
+                        movement: 2,
+                        position: { x: 3450, y: 460 },
+                        objectives: [{ nr: 12, type: 'melee' }, { nr: 12, type: 'ranged' }, { nr: '10', type: 'magic' }, { nr: 16, type: 'magic' }]
+                    },
+                    {
+                        title: 'Over the Howling Abyss',
+                        flavorText: "In the Murder Bridge, the Frostguard mount a magical defense, protecting Lissandra, which descends into the to the void rift.",
+                        movement: 0,
+                        position: { x: 3550, y: 350 },
+                        objectives: [{ nr: 20, type: 'magic' }, { nr: 'X', type: 'magic' }]
+                    },
+                    {
+                        title: 'The True Ice Sacrifice',
+                        flavorText: "In the depths of the Howling Abyss, Lissandra frees the Watchers, only to then realize their true form and intentions.",
+                        movement: 0,
+                        position: { x: 3700, y: 300 },
+                        objectives: [{ nr: 20, type: 'magic' }, { nr: 'X', type: 'magic' }]
+                    }
+                ],
+                isEnabled: true
+            },
+
+            {
+                title: 'The Fall of Icathia',
+                duration: 10,
+                requiredChampions: ['Azir', 'Xerath'],
+                isEnabled: true
+            },
+
+            {
+                title: 'Great Darkin War',
+                duration: 10,
+                requiredChampions: ['Nasus', 'Zoe'],
+                isEnabled: true
+            },
+
+            {
+                title: 'The Birth of Noxus',
+                duration: 10,
+                requiredChampions: ['Mordekaiser'],
+                isEnabled: true
+            },
+
+            {
+                title: 'The Rune Wars',
+                duration: 10,
+                requiredChampions: ['Ryze', 'Brand', 'Bard'],
+                isEnabled: true
+            },
+
+            {
+                title: 'The Black Mist',
+                duration: 10,
+                requiredChampions: ['Viego', 'Senna'],
+                isEnabled: true
+            },
+
+            {
+                title: 'Invasion of Ionia',
+                duration: 10,
+                requiredChampions: ['Irelia', 'Shen'],
+                isEnabled: true
+            },
+        ]
+
+
+    </script>
+
+    <script>
+
+        // █▄ ▄█ ██▀ █▄ █ █ █ 
+        // █ ▀ █ █▄▄ █ ▀█ ▀▄█ 
+
+
+        // setTimeout(() => {
+        // 	front.send("hello from front");
+        // }, 1000);
+
+        // front.on("hello from back", function (msg) {
+        // 	console.log(msg);
+        // 	$('#msg').html(msg);
+        // });
+
+        function html3(a) {
+            console.log(a.join(''))
+            return a.join('')
+        }
+
+        function html(strings, ...keys) {
+            let ret = '';
+            for (let i = 0; i < strings.length - 1; i++) {
+                ret += strings[i];
+                ret += keys[i];
+            }
+            ret += strings[strings.length - 1]
+            return ret;
+        }
+
+        function html2(strings, ...keys) {
+            let ret = '';
+            for (let i = 0; i < strings.length - 1; i++) {
+                ret += strings[i];
+                ret += keys[i];
+            }
+            ret += strings[strings.length - 1]
+            return $(ret);
+        }
+
+        function makeMenuItem(campaign) {
+            const { title, requiredChampions, missions, shortDescription } = campaign;
+
+            const isEnabled = missions && missions.length > 0
+
+            let characterString = (requiredChampions.length > 2)
+                ? requiredChampions.slice(0, 2).join(', ') + '...'
+                : requiredChampions.join(', ')
+
+            let item = $(html`
+            <div class="item ${!isEnabled ? ' disabled' : ''}">
+                <div class="name">${title}</div>
+                <div class="info">
+                    <span><img src="./assets/svg/clock.svg"> ${missions ? missions.length : 0}</span>
+                    <span><img src="./assets/svg/person.svg"> ${characterString}</span>
+                </div>
+            </div>
+            `)
+
+            // const item = $(`<div class="item">${title}</div>`)
+            $(".menu").append(item);
+
+            if (isEnabled) {
+                item.click(e => {
+                    $('.item.open').removeClass('open')
+                    item.addClass('open')
+                })
+
+                const innerInfo = $(html`
+                            <div class="inner-info">
+
+                                <div class="separator"></div>
+
+                                <div class="short-description">${shortDescription}</div>
+
+
+                                <div class="separator"></div>
+
+                                <span><img src="./assets/svg/clock.svg" style="height:3vw"> Missions: ${missions.length}</span>
+                                <div class="separator"></div>
+
+                                <!-- <div style="display: grid; column-gap: 2vw; row-gap: 0.5vw;"> -->
+                                <!-- <div style="grid-column: 1"> -->
+                                <span><img src="./assets/svg/person.svg" style="height:3vw"> Required Champions:</span>
+                                <div>
+                                    ${requiredChampions.map(c => html`
+                                    <img src="./assets/images/champions/icons/${c}.jpg" style="width: 5vw; transform: translateY(1vw)"> ${c}
+                                    `).join('<br />')}<br />
+                                </div>
+                                <div class="separator"></div>
+                            </div>
+                        `)
+                item.append(innerInfo);
+
+                const startButton = $(html`<div class="start-game-button">Start Game</div>`)
+                startButton.click(_ => startGame(campaign))
+                innerInfo.append(startButton);
+            }
+        }
+
+        function makeMenu() {
+            campaigns.forEach(c => makeMenuItem(c));
+        }
+
+        function startGame(campaign) {
+            transition('.menu', '.game', () => { game({ ...campaign }) })
+        }
+
+
+        // ▄▀  ▄▀▄ █▄ ▄█ ██▀ 
+        // ▀▄█ █▀█ █ ▀ █ █▄▄ 
+
+    </script>
+
+    <script>
+
+
+        // ▄▀  █ █ █ 
+        // ▀▄█ ▀▄█ █ 
+
+        function displayDisplayedTime(datetime) {
+
+            let seconds = datetime.getSeconds();
+            let minutes = datetime.getMinutes();
+            let hours = datetime.getHours() - 1;
+
+            if (minutes == 0 && hours == 0) {
+                $('.game .top .text').html(seconds)
+                return
+            }
+
+            if (hours == 0) {
+                $('.game .top .text').html(minutes + " : " + seconds)
+                return
+            }
+
+            $('.game .top .text').html(hours + " : " + minutes + " : " + seconds)
+        }
+
+        function displayTitle(title, flavorText) {
+            $('.title').html(title)
+            $('.flavor-text').html(flavorText)
+        }
+
+        function displayObjectives(objectives, doneObjectives) {
+
+            const parent = $('.objectives')
+            parent.empty()
+            for (let i = 0; i < objectives.length; i++) {
+                const objective = objectives[i];
+                const elem = $(html`
+        <div id="objective${i}" class="objective ${objective.type}">
+            <span class="number">${objective.nr}</span>
+            <div class="img"></div>
+        </div>
+    `)
+                elem.click(() => objectiveClicked(i))
+
+                if (doneObjectives.includes(i))
+                    elem.addClass('hidden')
+
+                parent.append(elem)
+            }
+        }
+
+        function displayHideObjective(i) {
+        }
+
+        function displayWalking(nr, percent) {
+
+            if (percent > 0 && percent < 1) {
+                $('.loading .inner').css('width', (100 * percent) + "%")
+                $('.loading').addClass('walking')
+            } else {
+                $('.loading .inner').css('width', "100%")
+                $('.loading').removeClass('walking')
+            }
+            $('.loading .text .nr').html(nr)
+        }
+
+        function displayMap(position, _zoom, missions, current) {
+
+            $('.bottom .text').html((1 + current) + ' / ' + missions.length)
+
+            const zoom = _zoom / 100;
+            const map = $('.map .img img')
+            map.width(`${100 * zoom}vw`);
+            map.css('transform', `translate(-${position.x / 100 * zoom}vw, -${position.y / 100 * zoom}vw)`)
+
+            const pins = $('.map .pins')
+            let lastPin = undefined;
+            missions.forEach((mission, i) => {
+
+                const x = parseInt(mission.position.x / 100 * zoom - position.x / 100 * zoom);
+                const y = parseInt(mission.position.y / 100 * zoom - position.y / 100 * zoom);
+
+                const newPin = (current < i)
+                    ? $(html`<div class="pin not-done"></div>`)
+                    : (current > i)
+                        ? $(html`<div class="pin done"></div>`)
+                        : $(html`<div class="pin current"></div>`)
+                newPin.css('left', `${x}vw`)
+                newPin.css('top', `${y}vw`)
+
+                if (lastPin) {
+                    const line = $(html`
+        <svg width="100vw" height="100vw">
+            <line x1="${x}vw" y1="${y}vw" x2="${lastPin.x}vw" y2="${lastPin.y}vw" style="stroke:#FFFFFF77;stroke-width:10" />
+        </svg>`)
+                    pins.append(line)
+                }
+
+                lastPin = { x, y }
+
+                pins.append(newPin)
+            });
+
+        }
+
+        function displayEvent(data, completeFunc) {
+
+        }
+
+        function displayMenu() {
+            transition('.game', '.menu')
+        }
+
+    </script>
+
+    <script>
+
+        // ▄▀  ▄▀▄ █▄ ▄█ ██▀ 
+        // ▀▄█ █▀█ █ ▀ █ █▄▄ 
+
+        var GAME;
+        const MAX_WALKING = 50;
+
+        function game(campaign) {
+            const timeStarted = performance.now();
+
+            var currentEvent = null;
+            var missionsComplete = 0;
+            var movementLeft, walking;
+            var doneObjectives
+
+            function getCurrentMission() {
+                return campaign.missions[missionsComplete]
+            }
+
+            setTimer((i) => {
+                const currTime = performance.now();
+                displayDisplayedTime(new Date(parseInt(currTime - timeStarted)))
+            }, 1000, () => true)
+
+            function loadNextMission() {
+                if (campaign.missions.length == missionsComplete) {
+                    displayMenu()
+                    return
+                }
+                let currentMission = getCurrentMission()
+                movementLeft = currentMission.movement
+                walking = 0
+                doneObjectives = []
+                displayTitle(currentMission.title, currentMission.flavorText)
+                displayObjectives(currentMission.objectives, doneObjectives)
+                displayWalking(movementLeft, walking)
+                displayMap(campaign.position, campaign.zoom, campaign.missions, missionsComplete)
+            }
+
+            this.startWalk = () => {
+
+                if (movementLeft <= 0 || walking > 0) {
+                    return;
+                }
+
+                walking = MAX_WALKING
+                setTimer((i) => {
+                    walking--;
+
+                    if (walking == 0) {
+                        movementLeft--;
+                    }
+
+                    displayWalking(movementLeft, walking / MAX_WALKING)
+
+                }, 100, () => walking > 0)
+            }
+
+            this.objectiveClicked = (i) => {
+                if (movementLeft > 0)
+                    return;
+                if (!doneObjectives.includes(i))
+                    doneObjectives.push(i)
+
+                const objectives = getCurrentMission().objectives;
+                displayObjectives(objectives, doneObjectives)
+
+                if (doneObjectives.length == objectives.length) {
+                    missionsComplete++
+                    transition('.game', '.game', loadNextMission)
+                }
+            }
+
+            loadNextMission();
+            GAME = this;
+        }
+
+        // █ █▄ █ █▀▄ █ █ ▀█▀ ▄▀▀ 
+        // █ █ ▀█ █▀  ▀▄█  █  ▄█▀ 
+
+        function movementClicked() {
+            if (GAME)
+                GAME.startWalk();
+        }
+
+        function objectiveClicked(i) {
+            if (GAME)
+                GAME.objectiveClicked(i);
+        }
+
+    </script>
+
+    <script>
+
+        // $(_ => {
+        //     makeMenu();
+        //     startGame(campaigns[0]);
+        // })
+        $(() => makeMenu())
+    </script>
+
+</body>
+
+</html>
