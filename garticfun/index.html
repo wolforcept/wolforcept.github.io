@@ -54,11 +54,7 @@
         });
 
         function buttonclick(id) {
-
-            [1, 2].forEach(i => {
-                if (i != id)
-                    $("#game" + i).hide();
-            });
+            $(".game").hide();
             $("#game" + id).show();
         }
     </script>
