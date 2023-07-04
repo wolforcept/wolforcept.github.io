@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Api Browser</title>
+
+    <script src="https://code.jquery.com/jquery-3.7.0.min.js" integrity="sha256-2Pmvv0kuTBOenSvLm6bvfBSSHrUJ+3A7x6P5Ebd07/g=" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/milligram/1.4.1/milligram.min.css" integrity="sha512-xiunq9hpKsIcz42zt0o2vCo34xV0j6Ny8hgEylN3XBglZDtTZ2nwnqF/Z/TTCc18sGdvCjbFInNd++6q3J0N6g==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lato&family=Oswald:wght@700&family=Rubik:wght@400;500&family=Ubuntu:wght@500&family=Ysabeau+SC&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300italic,700,700italic">
+    <link rel="stylesheet" href="dark.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/3.0.3/normalize.css">
+</head>
+
+<body>
+    <main class="wrapper">
+
+        <section class="container" id="title">
+            <h1 id="logo">apibrowser</h1>
+
+            <div class="row">
+                <div class="column column-75">
+                    <input type="text" placeholder="api address" id="address" />
+                </div>
+                <div class="column column-25">
+                    <a id="go" class="button">GO</a>
+                </div>
+            </div>
+
+        </section>
+
+        <section class="container" id="content">
+            <br />
+            <p style="color: #82858a;">no api loaded</p>
+        </section>
+
+        <section class="container" id="footer">
+            |&nbsp;&nbsp;&nbsp;
+
+            <a class="popular-apis-pokeapi" href="?address=https://pokeapi.co/api/v2/">PokeAPI</a>
+            &nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
+
+            <a class="popular-apis-pokeapi" href="?address=http://ddragon.leagueoflegends.com/cdn/12.6.1/data/en_US/champion.json">Riot Data Dragon</a>
+            &nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
+
+        </section>
+
+    </main>
+
+    <script src="engine.js"></script>
+
+</body>
+
+</html>

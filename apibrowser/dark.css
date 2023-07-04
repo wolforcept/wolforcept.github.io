@@ -1,0 +1,82 @@
+#logo {
+    font-family: 'Ysabeau SC';
+}
+
+body {
+    font-family: 'Roboto';
+    background: #2c2f34;
+    color: #f2f2f2;
+}
+
+.navigation .title,
+.navigation-title {
+    color: #f2f2f2;
+}
+
+.navigation {
+    background: #34373c;
+    border-bottom: 0.1rem solid #1b1c1d;
+}
+
+.header {
+    background-color: #141518;
+}
+
+pre {
+    background: #141518;
+}
+
+.prettyprint {
+    color: #f2f2f2;
+}
+
+.prettyprint.lang-md * {
+    color: #f2f2f2 !important;
+}
+
+code {
+    background: #141518;
+}
+
+.prettyprint .atv {
+    color: rgba(73, 158, 223, 1);
+}
+
+.button {
+    background-color: rgb(58, 52, 148);
+    border-color: rgb(42, 40, 61);
+}
+
+#content {
+    min-height: calc(100vh - 230px);
+}
+
+a {
+    color: rgb(186, 182, 238);
+}
+
+.collapsible {
+    position: relative;
+    color: rgb(182, 220, 238);
+    border-radius: 10px;
+    border: 1px solid rgb(60, 67, 70);
+    padding-left: 10px;
+    user-select: none;
+}
+
+.collapsible:hover {
+    border: 1px solid rgb(114, 138, 148);
+}
+
+.collapsible-button {
+    width: 25px;
+    height: 28px;
+    color: rgb(182, 220, 238);
+    border-radius: 10px;
+    margin-right: 10px;
+    cursor: pointer;
+}
+
+.collapsible-button:hover {
+    color: white
+}
