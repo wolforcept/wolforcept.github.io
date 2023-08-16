@@ -1,8 +1,21 @@
 <html>
 
 <head>
+
+    <!-- Google Tag Manager -->
+    <script>(function (w, d, s, l, i) {
+            w[l] = w[l] || []; w[l].push({
+                'gtm.start':
+                    new Date().getTime(), event: 'gtm.js'
+            }); var f = d.getElementsByTagName(s)[0],
+                j = d.createElement(s), dl = l != 'dataLayer' ? '&l=' + l : ''; j.async = true; j.src =
+                    'https://www.googletagmanager.com/gtm.js?id=' + i + dl; f.parentNode.insertBefore(j, f);
+        })(window, document, 'script', 'dataLayer', 'GTM-PCL7D33J');</script>
+    <!-- End Google Tag Manager -->
+
     <title>LoL Quiz</title>
     <script src='../lib/jquery.min.js'></script>
+    <script src='game.js'></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Lato&family=Oswald:wght@400&display=swap');
 
@@ -10,6 +23,9 @@
             --back-color: rgb(10, 17, 26);
             --text-color: rgba(224, 227, 255, 0.85);
             --color-dark: rgba(0, 0, 0, 0.247);
+            --color-darker: rgb(6, 10, 15);
+            --color-border: rgb(45, 53, 80);
+            --color-placeholder: rgba(18, 18, 41, 0.144);
         }
 
         * {
@@ -17,7 +33,7 @@
         }
 
         ::placeholder {
-            color: rgba(18, 18, 41, 0.144);
+            color: var(--color-placeholder);
         }
 
         /* width */
@@ -45,19 +61,32 @@
             text-align: center;
         }
 
+        .text {
+            text-align: center;
+            display: inline-block;
+            vertical-align: middle;
+            color: var(--text-color);
+            font-size: x-large;
+            padding: 0px 10px 4px 10px;
+            border-radius: 16px;
+            margin: auto;
+            margin-top: 20px;
+        }
+
         input,
         button {
             text-align: center;
             display: inline;
             vertical-align: middle;
             color: var(--text-color);
-            background-color: rgb(6, 10, 15);
+            background-color: var(--color-darker);
             font-size: x-large;
             padding: 0px 10px 4px 10px;
-            border: 2px solid rgba(255, 255, 255, 0.205);
+            border: 2px solid var(--color-border);
             border-radius: 16px;
             margin: auto;
             margin-top: 20px;
+            cursor: pointer;
         }
 
         input {
@@ -70,6 +99,10 @@
             font-family: 'Oswald', sans-serif;
             margin: 0 0 10px 0;
             height: 50px;
+        }
+
+        h1#lolquiz_title {
+            cursor: pointer;
         }
 
         h3 {
@@ -99,192 +132,148 @@
         }
 
         .separator {
-            border-bottom: 2px solid rgba(255, 255, 255, 0.151);
+            padding-top: 20px;
+            border-bottom: 2px solid var(--color-border);
+        }
+
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 60px;
+            height: 34px;
+            transform: translateY(-4px);
+        }
+
+        /* Hide default HTML checkbox */
+        .switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        /* The slider */
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: var(--color-darker);
+            border: 2px solid rgba(255, 255, 255, 0.205);
+            -webkit-transition: .4s;
+            transition: .4s;
+        }
+
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 26px;
+            width: 26px;
+            left: 2px;
+            bottom: 2px;
+            background-color: white;
+            -webkit-transition: .4s;
+            transition: .4s;
+        }
+
+        input:checked+.slider {
+            background-color: #2196F3;
+        }
+
+        input:focus+.slider {
+            box-shadow: 0 0 1px #2196F3;
+        }
+
+        input:checked+.slider:before {
+            -webkit-transform: translateX(26px);
+            -ms-transform: translateX(26px);
+            transform: translateX(26px);
+        }
+
+        /* Rounded sliders */
+        .slider.round {
+            border-radius: 34px;
+        }
+
+        .slider.round:before {
+            border-radius: 50%;
         }
     </style>
 </head>
 
 <body>
-    <script src='../patreon.js'></script>
+    <script src='../patreonbutton.js'></script>
     <script src='../backbutton.js'></script>
 
-    <h1>LoL Quiz</h1>
+    <h1 id="lolquiz_title">LoL Quiz</h1>
 
     <div id="content">
         <div id="questions"></div>
     </div>
-    <div style="position: fixed; bottom: 20px; width: 100%">
+
+    <div id="buttons_game" style="position: fixed; bottom: 20px; width: 100%">
         <button id="skip">Skip</button>
         <input placeholder="your answer here">
         <button id="submit">Submit</button>
     </div>
 
+    <div id="buttons_start" style="position: fixed; bottom: 20px; width: 100%">
+        <button id="start">Start</button>
+    </div>
+
     <script>
 
-        const jsonData = fetch('./championData.json').then(x => x.json()).then(champions => init(champions, Object.keys(champions)));
+        const col = 130;
+        const mid = 20;
+        const bor = 30;
 
-        function init(champions, championNames) {
-            console.log({ champions, championNames })
+        Object.keys(QuestionTypes).forEach(q => {
 
-            var currentAnswer
-            var score = 0
+            const isOn = localStorage.getItem("lolquiz_questiontype_" + q) === "true";
+            console.log(q + " is " + isOn)
 
-            let input = $('input');
-            let submitButton = $('#submit');
-            let skipButton = $('#skip');
-            let questions = $('#questions');
+            const [qText, aText] = q.split("_");
 
-            input.keydown(e => { if ((e.keyCode || e.which) == 13) submit() })
-            submitButton.click(e => submit())
-            skipButton.click(e => skip())
+            const div = $(`
+            <div class="text" style="width: ${bor}px"></div>
+            <div class="text" style="width: ${col}px">${qText}</div>
+            <div class="text" style="width: ${mid}px">→</div>
+            <div class="text" style="width: ${col}px">${aText}</div>
+            <div class="text" style="width: ${bor}px">
+                <label class="switch">
+                    <input type="checkbox" ${isOn ? `checked="true"` : ""} id="toggle_${q}">
+                    <span class="slider round"></span>
+                </label>
+            </div>
+            <br />
+           `)
 
-            // ▄▀▄ █ █ ██▀ ▄▀▀ ▀█▀ █ ▄▀▄ █▄ █    ▀█▀ ▀▄▀ █▀▄ ██▀ ▄▀▀ 
-            // ▀▄█ ▀▄█ █▄▄ ▄█▀  █  █ ▀▄▀ █ ▀█     █   █  █▀  █▄▄ ▄█▀ 
-
-            let questionTypes = [
-
-                () => {
-                    let championName = championNames[Math.floor(Math.random() * championNames.length)]
-                    let champion = champions[championName]
-                    let lore = champion.lore.replaceAll(champion.name, '??????')
-                    createQuestionDiv("Guess the champion based on the champion's lore:", lore)
-                    currentAnswer = champion.name
-                },
-
-                () => {
-                    let championName = championNames[Math.floor(Math.random() * championNames.length)]
-                    let champion = champions[championName]
-                    let i = Math.floor(Math.random() * champion.spells.length)
-                    let spell = champion.spells[i]
-                    let spellDescription = spell.description.replaceAll(champion.name, '??????')
-                    createQuestionDiv(`Guess the champion based on the champion's ability description: (${(['Q', 'W', 'E', 'R'])[i]})`, spellDescription)
-                    currentAnswer = champion.name
-                },
-
-                () => {
-                    let championName = championNames[Math.floor(Math.random() * championNames.length)]
-                    let champion = champions[championName]
-                    let spellDescription = champion.spells[3].description
-                    createQuestionDiv("Guess the champion's ultimate ability based on its description:", spellDescription)
-                    currentAnswer = champion.spells[3].name
-                },
-
-                () => {
-                    let championName = championNames[Math.floor(Math.random() * championNames.length)]
-                    let champion = champions[championName]
-                    let spell = champion.spells[Math.floor(Math.random() * champion.spells.length)]
-                    let spellDescription = `Q: ${champion.spells[0].name}<br />
-                    W: ${champion.spells[1].name}<br />
-                    E: ${champion.spells[2].name}`
-                    createQuestionDiv("Guess the champion based on its abilities names:", spellDescription)
-                    currentAnswer = champion.name
-                },
-
-            ]
-
-            // ██▀ █▄ █ ▄▀  █ █▄ █ ██▀ 
-            // █▄▄ █ ▀█ ▀▄█ █ █ ▀█ █▄▄ 
-
-            function submit() {
-                if (match(input.val(), currentAnswer)) {
-                    createAnswerDiv(`Answer "${input.val()}" is correct! +1 Point`, '#23bd28')
-                    createQuestion()
-                    score++
-                    updateScore()
-                } else {
-                    if (input.val())
-                        createAnswerDiv(`Answer "${input.val()}" is incorrect!`, '#998888')
-                }
-                input.val('')
-            }
-
-            function skip() {
-                score -= 1
-                updateScore()
-                createAnswerDiv(`Skipped. Correct answer was "${currentAnswer}". -1 Points`, '#e34622')
-                createSeparator()
-                createQuestion()
-                input.val('')
-            }
-
-            function createQuestion() {
-                questionTypes[Math.floor(Math.random() * questionTypes.length)]()
-            }
-
-            function match(text1, text2) {
-                let t1 = text1.toLowerCase().replace(' ', '').replace(/[^\w\s!?]/g, '');
-                let t2 = text2.toLowerCase().replace(' ', '').replace(/[^\w\s!?]/g, '');
-                return t1 == t2
-            }
-
-            // █▄█ ▀█▀ █▄ ▄█ █   
-            // █ █  █  █ ▀ █ █▄▄ 
-
-            function createQuestionDiv(title, text) {
-                let newDiv = $(`<div class="question"><h3>${title}</h3>${text}</div>`)
-                questions.append(newDiv)
-                newDiv[0].scrollIntoView({ behavior: 'smooth', block: 'center' })
-            }
-
-            function createAnswerDiv(answer, color) {
-                let newDiv = $(`<div class="answer" style="color: ${color}">${answer}</div>`)
-                questions.append(newDiv)
-                newDiv[0].scrollIntoView({ behavior: 'smooth', block: 'center' })
-            }
-
-            function createSeparator() {
-                let newDiv = $(`<div class="separator"></div>`)
-                questions.append(newDiv)
-                newDiv[0].scrollIntoView({ behavior: 'smooth', block: 'center' })
-            }
-
-            function updateScore() {
-                $('h1').html('Score: ' + score)
-            }
-            createQuestion()
-        }
-
-        function getChampionImage(name, i = 0) {
-            return `http://ddragon.leagueoflegends.com/cdn/img/champion/splash/${name}_${i}.jpg`
-        }
-
-        async function downloadData(version = '12.14.1') {
-
-            let data = await fetch(`http://ddragon.leagueoflegends.com/cdn/${version}/data/en_US/champion.json`)
-            data = await data.json()
-
-            let names = Object.keys(data.data)
-
-            data = (await Promise.all(names.map(name =>
-                fetch(`http://ddragon.leagueoflegends.com/cdn/12.14.1/data/en_US/champion/${name}.json`)
-            )))
-            data = await Promise.all(data.map(response => response.json()))
-
-            let championData = {}
-            data.forEach(loaded => {
-                let name = Object.keys(loaded.data).filter(x => x != 'format' && x != 'type' && x != 'version')[0]
-                championData[name] = loaded.data[name]
+            div.find('input').click(() => {
+                const newVal = div.find('input:checked').length ? true : false
+                localStorage.setItem("lolquiz_questiontype_" + q, "" + newVal)
+                console.log(q + " is now " + newVal)
             })
+            $('#buttons_start').prepend(div)
+        })
+        $('#buttons_start').prepend(`
+            <div class="text" style="width: ${bor}px"></div>
+            <div class="text" style="width: ${col}px">Question</div>
+            <div class="text" style="width: ${mid}px">→</div>
+            <div class="text" style="width: ${col}px">Answer</div>
+            <div class="text" style="width: ${bor}px"></div>
+            <br /><br />
+        `)
+        const jsonData = fetch('./championData.json').then(x => x.json()).then(champions => new Game(champions, Object.keys(champions)));
+        $("#buttons_game").hide();
 
-            console.log(championData)
-
-            $('body').append($('<a href="data:' +
-                "text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(championData))
-                + '" download="data.json">DOWNLOAD NEW CHAMPION DATA JSON</a>'))
-
-        }
+        $('#lolquiz_title').click(() => location.reload())
 
     </script>
 
-    <!-- Google tag (gtag.js) -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-83KM3NP9F1"></script>
-    <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
-
-      gtag('config', 'G-83KM3NP9F1');
-    </script>
+    <!-- Google Tag Manager (noscript) -->
+    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-PCL7D33J" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+    <!-- End Google Tag Manager (noscript) -->
 </body>
 
 </html>
