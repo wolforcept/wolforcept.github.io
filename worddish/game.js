@@ -502,7 +502,6 @@ const wordsSimpler = [
     "zone",
 ]
 const words = [
-    "aaaa",
     "aahs",
     "abbe",
     "abbr",
@@ -3640,6 +3639,7 @@ const H = 5;
 
 var nextCleanIn = 20;
 
+const vowels = ["A", "E", "I", "O", "U"];
 const letters = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"];
 const probabilities = [8.4966, 2.0720, 4.5388, 3.3844, 11.161, 1.8121, 2.4705, 3.0034, 7.5448, 0.1965, 1.1016, 5.4893, 3.0129, 6.6544, 7.1635, 3.1671, 0.1962, 7.5809, 5.7351, 6.9509, 3.6308, 1.0074, 1.2899, 0.2902, 1.7779, 0.2722];
 
@@ -3651,6 +3651,8 @@ function randomWord() {
 }
 
 function randomLetter() {
+    if (Math.random() < .05)
+        return vowels[Math.floor(Math.random() * vowels.length)]
     let r = Math.random();
     for (const i in letters) {
         if (r < probabilities[i] / 100)

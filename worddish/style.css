@@ -2,6 +2,7 @@
 
 * {
     font-family: 'Ysabeau SC';
+    user-select: none;
 }
 
 body {
@@ -42,7 +43,6 @@ body {
     font-size: var(--size);
     border-radius: 10px;
     cursor: pointer;
-    user-select: none;
     line-height: 64px;
 }
 
@@ -133,4 +133,54 @@ svg {
     border-radius: 10px;
     margin: 5px;
     padding: 5px;
+}
+
+#donewords2 {
+    display: none;
+}
+
+@media only screen and (max-width: 600px) {
+
+    h1 {
+        margin: 10px 0 10px 0;
+    }
+
+    #donewords,
+    #objectives,
+    #cleans {
+        margin: 0;
+        display: flex;
+        flex-direction: row;
+        height: 80px;
+        width: 100vw;
+        overflow-x: scroll;
+    }
+
+    svg {
+        min-width: 40px;
+    }
+
+    html,
+    body {
+        overflow-x: hidden;
+    }
+
+    body {
+        position: relative;
+        width: 100vw;
+        flex-direction: column;
+    }
+
+    #centre {
+        order: 0;
+    }
+
+    #objectives {
+        order: 1;
+    }
+
+    #donewords {
+        order: 2;
+    }
+
 }
