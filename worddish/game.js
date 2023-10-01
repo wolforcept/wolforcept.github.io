@@ -3796,6 +3796,10 @@ function makeObjective() {
 
 function markObjectiveDone(word) {
     $("#objective-" + word).css({ backgroundColor: "rgb(76, 122, 76)" })
+    objectiveWords.splice(objectiveWords.indexOf(word), 1)
+    if (objectiveWords.length === 0) {
+        $('#finish').show();
+    }
 }
 
 function makeClean() {

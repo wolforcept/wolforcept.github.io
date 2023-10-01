@@ -181,7 +181,7 @@ svg {
 }
 
 #instructions {
-    background-color: rgba(0, 0, 0, 0.849);
+    background-color: rgba(0, 0, 0, 0.9);
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -195,6 +195,30 @@ svg {
     color: white;
     text-align: center;
     font-size: 30px;
+}
+
+#finish {
+    background-color: rgba(0, 0, 0, 0.9);
+    display: flex;
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    z-index: 100;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    color: white;
+    text-align: center;
+    font-size: 30px;
+    z-index: 100;
+    line-height: 70px;
+}
+
+#finish span {
+    cursor: pointer;
 }
 
 #instructions .inner {
