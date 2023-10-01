@@ -3731,6 +3731,7 @@ function checkNextIsEmpty() {
 function checkAllWords() {
     for (const group of cellGroups) {
         const word = makeWordFromGroup(group).toLocaleLowerCase();
+        if (word.length < 4) continue;
         if (words.includes(word)) {
             words.splice(words.indexOf(word), 1)
             if (objectiveWords.includes(word))

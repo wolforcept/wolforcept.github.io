@@ -5755,7 +5755,7 @@ const words = [
     "roble",
     "rumba",
     "biffy",
-    "pupal",
+    "pupal"
 ]
 
 const S = 64;
@@ -5770,9 +5770,11 @@ const probabilities = [8.4966, 2.0720, 4.5388, 3.3844, 11.161, 1.8121, 2.4705, 3
 
 const objectiveWords = [];
 
-function randomWord() {
+function randomWord(remove = true) {
     const index = Math.floor(Math.random() * words.length);
-    return words.splice(index, 1)[0];
+    if (remove)
+        return words.splice(index, 1)[0];
+    return words[index]
 }
 
 function randomLetter() {
@@ -5830,6 +5832,7 @@ function checkNextIsEmpty() {
 function checkAllWords() {
     for (const group of cellGroups) {
         const word = makeWordFromGroup(group).toLocaleLowerCase();
+        if (word.length < 5) continue;
         if (words.includes(word)) {
             words.splice(words.indexOf(word), 1)
             if (objectiveWords.includes(word))
@@ -5884,7 +5887,7 @@ function makeDoneword(word) {
 }
 
 function makeObjective() {
-    const word = randomWord();
+    const word = randomWord(false);
     // const word = "aaaa"
     objectiveWords.push(word)
     const div = $(`<div id="objective-${word}" class="objective">${word}</div>`);
@@ -5927,3 +5930,7 @@ makeClean()
 makeClean()
 makeClean()
 makeClean()
+
+// objectiveWords[0].split('').forEach(e => {
+//     makeLetter(e.toUpperCase())
+// });
