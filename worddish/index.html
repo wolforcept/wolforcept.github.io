@@ -14,8 +14,7 @@
     <link rel="stylesheet" href="style.css">
     <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
     <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
-    <script src="jquery.ui.touch-punch.min.js"></script>
-
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui-touch-punch/0.2.3/jquery.ui.touch-punch.min.js" integrity="sha512-0bEtK0USNd96MnO4XhH8jhv3nyRF0eK87pJke6pkYf3cM0uDIhNJy9ltuzqgypoIFXw3JSuiy04tVk4AjpZdZw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 </head>
 
 <body>
@@ -28,19 +27,19 @@
             <div id="container">
                 <table id="grid">
                     <tr class="row1">
-                        <td class="cell cell1"></td>
-                        <td class="cell cell2"></td>
-                        <td class="cell cell3"></td>
-                        <td class="cell cell4"></td>
+                        <td class="cell cell01"></td>
+                        <td class="cell cell02"></td>
+                        <td class="cell cell03"></td>
+                        <td class="cell cell04"></td>
                     </tr>
                     <tr class="row2">
-                        <td class="cell cell5"></td>
-                        <td class="cell cell6"></td>
-                        <td class="cell cell7"></td>
-                        <td class="cell cell8"></td>
+                        <td class="cell cell05"></td>
+                        <td class="cell cell06"></td>
+                        <td class="cell cell07"></td>
+                        <td class="cell cell08"></td>
                     </tr>
                     <tr class="row3">
-                        <td class="cell cell9"></td>
+                        <td class="cell cell09"></td>
                         <td class="cell cell10"></td>
                         <td class="cell cell11"></td>
                         <td class="cell cell12"></td>
@@ -63,10 +62,26 @@
         </div>
         <div class="divisor"></div>
         <div id="cleans"></div>
+        <a id="instructions-button" onclick="$('#instructions').show()">
+            <div class="objective">instructions</div>
+        </a>
     </div>
     <div class="spacer"></div>
     <div id="donewords"></div>
     <script src="game.js"></script>
+    <div id="instructions">
+        <div class="inner">
+            <a onclick="$('#instructions').hide()"><span class="doneword">Start Game</span></a><br /><br />
+            Drag, Mix and Match letters to form 4 letter words in the small square space you have.<br />Words cannot be repeated.<br /><br />
+            Try to complete all<br /><span class="objective">Objective Words</span><br /><br />
+            Be careful not to fill your board, but if you do, there are some cleaners on the bottom.<br />Simply drag them on top of a letter to erase it.<br /><br />
+            Made in only 5 hours for the LUDUM DARE in October 2023!<br /><br />
+            <a href="./5/"><span class="doneword">5 letter version</span></a>
+        </div>
+    </div>
+    <a id="instructions-button2" onclick="$('#instructions').show()">
+        <div class="objective">?</div>
+    </a>
 </body>
 
 </html>

@@ -3633,6 +3633,15 @@ const words = [
     "zulu",
     "zuni"
 ]
+
+const allCells = [
+    ".cell01", ".cell02", ".cell03", ".cell04",
+    ".cell05", ".cell06", ".cell07", ".cell08",
+    ".cell09", ".cell10", ".cell11", ".cell12",
+    ".cell13", ".cell14", ".cell15", ".cell16",
+    ".cell17", ".cell18", ".cell19", ".cell20",
+]
+
 const S = 64;
 const W = 5;
 const H = 5;
@@ -3688,18 +3697,16 @@ function randomLetter() {
 // Z	0.2722 	1.39
 
 const cellGroups = [
-    [".cell1", ".cell2", ".cell3", ".cell4"],
-    [".cell5", ".cell6", ".cell7", ".cell8"],
-    [".cell9", ".cell10", ".cell11", ".cell12"],
+    [".cell01", ".cell02", ".cell03", ".cell04"],
+    [".cell05", ".cell06", ".cell07", ".cell08"],
+    [".cell09", ".cell10", ".cell11", ".cell12"],
     [".cell13", ".cell14", ".cell15", ".cell16"],
 
-    [".cell1", ".cell5", ".cell9", ".cell13"],
-    [".cell2", ".cell6", ".cell10", ".cell14"],
-    [".cell3", ".cell7", ".cell11", ".cell15"],
-    [".cell4", ".cell8", ".cell12", ".cell16"],
+    [".cell01", ".cell05", ".cell09", ".cell13"],
+    [".cell02", ".cell06", ".cell10", ".cell14"],
+    [".cell03", ".cell07", ".cell11", ".cell15"],
+    [".cell04", ".cell08", ".cell12", ".cell16"],
 
-    [".cell1", ".cell6", ".cell11", ".cell16"],
-    [".cell4", ".cell7", ".cell10", ".cell13"],
 ]
 
 function deleteAllLettersInGroup(group) {
@@ -3736,9 +3743,7 @@ function checkAllWords() {
 }
 
 function makeCells() {
-    for (let i = 1; i <= 16; i++) {
-        $(`.cell${i}`).droppable({ accept: ".letter, svg" });
-    }
+    allCells.forEach(cell => $(cell).droppable({ accept: ".letter, svg" }))
 }
 
 function makeLetter(letter) {

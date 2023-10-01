@@ -5786,6 +5786,14 @@ function randomLetter() {
     }
 }
 
+const allCells = [
+    ".cell01", ".cell02", ".cell03", ".cell04", ".cell05",
+    ".cell06", ".cell07", ".cell08", ".cell09", ".cell10",
+    ".cell11", ".cell12", ".cell13", ".cell14", ".cell15",
+    ".cell16", ".cell17", ".cell18", ".cell19", ".cell20",
+    ".cell21", ".cell22", ".cell23", ".cell24", ".cell25",
+]
+
 const cellGroups = [
     [".cell01", ".cell02", ".cell03", ".cell04", ".cell05"],
     [".cell06", ".cell07", ".cell08", ".cell09", ".cell10"],
@@ -5834,9 +5842,7 @@ function checkAllWords() {
 }
 
 function makeCells() {
-    for (let i = 1; i <= 25; i++) {
-        $(`.cell${i}`).droppable({ accept: ".letter, svg" });
-    }
+    allCells.forEach(cell => $(cell).droppable({ accept: ".letter, svg" }))
 }
 
 function makeLetter(letter) {

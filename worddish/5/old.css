@@ -16,9 +16,7 @@ body {
     justify-content: center;
 }
 
-#doubleContainer {
-    width: 275px;
-}
+
 
 #container {
     /* position: absolute; */
@@ -58,14 +56,12 @@ h1 {
     color: white;
     text-align: center;
     font-size: 40px;
-    z-index: 20;
 }
 
 #bottom {
     display: flex;
     flex-direction: row;
     align-items: center;
-    z-index: 10;
 }
 
 .text {
@@ -128,7 +124,6 @@ h1 {
 #cleans {
     width: 275px;
     text-align: center;
-    display: flex;
 }
 
 svg {
@@ -136,82 +131,9 @@ svg {
     border-radius: 10px;
     margin: 5px;
     padding: 5px;
-    z-index: 30;
-    max-width: 40px;
-}
-
-@media only screen and (min-width: 600px) {
-
-    #cleans {
-        width: 223px;
-        justify-content: center;
-    }
-
-    #cleans {
-        flex-wrap: wrap;
-    }
-
-    #cleans svg:nth-child(1),
-    #cleans svg:nth-child(2),
-    #cleans svg:nth-child(3),
-    #cleans svg:nth-child(4) {
-        flex: 1 0 16%;
-    }
-
-    #cleans svg:nth-child(n+5) {
-        max-width: 10px;
-        max-height: 10px;
-        background-color: rgb(125, 0, 0);
-    }
-
-    #donewords {
-        overflow-y: scroll;
-        -ms-overflow-style: none;
-        scrollbar-width: none;
-    }
-
-    #donewords::-webkit-scrollbar {
-        display: none;
-    }
-
 }
 
 #donewords2 {
-    display: none;
-}
-
-#instructions {
-    background-color: rgba(0, 0, 0, 0.849);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    z-index: 100;
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100vh;
-    color: white;
-    text-align: center;
-    font-size: 30px;
-}
-
-#instructions .inner {
-    width: 700px;
-}
-
-a {
-    text-decoration: none;
-    cursor: pointer;
-}
-
-#instructions-button div {
-    font-size: 22px;
-    background-color: rgba(168, 177, 185, 0.11);
-}
-
-#instructions-button2 {
     display: none;
 }
 
@@ -229,13 +151,7 @@ a {
         flex-direction: row;
         height: 80px;
         width: 100vw;
-        /* overflow-y: none; */
-    }
-
-    #donewords,
-    #objectives {
         overflow-x: scroll;
-
     }
 
     svg {
@@ -265,37 +181,4 @@ a {
         order: 2;
     }
 
-    #instructions-button {
-        display: none;
-    }
-
-    #instructions-button2 {
-        display: block;
-        position: absolute;
-        top: 0;
-        left: 0;
-    }
-
-    #instructions-button2 div {
-        width: 24px;
-        height: 24px;
-        font-size: 20px;
-        padding: 0;
-        line-height: 22px;
-        background-color: rgba(168, 177, 185, 0.226);
-    }
-
-    #instructions {
-        justify-content: flex-start;
-        padding-top: 80px;
-    }
-
-    #instructions span {
-        font-size: 22px;
-    }
-
-    #instructions .inner {
-        font-size: 22px;
-        max-width: 100vw;
-    }
 }
