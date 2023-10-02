@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]>      <html class="no-js"> <!--<![endif]-->
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>WordDish</title>
+    <meta name="description" content="Word Dish Worddish web game webgame">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="../style.css">
+    <link rel="stylesheet" href="style.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+    <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
+    <script src="jquery.ui.touch-punch.min.js"></script>
+
+</head>
+
+<body>
+    <div id="objectives"></div>
+    <div class="spacer"></div>
+    <div id="centre">
+        <h1>WordDish</h1>
+
+        <div id="doubleContainer">
+            <div id="container">
+                <table id="grid">
+                    <tr class="row1">
+                        <td class="cell cell01"></td>
+                        <td class="cell cell02"></td>
+                        <td class="cell cell03"></td>
+                        <td class="cell cell04"></td>
+                        <td class="cell cell05"></td>
+                    </tr>
+                    <tr class="row2">
+                        <td class="cell cell06"></td>
+                        <td class="cell cell07"></td>
+                        <td class="cell cell08"></td>
+                        <td class="cell cell09"></td>
+                        <td class="cell cell10"></td>
+                    </tr>
+                    <tr class="row3">
+                        <td class="cell cell11"></td>
+                        <td class="cell cell12"></td>
+                        <td class="cell cell13"></td>
+                        <td class="cell cell14"></td>
+                        <td class="cell cell15"></td>
+                    </tr>
+                    <tr class="row4">
+                        <td class="cell cell16"></td>
+                        <td class="cell cell17"></td>
+                        <td class="cell cell18"></td>
+                        <td class="cell cell19"></td>
+                        <td class="cell cell20"></td>
+                    </tr>
+                    <tr class="row5">
+                        <td class="cell cell21"></td>
+                        <td class="cell cell22"></td>
+                        <td class="cell cell23"></td>
+                        <td class="cell cell24"></td>
+                        <td class="cell cell25"></td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+        <div class="divisor"></div>
+        <div id="bottom">
+            <div class="text">
+                Next Letter:
+            </div>
+            <div id="nextLetter"></div>
+        </div>
+        <div class="divisor"></div>
+        <div id="cleans"></div>
+    </div>
+    <div class="spacer"></div>
+    <div id="donewords"></div>
+    <div id="instructions">
+        <div class="inner">
+            <a onclick="$('#instructions').hide(); $('#startGameButton').text('Return to Game')"><span id="startGameButton" class="doneword">Start Game</span></a><br /><br />
+            Drag, Mix and Match letters to form 4 letter words in the small square space you have.<br />Words cannot be repeated.<br /><br />
+            Try to complete all<br /><span class="objective">Objective Words</span><br /><br />
+            Be careful not to fill your board, but if you do, there are some cleaners on the bottom.<br />Simply drag them on top of a letter to erase it.<br /><br />
+            Made for the LUDUM DARE in October 2023!<br /><br />
+            <a href="./5/"><span class="doneword">5 letter version</span></a>
+        </div>
+    </div>
+    <div id="finish">
+        Congratulations!<br />
+        You Win!
+        <a onclick="$('#finish').hide()"><span class="doneword">Start Game</span></a><br /><br />
+        <a onclick="$('#finish').hide()"><span class="doneword">Keep Playing</span></a>
+        <a onclick="location.reload()"><span class="doneword">Restart</span></a>
+    </div>
+
+    <script src="game.js"></script>
+</body>
+
+</html>
