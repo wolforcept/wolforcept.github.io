@@ -8,6 +8,7 @@ function createElement() {
             <my-card title="Muted Tray" url="#software-mutedtray" image="./images/software/mutedtray.png"></my-card>
             <my-card title="Net Blocker" url="#software-netblocker" image="./images/software/netblocker.png"></my-card>
             <my-card title="Auto Clicker" url="#software-autoclicker" image="./images/software/autoclicker.png"></my-card>
+            <my-card title="Mini Timer" url="#software-minitimer" image="./images/software/minitimer.png"></my-card>
         </my--default>
         
         <my--atv>
@@ -60,5 +61,13 @@ function createElement() {
             </my-simplepage>
             <img src="./images/software/autoclicker_screenshot1.png">
         </my--autoclicker>
+        
+        <my--minitimer>
+            <my-simplepage title="Auto Clicker" description="A small application to keep track of your time.<br><br>The timers never stop counting, even when you shutdown the computer.<br><br>Customize your timers with text so you remember what they are."
+                image="./images/software/minitimer.png" download="./downloads/minitimer/MiniTimer.exe">
+            </my-simplepage>
+            <img src="./images/software/minitimer_screenshot2.png"><br><br>
+            <img src="./images/software/minitimer_screenshot1.png">
+        </my--minitimer>
     `
 }
