@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="ubuntu-font-family-0.83">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/aTV/ubuntu-font-family-0.83.zip!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

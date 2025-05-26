@@ -84,6 +84,7 @@ class Game {
         this.submitButton.click(e => this.submit())
         this.skipButton.click(e => this.skip())
         this.createQuestion()
+
     }
 
     // ██▀ █▄ █ ▄▀  █ █▄ █ ██▀ 
@@ -153,8 +154,10 @@ function getChampionImage(name, i = 0) {
     return `http://ddragon.leagueoflegends.com/cdn/img/champion/splash/${name}_${i}.jpg`
 }
 
-async function downloadData(version = '12.14.1') {
+async function downloadData(version = '14.19.1') {
 
+    console.log("AAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
+    
     let data = await fetch(`http://ddragon.leagueoflegends.com/cdn/${version}/data/en_US/champion.json`)
     data = await data.json()
 

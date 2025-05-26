@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="autoclicker">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/downloads/autoclicker/autoclicker.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

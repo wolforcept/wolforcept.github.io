@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="NetBlocker">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/downloads/netblocker/NetBlocker.zip!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

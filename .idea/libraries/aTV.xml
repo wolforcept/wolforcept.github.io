@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="aTV">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/downloads/atv/aTV.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

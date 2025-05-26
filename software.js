@@ -2,14 +2,29 @@ function createElement() {
     return html`
         <my--default>
             <h1>Software</h1>
-            <my-card title="aTV" url="#software-atv" image="./images/software/atv.png"></my-card>
-            <my-card title="Folder Saver" url="#software-foldersaver" image="./images/software/foldersaver.png"></my-card>
-            <my-card title="MFT" url="#software-mft" image="./images/software/mft.png"></my-card>
-            <my-card title="Muted Tray" url="#software-mutedtray" image="./images/software/mutedtray.png"></my-card>
-            <my-card title="Net Blocker" url="#software-netblocker" image="./images/software/netblocker.png"></my-card>
-            <my-card title="Auto Clicker" url="#software-autoclicker" image="./images/software/autoclicker.png"></my-card>
-            <my-card title="Mini Timer" url="#software-minitimer" image="./images/software/minitimer.png"></my-card>
+            <my-card title="aTV"                   url="#software-atv"                       image="./images/software/atv.png"></my-card>
+            <my-card title="Folder Saver"          url="#software-foldersaver"               image="./images/software/foldersaver.png"></my-card>
+            <my-card title="MFT"                   url="#software-mft"                       image="./images/software/mft.png"></my-card>
+            <my-card title="Muted Tray"            url="#software-mutedtray"                 image="./images/software/mutedtray.png"></my-card>
+            <my-card title="Net Blocker"           url="#software-netblocker"                image="./images/software/netblocker.png"></my-card>
+            <my-card title="Auto Clicker"          url="#software-autoclicker"               image="./images/software/autoclicker.png"></my-card>
+            <my-card title="Mini Timer"            url="#software-minitimer"                 image="./images/software/minitimer.png"></my-card>
+            <my-card title='AutoEP'                url='./AutoEP'                            image='./images/webgames/autoep400.png'></my-card>
         </my--default>
+        
+        <my--imagen>
+            <my-simplepage title="aTV"
+                description="aTV (animated Texture Viewer) is a micro java app to view vertical (Minecraft-compatible)<br>animated spritesheets while editing the image. Will automatically refresh when you save.<br><br>To load a new image press load.<br>Manually reloading is also possible by pressing the update button<br>Double click the image to toggle between showing GUI and not showing GUI.<br>Right click the image to choose the desired preview size."
+                image="./images/software/atv.png" download="./downloads/atv/aTV.jar">
+            </my-simplepage>
+        </my--imagen>
+        
+        <my--imagen>
+            <my-simplepage title="aTV"
+                description="aTV (animated Texture Viewer) is a micro java app to view vertical (Minecraft-compatible)<br>animated spritesheets while editing the image. Will automatically refresh when you save.<br><br>To load a new image press load.<br>Manually reloading is also possible by pressing the update button<br>Double click the image to toggle between showing GUI and not showing GUI.<br>Right click the image to choose the desired preview size."
+                image="./images/software/atv.png" download="./downloads/atv/aTV.jar">
+            </my-simplepage>
+        </my--imagen>
         
         <my--atv>
             <my-simplepage title="aTV"

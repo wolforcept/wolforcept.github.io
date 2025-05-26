@@ -8,13 +8,12 @@
 
     <link rel="icon" href="images/icon2.png">
     <link href="stylesheet.css" rel="stylesheet">
-    <script type="application/javascript" src="https://unpkg.com/react@17.0.2/umd/react.production.min.js"></script>
-    <script type="application/javascript" src="https://unpkg.com/react-dom@17.0.2/umd/react-dom.production.min.js"></script>
+    <!-- <script type="application/javascript" src="https://unpkg.com/react@17.0.2/umd/react.production.min.js"></script> -->
+    <!-- <script type="application/javascript" src="https://unpkg.com/react-dom@17.0.2/umd/react-dom.production.min.js"></script> -->
     <script type="application/javascript" src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
     <script src='./lib/jquery.min.js'></script>
 
     <script src="myweblib.js"></script>
-    <script src="news.js"></script>
 
     <style>
         h1 {
@@ -24,19 +23,34 @@
 
 </head>
 
-<body>
+<body class="hidden">
 
     <my-nav></my-nav>
 
     <div id="content">
-        <my--default id="newsPage">
-            <h1>News</h1>
-            <img id="newsImage" src="images/mig.png"></img>
+        <my--default id="software">
+            <h1>Welcome! You're probably looking for...</h1>
+            <h3>... one of these mods:</h3>
+            <p>
+                <my-card title="Simple Shops" url="https://www.curseforge.com/minecraft/mc-mods/simple-shops" image="./images/simpleshops128.png"></my-card>
+                <my-card title="Hearthwell" url="https://www.curseforge.com/minecraft/mc-mods/hearth-well" image="./images/hearthwell128.png"></my-card>
+                <my-card title="MCTCG" url="https://www.curseforge.com/minecraft/mc-mods/mctcg" image="./images/mctcg128.png"></my-card>
+                <my-card title="Megabuilds" url="https://www.curseforge.com/minecraft/mc-mods/mega-builds" image="./images/megabuilds128.png"></my-card>
+            </p>
+            <h3>... one of these games:</h3>
+            <p>
+                <my-card title='Ecogenesis' url='https://ecogenesis-app.onrender.com' image='./images/webgames/ecogenesis.png'></my-card>
+                <my-card title='WordDish' url='https://worddish.onrender.com' image='./images/webgames/worddish.png'></my-card>
+                <my-card title='LoL Blurs' url='./blurs/lol' image='./images/webgames/lolblurs128.png'></my-card>
+                <my-card title='Seedmix2' url='https://seedmix2.onrender.com' pixelated='true' image='./images/webgames/seedmix2.png'></my-card>
+                <my-card title='PokeGene 2' url='https://pokegene2.onrender.com' image='./images/webgames/pokegene.png'></my-card>
+            </p>
+            <img id="newsImage" src="images/mig.png">
         </my--default>
 
-        <my--minecraftmods newpage="true"></my--minecraftmods>
         <my--webgames newpage="true"></my--webgames>
         <my--software newpage="true"></my--software>
+        <my--minecraftmods newpage="true"></my--minecraftmods>
         <my--links newpage="true"></my--links>
         <my--other newpage="true"></my--other>
         <my--about newpage="true"></my--about>

@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="vscode-1.45.1">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/.vscode-test/vscode-1.45.1.zip!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

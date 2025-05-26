@@ -68,6 +68,11 @@ body {
     font-size: var(--font-size);
     display: flex;
     overflow: visible;
+    transition: opacity 0.5s;
+}
+
+body.hidden {
+    opacity: 0;
 }
 
 a {

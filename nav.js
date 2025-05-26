@@ -1,10 +1,10 @@
 function createElement() {
 
     const navLinks = [
-        { title: 'News', url: '', },
-        { title: 'Minecraft', url: '#minecraftmods', },
         { title: 'Games', url: '#webgames', },
         { title: 'Software', url: '#software', },
+        // { title: 'News', url: '', },
+        { title: 'Minecraft', url: '#minecraftmods', },
         { title: 'Links', url: '#links', },
         { title: 'Other', url: '#other', },
         // { title: 'About', url: '#about', },

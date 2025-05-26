@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="programmer_art">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/reference/assets/minecraft/resourcepacks/programmer_art.zip!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

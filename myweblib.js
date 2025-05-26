@@ -20,7 +20,7 @@ async function loadPage(comp, name, data) {
     });
 }
 
-async function my(comp, hash) {
+async function my(comp, hash, isTopLevel) {
 
     let tag = comp.prop('tagName').toLowerCase()
     let name = tag.substring(4)
@@ -64,6 +64,12 @@ async function my(comp, hash) {
             await my($(this), hash)
         })
     }
+
+    if (isTopLevel) {
+        setTimeout(() => {
+            $("body").removeClass("hidden");
+        }, 1);
+    }
 }
 
-$(document).ready(() => my($(`body`), getCurrentHashLoc()))
+$(document).ready(() => my($(`body`), getCurrentHashLoc(), true))

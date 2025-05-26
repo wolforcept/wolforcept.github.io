@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="mutedtray">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/downloads/mutedtray/mutedtray.zip!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

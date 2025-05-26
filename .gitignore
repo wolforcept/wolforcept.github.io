@@ -5,3 +5,5 @@ pokemonidler
 pokemonidler/*
 images/psd
 node_modules
+lolquiz/jquery.ui.touch-punch.min.js
+ignored/*

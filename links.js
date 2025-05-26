@@ -7,7 +7,7 @@ function createElement() {
     <my-card title='Github'     	url='https://github.com/wolforcept?tab=repositories'        image='./images/github256white.png'></my-card>
     <my-card title='Youtube'    	url='https://www.youtube.com/c/Wolforce'                    image='./images/youtube.jpg'></my-card>
     <my-card title='Patreon'    	url='https://www.patreon.com/wolforce'                      image='./images/patreon.svg'></my-card>
-    <my-card title='Twitter'    	url='https://twitter.com/wolforcept'                        image='./images/twitter.png'></my-card>
+    <!-- <my-card title='Twitter'    	url='https://twitter.com/wolforcept'                        image='./images/twitter.png'></my-card> -->
     <!-- <my-card title='Deviantart' 	url='https://www.deviantart.com/wolforce'                   image='./images/deviantart512.png'></my-card> -->
     <my-card title='Twitch'     	url='https://www.twitch.tv/wolforce'                        image='./images/twitch.jpg'></my-card>
     <my-card title='Soundcloud' 	url='https://soundcloud.com/wolforce'                       image='./images/soundcloud.png'></my-card>

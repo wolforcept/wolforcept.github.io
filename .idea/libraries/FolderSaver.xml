@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="FolderSaver">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/downloads/foldersaver/FolderSaver.zip!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>
