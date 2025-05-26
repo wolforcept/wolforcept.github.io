@@ -111,6 +111,12 @@ h3 {
     background-color: var(--link-lighter-background-color);
 }
 
+my--default img {
+    position: absolute;
+    right: 0;
+    top: 0;
+}
+
 /* 
 █▄ █ ▄▀▄ █ █ 
 █ ▀█ █▀█ ▀▄▀  
