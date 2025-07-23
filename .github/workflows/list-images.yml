@@ -1,0 +1,25 @@
+name: Generate Image List
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  generate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Generate image list JSON
+        run: |
+          mkdir -p output
+          find images \( -iname "*.png" -o -iname "*.jpg" -o -iname "*.jpeg" -o -iname "*.gif" \) \
+            | jq -R -s -c 'split("\n") | map(select(length > 0))' > image-list.json
+
+      - name: Commit and push changes
+        uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: "Update image list"
+          file_pattern: image-list.json
