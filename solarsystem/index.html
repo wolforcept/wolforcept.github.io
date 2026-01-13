@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Solar System to Scale</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.4.0/p5.min.js"></script>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+        }
+
+        canvas {
+            display: block;
+        }
+    </style>
+</head>
+
+<body>
+    <script>
+
+        const planets = [
+            { name: "Sun",          /**/ size: 1391.499,   /**/ distance: 0,            /**/ color: { r: 255, g: 220, b: 0 } },
+            { name: "Mercury",      /**/ size: 4.879,      /**/ distance: 57900,     /**/ color: { r: 169, g: 169, b: 169 } },
+            { name: "Venus",        /**/ size: 12.104,     /**/ distance: 108200,    /**/ color: { r: 230, g: 200, b: 140 } },
+            { name: "Earth",        /**/ size: 12.756,     /**/ distance: 149600,    /**/ color: { r: 100, g: 150, b: 255 } },
+            { name: "Mars",         /**/ size: 6.792,      /**/ distance: 227900,    /**/ color: { r: 193, g: 68, b: 14 } },
+            { name: "Jupiter",      /**/ size: 142.984,    /**/ distance: 778600,    /**/ color: { r: 216, g: 202, b: 157 } },
+            { name: "Saturn",       /**/ size: 120.536,    /**/ distance: 1433500,   /**/ color: { r: 250, g: 227, b: 171 } },
+            { name: "Uranus",       /**/ size: 41.118,     /**/ distance: 2872500,   /**/ color: { r: 79, g: 208, b: 231 } },
+            { name: "Neptune",      /**/ size: 49.528,     /**/ distance: 4495100,   /**/ color: { r: 62, g: 84, b: 232 } },
+            { name: "Pluto",        /**/ size: 2.390,      /**/ distance: 7375930,   /**/ color: { r: 162, g: 162, b: 162 } },
+            { name: "Eris",         /**/ size: 2.326,      /**/ distance: 10126000,  /**/ color: { r: 162, g: 162, b: 162 } },
+        ]
+
+        let zoom = 1 / 200;
+        let panX = 0;
+        let panY = 0;
+        let isDragging = false;
+        let dragStartX = 0;
+        let dragStartY = 0;
+
+        function setup() {
+            createCanvas(windowWidth, windowHeight);
+            panX = 100
+            panY = windowHeight / 2
+        }
+
+        // Convert world coordinates to screen coordinates
+        function worldToScreen(worldX, worldY) {
+            return {
+                x: worldX * zoom + panX,
+                y: worldY * zoom + panY
+            };
+        }
+
+        function draw() {
+            background(0);
+
+            // Draw horizontal line in screen space
+            let leftPoint = worldToScreen(-10000000000, 0);
+            let rightPoint = worldToScreen(10000000000, 0);
+            stroke(100);
+            strokeWeight(1);
+            line(leftPoint.x, leftPoint.y, rightPoint.x, rightPoint.y);
+
+            let i = 0
+            // Draw planets in screen space
+            for (let planet of planets) {
+                let planetScreen = worldToScreen(planet.distance, 0);
+                let planetRadius = planet.size * zoom / 2;
+
+                // Draw orbit
+                let center = worldToScreen(0, 0);
+                let orbitRadius = planet.distance * zoom;
+                noFill();
+                stroke(color(planet.color.r, planet.color.g, planet.color.b, 255));
+                ellipse(center.x, center.y, orbitRadius * 2);
+
+                // Draw planet
+                noStroke();
+                fill(color(planet.color.r, planet.color.g, planet.color.b, 255));
+                ellipse(planetScreen.x, planetScreen.y, planetRadius * 2);
+
+                // Draw name
+                fill(255);
+                noStroke();
+                textAlign(CENTER, TOP);
+                textSize(12);
+                if (orbitRadius > 20 || planet.name === "Sun") {
+                    text(planet.name, planetScreen.x, planetScreen.y + planetRadius + 5);
+                }
+
+            }
+
+            // Instructions
+            fill(255);
+            noStroke();
+            textSize(14);
+            textAlign(LEFT, TOP);
+            text('Solar System to Scale\nDrag to pan the map\nScroll to zoom in/out', 10, 10);
+        }
+
+        function mousePressed() {
+            isDragging = true;
+            dragStartX = mouseX - panX;
+            dragStartY = mouseY - panY;
+        }
+
+        function mouseDragged() {
+            if (isDragging) {
+                panX = mouseX - dragStartX;
+                panY = mouseY - dragStartY;
+            }
+        }
+
+        function mouseReleased() {
+            isDragging = false;
+        }
+
+        function mouseWheel(event) {
+            // Zoom towards mouse position
+            let zoomFactor = event.delta > 0 ? 0.85 : 1.15;
+            let newZoom = zoom * zoomFactor;
+
+            // Adjust pan to zoom towards mouse
+            panX = mouseX - (mouseX - panX) * (newZoom / zoom);
+            panY = mouseY - (mouseY - panY) * (newZoom / zoom);
+
+            zoom = newZoom;
+
+            return false; // Prevent default scrolling
+        }
+
+        function windowResized() {
+            resizeCanvas(windowWidth, windowHeight);
+        }
+    </script>
+</body>
+
+</html>
