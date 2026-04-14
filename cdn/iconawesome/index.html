@@ -1,0 +1,664 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ia — Icon Reference</title>
+    <link rel="stylesheet" href="ia.css">
+    <style>
+
+        @import url('https://fonts.googleapis.com/css2?family=Inconsolata:wght@200..900&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap');
+
+        :root {
+            --bg: #0d0f14;
+            --surface: #161920;
+            --surface2: #1e222c;
+            --border: rgba(255, 255, 255, 0.07);
+            --border-hover: rgba(255, 255, 255, 0.16);
+            --text: #e8e9ec;
+            --muted: #6b7280;
+            --accent: #c9a84c;
+            --accent-dim: rgba(201, 168, 76, 0.10);
+            --accent-glow: rgba(201, 168, 76, 0.22);
+            --radius: 10px;
+            --font-body: 'Roboto', serif;
+            --font-ui: 'Inconsolata', monospace;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background: var(--bg);
+            color: var(--text);
+            font-family: var(--font-body);
+            min-height: 100vh;
+        }
+
+        /* ── HEADER ── */
+        header {
+            padding: 3rem 2rem 2rem;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: flex-end;
+            justify-content: space-between;
+            gap: 2rem;
+            flex-wrap: wrap;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .header-left h1 {
+            font-family: var(--font-ui);
+            font-size: 2rem;
+            font-weight: normal;
+            letter-spacing: 0.08em;
+            color: var(--accent);
+        }
+
+        .header-left p {
+            font-size: 0.85rem;
+            color: var(--muted);
+            margin-top: 0.4rem;
+            font-family: var(--font-ui);
+            letter-spacing: 0.04em;
+        }
+
+        .header-left p span {
+            color: var(--accent);
+            font-weight: bold;
+        }
+
+        .search-wrap {
+            position: relative;
+            flex: 1;
+            max-width: 380px;
+            min-width: 200px;
+        }
+
+        .search-wrap input {
+            width: 100%;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            color: var(--text);
+            font-family: var(--font-ui);
+            font-size: 0.875rem;
+            padding: 0.65rem 1rem 0.65rem 2.75rem;
+            outline: none;
+            transition: border-color 0.2s;
+            letter-spacing: 0.04em;
+        }
+
+        .search-wrap input:focus {
+            border-color: var(--accent);
+        }
+
+        .search-wrap input::placeholder {
+            color: var(--muted);
+        }
+
+        .search-icon {
+            position: absolute;
+            left: 0.85rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--muted);
+            font-size: 0.9rem;
+            pointer-events: none;
+        }
+
+        /* ── PREVIEW PANEL ── */
+        #preview {
+            max-width: 1400px;
+            margin: 0 auto;
+            overflow: hidden;
+            max-height: 0;
+            transition: max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.3s ease;
+            opacity: 0;
+        }
+
+        #preview.open {
+            max-height: 340px;
+            opacity: 1;
+        }
+
+        .preview-inner {
+            display: flex;
+            align-items: center;
+            gap: 3rem;
+            padding: 2.5rem 2rem;
+            border-bottom: 1px solid var(--border);
+            position: relative;
+        }
+
+        .preview-icon-wrap {
+            flex-shrink: 0;
+            width: 140px;
+            height: 140px;
+            background: var(--surface);
+            border: 1px solid var(--border-hover);
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* subtle radial glow behind the icon */
+        .preview-icon-wrap::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(ellipse at 50% 60%, var(--accent-glow) 0%, transparent 68%);
+            pointer-events: none;
+        }
+
+        .big-icon {
+            font-size: 5.5rem;
+            color: var(--accent);
+            line-height: 1;
+            position: relative;
+            z-index: 1;
+        }
+
+        .big-icon.animate {
+            animation: icon-pop 0.32s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+        }
+
+        .preview-info {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .preview-name {
+            font-family: var(--font-ui);
+            font-size: 1.6rem;
+            color: var(--text);
+            letter-spacing: 0.07em;
+        }
+
+        .preview-rows {
+            display: flex;
+            flex-direction: column;
+            gap: 0.55rem;
+            margin-top: 1.1rem;
+        }
+
+        .preview-row {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .preview-label {
+            font-family: var(--font-ui);
+            font-size: 0.68rem;
+            color: var(--muted);
+            letter-spacing: 0.09em;
+            text-transform: uppercase;
+            width: 56px;
+            flex-shrink: 0;
+        }
+
+        .preview-value {
+            font-family: var(--font-ui);
+            font-size: 0.82rem;
+            color: var(--text);
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            padding: 0.3rem 0.75rem;
+            letter-spacing: 0.04em;
+            cursor: pointer;
+            transition: border-color 0.15s, color 0.15s, background 0.15s;
+            user-select: all;
+        }
+
+        .preview-value:hover {
+            border-color: var(--accent);
+            background: var(--accent-dim);
+        }
+
+        .preview-value.flashed {
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+
+        .copy-hint {
+            font-family: var(--font-ui);
+            font-size: 0.63rem;
+            color: var(--muted);
+            letter-spacing: 0.05em;
+            opacity: 0.65;
+        }
+
+        .preview-close {
+            position: absolute;
+            top: 1.25rem;
+            right: 1.5rem;
+            background: none;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            color: var(--muted);
+            font-family: var(--font-ui);
+            font-size: 0.72rem;
+            letter-spacing: 0.06em;
+            padding: 0.3rem 0.7rem;
+            cursor: pointer;
+            transition: border-color 0.15s, color 0.15s;
+        }
+
+        .preview-close:hover {
+            border-color: var(--border-hover);
+            color: var(--text);
+        }
+
+        .preview-nav {
+            display: flex;
+            gap: 0.5rem;
+            margin-top: 1.2rem;
+        }
+
+        .nav-btn {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            color: var(--muted);
+            font-family: var(--font-ui);
+            font-size: 0.72rem;
+            letter-spacing: 0.06em;
+            padding: 0.3rem 0.85rem;
+            cursor: pointer;
+            transition: border-color 0.15s, color 0.15s;
+        }
+
+        .nav-btn:hover:not(:disabled) {
+            border-color: var(--border-hover);
+            color: var(--text);
+        }
+
+        .nav-btn:disabled {
+            opacity: 0.22;
+            cursor: default;
+        }
+
+        /* ── MAIN ── */
+        main {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .meta-bar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 1.5rem;
+            font-family: var(--font-ui);
+            font-size: 0.78rem;
+            color: var(--muted);
+            letter-spacing: 0.05em;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+            gap: 10px;
+        }
+
+        .card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 1rem 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.75rem;
+            cursor: pointer;
+            transition: border-color 0.18s, background 0.18s, transform 0.12s;
+            position: relative;
+            user-select: none;
+            animation: fade-in 0.25s ease both;
+        }
+
+        .card:hover {
+            border-color: var(--border-hover);
+            background: var(--surface2);
+            transform: translateY(-1px);
+        }
+
+        .card.active {
+            border-color: var(--accent);
+            background: var(--accent-dim);
+        }
+
+        .card .icon {
+            font-size: 3rem;
+            color: var(--text);
+            line-height: 1;
+            transition: color 0.18s;
+        }
+
+        .card:hover .icon,
+        .card.active .icon {
+            color: var(--accent);
+        }
+
+        .card .name {
+            font-family: var(--font-ui);
+            font-size: 0.75rem;
+            color: var(--text);
+            text-align: center;
+            letter-spacing: 0.04em;
+            word-break: break-word;
+            line-height: 1.4;
+        }
+
+        .card:hover .name {
+            color: var(--accent);
+        }
+
+        .empty {
+            grid-column: 1 / -1;
+            text-align: center;
+            padding: 5rem 2rem;
+            font-family: var(--font-ui);
+            font-size: 0.85rem;
+            color: var(--muted);
+            letter-spacing: 0.06em;
+        }
+
+        .error-msg {
+            background: #1a0f0f;
+            border: 1px solid #4a1515;
+            border-radius: var(--radius);
+            padding: 1.25rem 1.5rem;
+            font-family: var(--font-ui);
+            font-size: 0.82rem;
+            color: #d98080;
+            line-height: 1.7;
+            letter-spacing: 0.03em;
+        }
+
+        @keyframes fade-in {
+            from {
+                opacity: 0;
+                transform: translateY(6px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes icon-pop {
+            0% {
+                transform: scale(0.65);
+                opacity: 0;
+            }
+
+            65% {
+                transform: scale(1.1);
+                opacity: 1;
+            }
+
+            100% {
+                transform: scale(1);
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <header>
+        <div class="header-left">
+            <h1>ia_icons</h1>
+            <p>parsed from <span>ia.css</span> — click any card to preview</p>
+        </div>
+        <div class="search-wrap">
+            <span class="search-icon">&#9906;</span>
+            <input type="text" id="search" placeholder="search icons..." autocomplete="off" spellcheck="false">
+        </div>
+    </header>
+
+    <div id="preview">
+        <div class="preview-inner">
+            <button class="preview-close" id="preview-close">✕ close</button>
+
+            <div class="preview-icon-wrap">
+                <span class="big-icon" id="preview-big-icon"></span>
+            </div>
+
+            <div class="preview-info">
+                <div class="preview-name" id="preview-name"></div>
+                <div class="preview-rows">
+                    <div class="preview-row">
+                        <span class="preview-label">class</span>
+                        <code class="preview-value" id="preview-class"></code>
+                        <span class="copy-hint">click to copy</span>
+                    </div>
+                    <div class="preview-row">
+                        <span class="preview-label">html</span>
+                        <code class="preview-value" id="preview-html"></code>
+                        <span class="copy-hint">click to copy</span>
+                    </div>
+                    <div class="preview-row">
+                        <span class="preview-label">unicode</span>
+                        <code class="preview-value" id="preview-code"></code>
+                    </div>
+                </div>
+                <div class="preview-nav">
+                    <button class="nav-btn" id="nav-prev">← prev</button>
+                    <button class="nav-btn" id="nav-next">next →</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <main>
+        <div class="meta-bar">
+            <span id="count-label">loading...</span>
+            <span id="filter-label"></span>
+        </div>
+        <div id="grid" class="grid"></div>
+    </main>
+
+    <script>
+        (async function () {
+            const grid = document.getElementById('grid');
+            const countLabel = document.getElementById('count-label');
+            const filterLabel = document.getElementById('filter-label');
+            const searchInput = document.getElementById('search');
+            const preview = document.getElementById('preview');
+            const bigIcon = document.getElementById('preview-big-icon');
+            const previewName = document.getElementById('preview-name');
+            const previewCls = document.getElementById('preview-class');
+            const previewHtml = document.getElementById('preview-html');
+            const previewCode = document.getElementById('preview-code');
+            const btnClose = document.getElementById('preview-close');
+            const btnPrev = document.getElementById('nav-prev');
+            const btnNext = document.getElementById('nav-next');
+
+            let allIcons = [];
+            let filteredList = [];
+            let activeIndex = -1;
+
+            /* ── LOAD & PARSE CSS ── */
+            async function loadIcons() {
+                let cssText;
+                try {
+                    const res = await fetch('ia.css?nocache=' + Date.now());
+                    if (!res.ok) throw new Error('HTTP ' + res.status);
+                    cssText = await res.text();
+                } catch (e) {
+                    grid.innerHTML = `<div class="error-msg">
+        Could not load <strong>ia.css</strong>.<br>
+        Make sure this file is hosted alongside ia.css (same directory).<br>
+        Error: ${e.message}
+      </div>`;
+                    countLabel.textContent = 'error';
+                    return;
+                }
+
+                const regex = /\.(ia-[\w-]+)::before\s*\{[^}]*content:\s*["']([^"']+)["']/g;
+                let m;
+                while ((m = regex.exec(cssText)) !== null) {
+                    allIcons.push({ cls: m[1], name: m[1].replace('ia-', ''), code: m[2] });
+                }
+
+                countLabel.textContent = allIcons.length + ' icons total';
+                render('');
+                routeFromHash();
+            }
+
+            /* ── RENDER GRID ── */
+            function render(query) {
+                const q = query.toLowerCase().trim();
+                filteredList = q ? allIcons.filter(i => i.name.includes(q)) : allIcons.slice();
+
+                filterLabel.textContent = q
+                    ? filteredList.length + ' match' + (filteredList.length !== 1 ? 'es' : '')
+                    : '';
+
+                if (filteredList.length === 0) {
+                    grid.innerHTML = `<div class="empty">no icons match "${q}"</div>`;
+                    return;
+                }
+
+                grid.innerHTML = '';
+                filteredList.forEach((icon, i) => {
+                    const card = document.createElement('div');
+                    card.className = 'card';
+                    card.dataset.cls = icon.cls;
+                    card.style.animationDelay = Math.min(i * 10, 280) + 'ms';
+                    card.innerHTML = `
+        <span class="icon ${icon.cls}"></span>
+        <span class="name">${icon.name}</span>
+      `;
+                    card.addEventListener('click', () => {
+                        window.location.hash = icon.cls;
+                    });
+                    grid.appendChild(card);
+                });
+
+                highlightCard();
+            }
+
+            /* ── OPEN PREVIEW ── */
+            function openPreview(icon, idx) {
+                activeIndex = idx;
+
+                // restart pop animation
+                bigIcon.className = 'big-icon';
+                void bigIcon.offsetWidth;
+                bigIcon.className = 'big-icon animate ' + icon.cls;
+
+                previewName.textContent = icon.name;
+                previewCls.textContent = icon.cls;
+                previewHtml.textContent = `<span class="${icon.cls}"></span>`;
+                previewCode.textContent = icon.code;
+
+                btnPrev.disabled = idx <= 0;
+                btnNext.disabled = idx >= filteredList.length - 1;
+
+                preview.classList.add('open');
+                highlightCard();
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            }
+
+            /* ── CLOSE PREVIEW ── */
+            function closePreview() {
+                preview.classList.remove('open');
+                activeIndex = -1;
+                highlightCard();
+                // remove hash without adding history entry
+                history.replaceState(null, '', window.location.pathname + window.location.search);
+            }
+
+            /* ── HIGHLIGHT ACTIVE CARD ── */
+            function highlightCard() {
+                document.querySelectorAll('.card.active').forEach(c => c.classList.remove('active'));
+                if (activeIndex >= 0 && filteredList[activeIndex]) {
+                    const el = grid.querySelector(`[data-cls="${filteredList[activeIndex].cls}"]`);
+                    if (el) el.classList.add('active');
+                }
+            }
+
+            /* ── HASH ROUTER ── */
+            function routeFromHash() {
+                const hash = window.location.hash.slice(1);
+                if (!hash) { closePreview(); return; }
+
+                let idx = filteredList.findIndex(i => i.cls === hash);
+
+                if (idx < 0) {
+                    // icon not in filtered view: clear search and retry
+                    const exists = allIcons.find(i => i.cls === hash);
+                    if (exists) {
+                        searchInput.value = '';
+                        render('');
+                        idx = filteredList.findIndex(i => i.cls === hash);
+                    }
+                }
+
+                if (idx >= 0) openPreview(filteredList[idx], idx);
+            }
+
+            window.addEventListener('hashchange', routeFromHash);
+
+            /* ── NAV BUTTONS ── */
+            btnPrev.addEventListener('click', () => {
+                if (activeIndex > 0) window.location.hash = filteredList[activeIndex - 1].cls;
+            });
+            btnNext.addEventListener('click', () => {
+                if (activeIndex < filteredList.length - 1) window.location.hash = filteredList[activeIndex + 1].cls;
+            });
+
+            /* ── CLOSE BUTTON & ESCAPE ── */
+            btnClose.addEventListener('click', closePreview);
+
+            document.addEventListener('keydown', e => {
+                if (e.key === 'Escape') { closePreview(); return; }
+                if (activeIndex < 0) return;
+                if (e.key === 'ArrowRight' || e.key === 'ArrowDown') {
+                    e.preventDefault();
+                    if (activeIndex < filteredList.length - 1) window.location.hash = filteredList[activeIndex + 1].cls;
+                }
+                if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') {
+                    e.preventDefault();
+                    if (activeIndex > 0) window.location.hash = filteredList[activeIndex - 1].cls;
+                }
+            });
+
+            /* ── COPY ON CLICK ── */
+            function makeCopyable(el) {
+                el.addEventListener('click', () => {
+                    navigator.clipboard.writeText(el.textContent).catch(() => { });
+                    el.classList.add('flashed');
+                    setTimeout(() => el.classList.remove('flashed'), 900);
+                });
+            }
+            makeCopyable(previewCls);
+            makeCopyable(previewHtml);
+
+            /* ── SEARCH ── */
+            searchInput.addEventListener('input', () => {
+                render(searchInput.value);
+                if (window.location.hash) routeFromHash();
+            });
+
+            loadIcons();
+        })();
+    </script>
+</body>
+
+</html>
