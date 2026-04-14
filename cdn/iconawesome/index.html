@@ -7,7 +7,6 @@
     <title>ia — Icon Reference</title>
     <link rel="stylesheet" href="ia.css">
     <style>
-
         @import url('https://fonts.googleapis.com/css2?family=Inconsolata:wght@200..900&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap');
 
         :root {
@@ -387,6 +386,16 @@
             letter-spacing: 0.03em;
         }
 
+        #subtitle {
+            cursor: pointer;
+            color: var(--text);
+        }
+
+        #subtitle:hover {
+            color: var(--accent);
+            cursor: pointer;
+        }
+
         @keyframes fade-in {
             from {
                 opacity: 0;
@@ -421,8 +430,26 @@
 
     <header>
         <div class="header-left">
-            <h1>ia_icons</h1>
-            <p>parsed from <span>ia.css</span> — click any card to preview</p>
+            <h1>Icon Awesome</h1>
+            <p id="subtitle">https://wolforcept.github.io/cdn/iconawesome/ia.css</p>
+            <script>
+                const subtitle = document.getElementById("subtitle");
+
+                subtitle.addEventListener("click", () => {
+                    const original = subtitle.textContent;
+
+                    navigator.clipboard.writeText(original);
+
+                    subtitle.textContent = "Copied!";
+                    subtitle.style.transition = "transform 0.2s ease, opacity 0.2s ease";
+                    subtitle.style.opacity = "0.7";
+
+                    setTimeout(() => {
+                        subtitle.textContent = original;
+                        subtitle.style.opacity = "1";
+                    }, 600);
+                });
+            </script>
         </div>
         <div class="search-wrap">
             <span class="search-icon">&#9906;</span>
