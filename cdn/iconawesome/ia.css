@@ -1,11 +1,11 @@
 @font-face {
   font-family: "ia";
-  src: url('ia.eot?t=1779978761394'); /* IE9*/
-  src: url('ia.eot?t=1779978761394#iefix') format('embedded-opentype') /* IE6-IE8 */,
-  url('ia.woff2?t=1779978761394') format('woff2'),
-  url('ia.woff?t=1779978761394') format('woff'),
-  url('ia.ttf?t=1779978761394') format('truetype'),
-  url('ia.svg?t=1779978761394') format('svg');
+  src: url('ia.eot?t=1779985468636'); /* IE9*/
+  src: url('ia.eot?t=1779985468636#iefix') format('embedded-opentype') /* IE6-IE8 */,
+  url('ia.woff2?t=1779985468636') format('woff2'),
+  url('ia.woff?t=1779985468636') format('woff'),
+  url('ia.ttf?t=1779985468636') format('truetype'),
+  url('ia.svg?t=1779985468636') format('svg');
 }
 
 [class^="ia-"], [class*=" ia-"] {
@@ -170,9 +170,10 @@
 .ia-wand::before { content: "\ea98"; }
 .ia-water::before { content: "\ea99"; }
 .ia-whip::before { content: "\ea9a"; }
-.ia-windmill::before { content: "\ea9b"; }
-.ia-winged-shield::before { content: "\ea9c"; }
-.ia-world::before { content: "\ea9d"; }
-.ia-yinyang::before { content: "\ea9e"; }
+.ia-windmill-blade::before { content: "\ea9b"; }
+.ia-windmill::before { content: "\ea9c"; }
+.ia-winged-shield::before { content: "\ea9d"; }
+.ia-world::before { content: "\ea9e"; }
+.ia-yinyang::before { content: "\ea9f"; }
 
 
