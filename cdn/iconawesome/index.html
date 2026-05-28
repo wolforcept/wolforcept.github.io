@@ -679,8 +679,15 @@
 
             /* ── SEARCH ── */
             searchInput.addEventListener('input', () => {
+                const activeCls = activeIndex >= 0 && filteredList[activeIndex]
+                    ? filteredList[activeIndex].cls
+                    : null;
                 render(searchInput.value);
-                if (window.location.hash) routeFromHash();
+                // Re-open the previously selected icon if it still exists in the new filtered list
+                if (activeCls) {
+                    const newIdx = filteredList.findIndex(i => i.cls === activeCls);
+                    if (newIdx >= 0) openPreview(filteredList[newIdx], newIdx);
+                }
             });
 
             loadIcons();
