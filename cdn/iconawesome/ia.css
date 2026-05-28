@@ -1,11 +1,11 @@
 @font-face {
   font-family: "ia";
-  src: url('ia.eot?t=1779963981711'); /* IE9*/
-  src: url('ia.eot?t=1779963981711#iefix') format('embedded-opentype') /* IE6-IE8 */,
-  url('ia.woff2?t=1779963981711') format('woff2'),
-  url('ia.woff?t=1779963981711') format('woff'),
-  url('ia.ttf?t=1779963981711') format('truetype'),
-  url('ia.svg?t=1779963981711') format('svg');
+  src: url('ia.eot?t=1779966383720'); /* IE9*/
+  src: url('ia.eot?t=1779966383720#iefix') format('embedded-opentype') /* IE6-IE8 */,
+  url('ia.woff2?t=1779966383720') format('woff2'),
+  url('ia.woff?t=1779966383720') format('woff'),
+  url('ia.ttf?t=1779966383720') format('truetype'),
+  url('ia.svg?t=1779966383720') format('svg');
 }
 
 [class^="ia-"], [class*=" ia-"] {
