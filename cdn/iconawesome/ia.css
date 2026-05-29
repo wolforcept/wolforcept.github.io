@@ -1,11 +1,11 @@
 @font-face {
   font-family: "ia";
-  src: url('ia.eot?t=1779988505929'); /* IE9*/
-  src: url('ia.eot?t=1779988505929#iefix') format('embedded-opentype') /* IE6-IE8 */,
-  url('ia.woff2?t=1779988505929') format('woff2'),
-  url('ia.woff?t=1779988505929') format('woff'),
-  url('ia.ttf?t=1779988505929') format('truetype'),
-  url('ia.svg?t=1779988505929') format('svg');
+  src: url('ia.eot?t=1780095783693'); /* IE9*/
+  src: url('ia.eot?t=1780095783693#iefix') format('embedded-opentype') /* IE6-IE8 */,
+  url('ia.woff2?t=1780095783693') format('woff2'),
+  url('ia.woff?t=1780095783693') format('woff'),
+  url('ia.ttf?t=1780095783693') format('truetype'),
+  url('ia.svg?t=1780095783693') format('svg');
 }
 
 [class^="ia-"], [class*=" ia-"] {
@@ -132,20 +132,20 @@
 .ia-pot::before { content: "\ea72"; }
 .ia-potion::before { content: "\ea73"; }
 .ia-quarry::before { content: "\ea74"; }
-.ia-recycle-tank::before { content: "\ea75"; }
-.ia-rift::before { content: "\ea76"; }
-.ia-ring::before { content: "\ea77"; }
-.ia-rock-2::before { content: "\ea78"; }
-.ia-rock::before { content: "\ea79"; }
-.ia-runic-blade::before { content: "\ea7a"; }
-.ia-sceptre::before { content: "\ea7b"; }
-.ia-scroll::before { content: "\ea7c"; }
-.ia-scythe::before { content: "\ea7d"; }
-.ia-search::before { content: "\ea7e"; }
-.ia-shack::before { content: "\ea7f"; }
-.ia-shield::before { content: "\ea80"; }
-.ia-skeleton::before { content: "\ea81"; }
-.ia-skelleton::before { content: "\ea82"; }
+.ia-question-mark::before { content: "\ea75"; }
+.ia-recycle-tank::before { content: "\ea76"; }
+.ia-rift::before { content: "\ea77"; }
+.ia-ring::before { content: "\ea78"; }
+.ia-rock-2::before { content: "\ea79"; }
+.ia-rock::before { content: "\ea7a"; }
+.ia-runic-blade::before { content: "\ea7b"; }
+.ia-sceptre::before { content: "\ea7c"; }
+.ia-scroll::before { content: "\ea7d"; }
+.ia-scythe::before { content: "\ea7e"; }
+.ia-search::before { content: "\ea7f"; }
+.ia-shack::before { content: "\ea80"; }
+.ia-shield::before { content: "\ea81"; }
+.ia-skeleton::before { content: "\ea82"; }
 .ia-slingshot::before { content: "\ea83"; }
 .ia-solar-panel::before { content: "\ea84"; }
 .ia-solar::before { content: "\ea85"; }
@@ -171,10 +171,11 @@
 .ia-wand::before { content: "\ea99"; }
 .ia-water::before { content: "\ea9a"; }
 .ia-whip::before { content: "\ea9b"; }
-.ia-windmill-blade::before { content: "\ea9c"; }
-.ia-windmill::before { content: "\ea9d"; }
-.ia-winged-shield::before { content: "\ea9e"; }
-.ia-world::before { content: "\ea9f"; }
-.ia-yinyang::before { content: "\eaa0"; }
+.ia-wind-blade::before { content: "\ea9c"; }
+.ia-wind-tower::before { content: "\ea9d"; }
+.ia-windmill::before { content: "\ea9e"; }
+.ia-winged-shield::before { content: "\ea9f"; }
+.ia-world::before { content: "\eaa0"; }
+.ia-yinyang::before { content: "\eaa1"; }
 
 
