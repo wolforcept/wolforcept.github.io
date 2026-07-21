@@ -1,353 +1,783 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-    <meta charset="UTF-8" />
-    <title>Simple Image Gallery</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Image Browser</title>
 
-    <style>
-        body {
-            margin: 0;
-            font-family: sans-serif;
-            display: flex;
-            height: 100vh;
-            background-color: #222223;
-        }
+  <!-- WebAwesome (autoloader — components load on demand) -->
+  <link rel="stylesheet" href="https://ka-f.webawesome.com/webawesome@3.10.0/styles/webawesome.css" />
+  <script type="module" src="https://ka-f.webawesome.com/webawesome@3.10.0/webawesome.loader.js"></script>
 
-        #sidebar {
-            width: 25%;
-            overflow-y: auto;
-            padding: 1rem;
-            display: flex;
-            flex-flow: wrap;
-            gap: 10px;
-        }
+  <!-- Icon Awesome (self-hosted icon webfont — used via ia-<name> classes) -->
+  <link rel="stylesheet" href="https://wolforcept.github.io/cdn/iconawesome/ia.css" />
 
-        .imgHolder {
-            cursor: pointer;
-            border: 1px solid #b0bcc955;
-            border-radius: 10px;
-            overflow: hidden;
-        }
+  <!-- ═══════════════════════════════════════════════════════════════════ -->
+  <!-- ██  STYLE  ██████████████████████████████████████████████████████████ -->
+  <!-- ═══════════════════════════════════════════════════════════════════ -->
+  <style>
+    :root {
+      --gap: 1rem;
+      --thumb-radius: var(--wa-border-radius-m, 0.5rem);
+    }
 
-        /*
-            MAIN
-        */
+    * { box-sizing: border-box; }
 
-        #preview {
-            flex-grow: 1;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-        }
+    /* Make the [hidden] attribute win over the display rules below. */
+    [hidden] { display: none !important; }
 
-        #main-image {
-            height: 100%;
-            width: 100%;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: space-evenly;
+    body {
+      margin: 0;
+      font-family: var(--wa-font-family-body, system-ui, sans-serif);
+      background: var(--wa-color-surface-default, #fff);
+      color: var(--wa-color-text-normal, #1a1a1a);
+    }
 
-            max-width: 90%;
-            max-height: 90%;
-        }
+    /* ---------------------------------------------------------- Header */
+    .app-header {
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      padding: 0.75rem 1.25rem;
+      background: var(--wa-color-surface-default, #fff);
+      border-bottom: 1px solid var(--wa-color-neutral-border-normal, #e0e0e0);
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: var(--gap);
+    }
 
-        .subText {
-            color: #b0bcc9;
-            text-decoration: none;
-            padding: 10px;
-            border-radius: 10px;
-            cursor: pointer;
-        }
+    #breadcrumb { min-width: 0; }
+    #mode-toggle { flex-shrink: 0; }
 
-        .copyText {
-            color: #b0bcc9;
-            text-decoration: none;
-            border: 1px solid #b0bcc9;
-            padding: 10px;
-            border-radius: 10px;
-            cursor: pointer;
-        }
+    /* ------------------------------------------------------------ Main */
+    #main { padding: 1.25rem; max-width: 1400px; margin: 0 auto; }
 
-        /*
-        TREE
-        */
+    .state {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 0.75rem;
+      padding: 4rem 1rem;
+      color: var(--wa-color-text-quiet, #666);
+      text-align: center;
+    }
 
-        .treeFolder {
-            color: white;
-            border-left: 1px solid #ffffff55;
-            border-bottom: 1px solid #ffffff55;
-            margin-bottom: 4px;
-            padding: 10px 10px 10px 10px;
-        }
+    /* --------------------------------------------------------- Folders */
+    .folders {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+      margin-bottom: 1.5rem;
+    }
 
-        .treeFolderChildren {
-            display: flex;
-            flex-wrap: wrap;
-        }
+    .folder-card { min-width: 200px; }
 
-        .treeFile {
-            color: rgb(190, 190, 190);
-            padding: 1px;
-            cursor: pointer;
+    .folder-card__body {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
 
-            width: 64px;
-            height: 64px;
-            display: flex;
-            flex-direction: row;
-            align-items: center;
-            justify-content: center;
+    .folder-card__icon { font-size: 1.75rem; line-height: 1; color: var(--wa-color-brand-fill-loud, #c9a84c); }
 
-        }
+    .folder-card__meta { display: flex; flex-direction: column; }
+    .folder-card__name { font-weight: 600; }
+    .folder-card__count { font-size: 0.8rem; color: var(--wa-color-text-quiet, #666); }
 
-        .treeFile:hover {
-            color: white;
-        }
+    /* ------------------------------------------------------------ Grid */
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+      gap: var(--gap);
+    }
 
-        .treeText {
-            color: #b0bcc9;
-            text-decoration: none;
-        }
+    .grid-item { overflow: hidden; }
 
-        .treeImg {
-            color: #b0bcc9;
-            text-decoration: none;
+    .grid-item__media {
+      aspect-ratio: 1 / 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      background: var(--wa-color-neutral-fill-quiet, #f4f4f4);
+    }
 
-            max-width: 64px;
-            max-height: 64px;
-        }
+    .grid-item__media img {
+      max-width: 100%;
+      max-height: 100%;
+      width: auto;
+      height: auto;      /* natural size — never scaled up past the original */
+      object-fit: contain;
+      display: block;
+    }
 
-        /*
-        SCROLLBAR
-        */
-        
-        #sidebar::-webkit-scrollbar {
-            width: 12px;
-        }
-        
-        #sidebar::-webkit-scrollbar-track {
-            border-radius: 8px;
-            background-color: #00000055;
-            border: 1px solid #00000055;
-            box-shadow: inset 0 0 6px rgba(0, 0, 0, .3);
-        }
-        
-        #sidebar::-webkit-scrollbar-thumb {
-            border-radius: 8px;
-            background-color: #363636;
-        }
-        /*        ScrollBar 3    */
-        
-        #scrollbar3::-webkit-scrollbar {
-            width: 12px;
-        }
+    .grid-item__name {
+      display: block;
+      padding: 0.5rem;
+      font-size: 0.85rem;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
 
-    </style>
+    /* --------------------------------------- List (details / explorer) */
+    .list {
+      display: flex;
+      flex-direction: column;
+      font-size: 0.85rem;
+      border: 1px solid var(--wa-color-neutral-border-normal, #e0e0e0);
+      border-radius: var(--thumb-radius);
+      overflow: hidden;
+    }
 
-    <script src="../lib/jquery.min.js"></script>
+    .list__row {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 72px 96px 116px;
+      align-items: center;
+      gap: 0.75rem;
+      padding: 0.3rem 0.85rem;
+      border-bottom: 1px solid var(--wa-color-neutral-border-normal, #eee);
+      cursor: pointer;
+    }
+    .list__row:last-child { border-bottom: none; }
+    .list__row:not(.list__head):hover { background: var(--wa-color-neutral-fill-quiet, #f4f4f4); }
+    .list__row:focus-visible { outline: 2px solid var(--wa-color-brand-fill-loud, #0069d9); outline-offset: -2px; }
 
+    .list__head {
+      position: sticky;
+      top: 0;
+      cursor: default;
+      font-size: 0.72rem;
+      font-weight: 600;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      color: var(--wa-color-text-quiet, #666);
+      background: var(--wa-color-neutral-fill-quiet, #f7f7f7);
+    }
+
+    .col-name { display: flex; align-items: center; gap: 0.6rem; min-width: 0; }
+
+    .list__thumb {
+      width: 28px;
+      height: 28px;
+      object-fit: cover;
+      border-radius: 3px;
+      flex-shrink: 0;
+      background: var(--wa-color-neutral-fill-quiet, #eee);
+    }
+
+    .list__name { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .col-type { text-transform: uppercase; font-size: 0.75rem; color: var(--wa-color-text-quiet, #666); }
+    .col-size,
+    .col-dims { color: var(--wa-color-text-quiet, #666); font-variant-numeric: tabular-nums; }
+
+    /* -------------------------------------------------------- Carousel */
+    .carousel-wrap { display: flex; flex-direction: column; gap: 1rem; }
+
+    .carousel-main {
+      --aspect-ratio: 16 / 9;
+      max-height: 70vh;
+      border-radius: var(--thumb-radius);
+      background: var(--wa-color-neutral-fill-quiet, #f4f4f4);
+    }
+
+    .carousel-main::part(base) { height: 100%; }
+
+    .carousel-main wa-carousel-item {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100%;
+    }
+
+    .carousel-main img {
+      max-width: 100%;
+      max-height: 100%;
+      width: auto;
+      height: auto;      /* natural size — never scaled up past the original */
+      object-fit: contain;
+      cursor: pointer;
+    }
+
+    .carousel-thumbs {
+      display: flex;
+      gap: 0.5rem;
+      overflow-x: auto;
+      padding: 0.25rem;
+      scrollbar-width: thin;
+    }
+
+    .carousel-thumb {
+      flex: 0 0 auto;
+      width: 84px;
+      height: 84px;
+      padding: 0;
+      border: 2px solid transparent;
+      border-radius: var(--thumb-radius);
+      overflow: hidden;
+      cursor: pointer;
+      background: none;
+      opacity: 0.55;
+      transition: opacity 0.15s ease, border-color 0.15s ease;
+    }
+
+    .carousel-thumb img { width: 100%; height: 100%; object-fit: cover; display: block; }
+
+    .carousel-thumb:hover { opacity: 0.85; }
+
+    .carousel-thumb.active {
+      opacity: 1;
+      border-color: var(--wa-color-brand-fill-loud, #0069d9);
+    }
+  </style>
 </head>
-
 <body>
-    <div id="sidebar">
+  <header class="app-header">
+    <!-- Folder path (top-left) -->
+    <wa-breadcrumb id="breadcrumb" label="Current folder">
+      <i slot="separator" class="ia-chevron-right" aria-hidden="true"></i>
+    </wa-breadcrumb>
+
+    <!-- Mode toggle: List / Grid / Carousel (top-right) -->
+    <wa-radio-group id="mode-toggle" value="grid" size="s" orientation="horizontal">
+      <wa-radio appearance="button" value="list">
+        <i slot="start" class="ia-list" aria-hidden="true"></i>
+        List
+      </wa-radio>
+      <wa-radio appearance="button" value="grid">
+        <i slot="start" class="ia-grid" aria-hidden="true"></i>
+        Grid
+      </wa-radio>
+      <wa-radio appearance="button" value="carousel">
+        <i slot="start" class="ia-film" aria-hidden="true"></i>
+        Carousel
+      </wa-radio>
+    </wa-radio-group>
+  </header>
+
+  <main id="main">
+    <!-- Loading state -->
+    <div id="loading" class="state">
+      <wa-spinner style="font-size: 2.5rem;"></wa-spinner>
+      <p>Loading file list from GitHub…</p>
     </div>
-    <div id="preview">
-    </div>
 
-    <script>
+    <!-- Error / warning state -->
+    <div id="error" class="state" hidden></div>
 
-        // function buildFileTree(paths) {
-        //     const root = [];
+    <!-- Rendered content (subfolders + images) goes here -->
+    <div id="content" hidden></div>
+  </main>
 
-        //     function findOrCreateFolder(arr, folderName) {
-        //         for (const item of arr) {
-        //             if (Array.isArray(item) && item[0] === folderName) {
-        //                 return item;
-        //             }
-        //         }
-        //         const newFolder = [folderName];
-        //         arr.push(newFolder);
-        //         return newFolder;
-        //     }
+  <!-- ═══════════════════════════════════════════════════════════════════ -->
+  <!-- ██  CODE  ███████████████████████████████████████████████████████████ -->
+  <!-- ═══════════════════════════════════════════════════════════════════ -->
+  <script>
+  // ┌───────────────────────────────────────────────────────────────────────┐
+  // │  CONFIG — EDIT THIS to point the browser at a GitHub repo folder.        │
+  // │  This is the ONLY section you need to change per deployment.             │
+  // │  Everything else is derived automatically.                               │
+  // └───────────────────────────────────────────────────────────────────────┘
+  const CONFIG = {
+    owner:  "wolforcept",              // GitHub user/org
+    repo:   "wolforcept.github.io",    // repository name
+    branch: "master",                  // branch that GitHub Pages serves
 
-        //     for (const path of paths) {
-        //         const parts = path.split('/');
-        //         let current = root;
+    // Folder (relative to the repo root) this site lives in and explores.
+    //   "auto"  -> derive it from the page URL, so you can copy this site into
+    //              a different folder without editing anything.
+    //   "images" (or any path) -> pin it explicitly.
+    folderPath: "auto",
+  };
+  // ─────────────────────────────────────────────────────────────────────────
 
-        //         for (let i = 0; i < parts.length; i++) {
-        //             const part = parts[i];
+  const IMAGE_EXTENSIONS = ["jpg", "jpeg", "png", "gif", "webp", "avif", "svg", "bmp", "ico"];
+  const CACHE_TTL_MS = 3 * 60 * 60 * 1000; // 3 hours
 
-        //             if (i === parts.length - 1) {
-        //                 // File
-        //                 current.push(part);
-        //             } else {
-        //                 // Folder
-        //                 current = findOrCreateFolder(current, part);
-        //             }
-        //         }
-        //     }
+  // --- Elements -------------------------------------------------------------
+  const els = {
+    loading:    document.getElementById("loading"),
+    error:      document.getElementById("error"),
+    content:    document.getElementById("content"),
+    breadcrumb: document.getElementById("breadcrumb"),
+    modeToggle: document.getElementById("mode-toggle"),
+  };
 
-        //     return root;
-        // }
+  // --- App state ------------------------------------------------------------
+  const state = {
+    rootPath: "",     // repo-relative path of the folder this site explores
+    tree: null,       // nested folder model { name, path, dirs: Map, images: [] }
+    currentPath: "",  // repo-relative path of the folder currently shown
+    mode: "grid",
+    truncated: false,
+  };
 
-        function buildFileTree(paths) {
-            const root = ["root"];
+  // =========================================================================
+  // Config resolution
+  // =========================================================================
 
-            function findOrCreateFolder(arr, folderName) {
-                for (const item of arr) {
-                    if (Array.isArray(item) && item[0] === folderName) {
-                        return item;
-                    }
-                }
-                const newFolder = [folderName];
-                arr.push(newFolder);
-                return newFolder;
-            }
+  /** Repo-relative folder this site is deployed in, derived from the URL. */
+  function deriveFolderFromUrl() {
+    // e.g. "/images/browser/index.html" -> "images/browser"
+    let path = decodeURIComponent(window.location.pathname);
+    path = path.replace(/\/index\.html?$/i, "");   // drop trailing index.html
+    path = path.replace(/^\/+|\/+$/g, "");          // trim slashes
+    return path;
+  }
 
-            function sortFolder(folder) {
-                const [name, ...contents] = folder;
-                contents.sort((a, b) => {
-                    const aIsFolder = Array.isArray(a);
-                    const bIsFolder = Array.isArray(b);
+  function resolveRootPath() {
+    return CONFIG.folderPath === "auto" ? deriveFolderFromUrl() : CONFIG.folderPath.replace(/^\/+|\/+$/g, "");
+  }
 
-                    if (aIsFolder && !bIsFolder) return -1;
-                    if (!aIsFolder && bIsFolder) return 1;
+  // =========================================================================
+  // GitHub tree fetching (one recursive request) + caching
+  // =========================================================================
 
-                    const aName = aIsFolder ? a[0] : a;
-                    const bName = bIsFolder ? b[0] : b;
+  function cacheKey() {
+    return `imgbrowser:tree:${CONFIG.owner}/${CONFIG.repo}@${CONFIG.branch}`;
+  }
 
-                    return aName.localeCompare(bName);
-                });
+  function readCache() {
+    try {
+      const raw = localStorage.getItem(cacheKey());
+      if (!raw) return null;
+      const parsed = JSON.parse(raw);
+      if (Date.now() - parsed.ts > CACHE_TTL_MS) return null;
+      return parsed;
+    } catch {
+      return null;
+    }
+  }
 
-                // Recursively sort subfolders
-                for (const item of contents) {
-                    if (Array.isArray(item)) {
-                        sortFolder(item);
-                    }
-                }
+  function writeCache(entries, truncated) {
+    try {
+      localStorage.setItem(cacheKey(), JSON.stringify({ ts: Date.now(), entries, truncated }));
+    } catch {
+      /* localStorage full or unavailable — ignore, we still have it in memory */
+    }
+  }
 
-                // Reconstruct the folder array
-                folder.length = 1; // Keep only the folder name
-                folder.push(...contents);
-            }
+  /** Fetch the whole repo tree in a single recursive request. */
+  async function fetchTree() {
+    const url = `https://api.github.com/repos/${CONFIG.owner}/${CONFIG.repo}/git/trees/${CONFIG.branch}?recursive=1`;
+    const res = await fetch(url, { headers: { Accept: "application/vnd.github+json" } });
 
-            for (const path of paths) {
-                const parts = path.split('/');
-                let current = root;
+    if (!res.ok) {
+      if (res.status === 403 && res.headers.get("X-RateLimit-Remaining") === "0") {
+        const reset = Number(res.headers.get("X-RateLimit-Reset")) * 1000;
+        throw new Error(`GitHub API rate limit reached (60 requests/hour for anonymous use). Try again after ${new Date(reset).toLocaleTimeString()}.`);
+      }
+      throw new Error(`GitHub API request failed (${res.status} ${res.statusText}).`);
+    }
 
-                for (let i = 0; i < parts.length; i++) {
-                    const part = parts[i];
+    const data = await res.json();
+    // Keep only the fields we need to keep the cache small.
+    const entries = (data.tree || []).map((e) => ({ path: e.path, type: e.type, size: e.size }));
+    return { entries, truncated: Boolean(data.truncated) };
+  }
 
-                    if (i === parts.length - 1) {
-                        current.push(part);
-                    } else {
-                        current = findOrCreateFolder(current, part);
-                    }
-                }
-            }
+  // =========================================================================
+  // Model building
+  // =========================================================================
 
-            sortFolder(root);
-            return root;
-        }
+  function isImage(path) {
+    const ext = path.split(".").pop().toLowerCase();
+    return IMAGE_EXTENSIONS.includes(ext);
+  }
 
-        function makeFolder(parent, tree, fullpath) {
+  function makeNode(name, path) {
+    return { name, path, dirs: new Map(), images: [] };
+  }
 
-            if (tree.constructor === Array) {
+  /**
+   * Build a nested folder model from the flat GitHub tree, scoped to rootPath.
+   * Only branches leading to images are kept.
+   */
+  function buildModel(entries, rootPath) {
+    const root = makeNode(rootPath.split("/").pop() || CONFIG.repo, rootPath);
+    const prefix = rootPath ? rootPath + "/" : "";
 
-                const div = $(`<div class="treeFolder">${tree[0]}<div>`)
-                const children = $(`<div class="treeFolderChildren"><div>`)
-                parent.append(div)
-                div.append(children)
-                tree.forEach((t, i) => {
-                    if (i !== 0)
-                        makeFolder(children, t, fullpath + "/" + tree[0])
-                })
+    for (const entry of entries) {
+      if (entry.type !== "blob" || !isImage(entry.path)) continue;
+      if (rootPath && !entry.path.startsWith(prefix)) continue;
 
+      const relative = rootPath ? entry.path.slice(prefix.length) : entry.path;
+      const parts = relative.split("/");
+      const fileName = parts.pop();
 
-            } else {
+      // Walk/create the folder chain.
+      let node = root;
+      let accum = rootPath;
+      for (const dir of parts) {
+        accum = accum ? `${accum}/${dir}` : dir;
+        if (!node.dirs.has(dir)) node.dirs.set(dir, makeNode(dir, accum));
+        node = node.dirs.get(dir);
+      }
 
-                const img = $(`<img class="treeImg" src="${fullpath}/${tree}" >`)
-                const text = $(`<div class="treeText">${tree}</div>`)
+      node.images.push({
+        name: fileName,
+        path: entry.path,                 // repo-relative
+        relativeToSite: relative,         // relative to the deployed site
+        size: entry.size,
+      });
+    }
 
-                const div = $(`<div class="treeFile"><div>`)
-                div.append(img);
-                // div.append(text)
-                div.on('click', () => {
-                    show(fullpath + "/" + tree)
-                })
-                parent.append(div)
-            }
-        }
+    return root;
+  }
 
-        function show(path) {
+  /** Find a folder node by its repo-relative path. Returns null if not found. */
+  function findNode(path) {
+    if (path === state.rootPath) return state.tree;
+    const prefix = state.rootPath ? state.rootPath + "/" : "";
+    const relative = path.slice(prefix.length);
+    let node = state.tree;
+    for (const dir of relative.split("/").filter(Boolean)) {
+      if (!node.dirs.has(dir)) return null;
+      node = node.dirs.get(dir);
+    }
+    return node;
+  }
 
-            console.log(path);
+  // =========================================================================
+  // URL / persistence
+  // =========================================================================
 
-            const fullPath = `https://raw.githubusercontent.com/wolforcept/wolforcept.github.io/refs/heads/master${path}`;
-            // const name = path.substring(7);
+  const STORE_MODE = "imgbrowser:mode";
+  const STORE_PATH = "imgbrowser:path";
 
-            const img = $(`<img src="${fullPath}" >`)
+  function loadInitialViewState() {
+    const params = new URLSearchParams(window.location.search);
 
-            const copyButton = $(`<div class="copyText">copy</div>`);
-            copyButton.on('copy', () => navigator.clipboard.writeText(fullPath))
+    const mode = params.get("mode") || localStorage.getItem(STORE_MODE) || "grid";
+    state.mode = ["list", "grid", "carousel"].includes(mode) ? mode : "grid";
 
-            const link = $(`<div><a class="subText" href="${fullPath}">https://raw.githubusercontent.com/wolforcept/wolforcept.github.io/refs/heads/master/${path}</a></div>`)
+    const rel = params.get("path") || localStorage.getItem(STORE_PATH) || "";
+    const candidate = rel ? `${state.rootPath}/${rel}`.replace(/\/+$/g, "") : state.rootPath;
+    state.currentPath = candidate;
+  }
 
-            const shown = $('#preview');
+  function persistViewState() {
+    const prefix = state.rootPath ? state.rootPath + "/" : "";
+    const rel = state.currentPath.startsWith(prefix) ? state.currentPath.slice(prefix.length) : "";
 
-            shown.empty()
-            shown.append(img)
-            shown.append(link)
-            shown.append(copyButton)
+    const params = new URLSearchParams(window.location.search);
+    params.set("mode", state.mode);
+    if (rel) params.set("path", rel); else params.delete("path");
+    history.replaceState(null, "", `${window.location.pathname}?${params.toString()}`);
 
-        }
+    localStorage.setItem(STORE_MODE, state.mode);
+    localStorage.setItem(STORE_PATH, rel);
+  }
 
-        var selectedFirst = false;
-        fetch('https://raw.githubusercontent.com/wolforcept/wolforcept.github.io/refs/heads/master/image-list.json')
-            .then(res => res.json())
-            .then(images => {
-                const sidebar = $('#sidebar');
-                let lastCategory = null;
+  // =========================================================================
+  // Rendering
+  // =========================================================================
 
-                const fileTree = buildFileTree(images)[1];
-                // console.log(JSON.stringify(fileTree, null, 3))
-                makeFolder(sidebar, fileTree, "")
+  function show(el) { el.hidden = false; }
+  function hide(el) { el.hidden = true; }
 
-                images.forEach(path => {
+  function renderError(message, { retry = false } = {}) {
+    hide(els.loading);
+    hide(els.content);
+    els.error.innerHTML = "";
+    const callout = document.createElement("wa-callout");
+    callout.setAttribute("variant", "danger");
+    callout.innerHTML = `<i slot="icon" class="ia-danger" aria-hidden="true"></i>${escapeHtml(message)}`;
+    if (retry) {
+      const btn = document.createElement("wa-button");
+      btn.setAttribute("slot", "actions");
+      btn.setAttribute("size", "small");
+      btn.textContent = "Retry";
+      btn.addEventListener("click", () => init(true));
+      callout.appendChild(btn);
+    }
+    els.error.appendChild(callout);
+    show(els.error);
+  }
 
-                    // const div = $(`<div class="imgHolder"></div>`);
-                    // const img2 = $(`<div class="wrapper"><img src="${fullPath}"></div>`);
-                    // div.append(img2)
+  function renderBreadcrumb() {
+    els.breadcrumb.innerHTML = "";
+    const prefix = state.rootPath ? state.rootPath + "/" : "";
+    const rel = state.currentPath.startsWith(prefix) ? state.currentPath.slice(prefix.length) : "";
+    const parts = rel ? rel.split("/") : [];
 
-                    // function show() {
+    const addItem = (label, path, isLast) => {
+      const item = document.createElement("wa-breadcrumb-item");
+      item.textContent = label;
+      if (!isLast) {
+        item.style.cursor = "pointer";
+        item.addEventListener("click", () => navigateTo(path));
+      }
+      els.breadcrumb.appendChild(item);
+    };
 
-                    //     const copyButton = $(`<div class="copyText">copy</div>`);
-                    //     copyButton.on('copy', () => {
-                    //         navigator.clipboard.writeText()
-                    //     })
+    addItem(state.tree.name || "root", state.rootPath, parts.length === 0);
+    let accum = state.rootPath;
+    parts.forEach((part, i) => {
+      accum = accum ? `${accum}/${part}` : part;
+      addItem(part, accum, i === parts.length - 1);
+    });
+  }
 
-                    //     const link = $(`<div><a class="subText" href="${fullPath}">https://raw.githubusercontent.com/wolforcept/wolforcept.github.io/refs/heads/master/${path}</a></div>`)
+  function render() {
+    const node = findNode(state.currentPath) || state.tree;
+    renderBreadcrumb();
 
-                    //     shown.empty()
-                    //     shown.append(img)
-                    //     shown.append(link)
-                    //     shown.append(copyButton)
+    els.content.innerHTML = "";
+    els.content.className = `mode-${state.mode}`;
 
-                    // }
+    if (state.truncated) {
+      const warn = document.createElement("wa-callout");
+      warn.setAttribute("variant", "warning");
+      warn.innerHTML = `<i slot="icon" class="ia-danger" aria-hidden="true"></i>
+        The repository is large and GitHub truncated the file list — some images may be missing.`;
+      els.content.appendChild(warn);
+    }
 
-                    // div.on('click', () => {
-                    //     show()
-                    // })
-                    // if (!selectedFirst) {
-                    //     show()
-                    //     selectedFirst = true;
-                    // }
-                });
-            });
-    </script>
+    // Subfolders first (always shown, independent of view mode).
+    const subdirs = [...node.dirs.values()].sort((a, b) => a.name.localeCompare(b.name));
+    if (subdirs.length) {
+      const folderWrap = document.createElement("div");
+      folderWrap.className = "folders";
+      for (const dir of subdirs) folderWrap.appendChild(renderFolderCard(dir));
+      els.content.appendChild(folderWrap);
+    }
 
+    const images = node.images.slice().sort((a, b) => a.name.localeCompare(b.name));
+
+    if (!images.length && !subdirs.length) {
+      const empty = document.createElement("div");
+      empty.className = "state";
+      empty.innerHTML = `<i class="ia-folder-open" aria-hidden="true" style="font-size:2.5rem;"></i>
+        <p>This folder has no images.</p>`;
+      els.content.appendChild(empty);
+    } else if (images.length) {
+      if (state.mode === "list") renderList(images);
+      else if (state.mode === "carousel") renderCarousel(images);
+      else renderGrid(images);
+    }
+
+    hide(els.loading);
+    hide(els.error);
+    show(els.content);
+    persistViewState();
+  }
+
+  function renderFolderCard(dir) {
+    const count = countImages(dir);
+    const card = document.createElement("wa-card");
+    card.className = "folder-card";
+    card.setAttribute("appearance", "outlined");
+    card.style.cursor = "pointer";
+    card.innerHTML = `
+      <div class="folder-card__body">
+        <i class="ia-folder folder-card__icon" aria-hidden="true"></i>
+        <div class="folder-card__meta">
+          <span class="folder-card__name">${escapeHtml(dir.name)}</span>
+          <span class="folder-card__count">${count} image${count === 1 ? "" : "s"}</span>
+        </div>
+      </div>`;
+    card.addEventListener("click", () => navigateTo(dir.path));
+    return card;
+  }
+
+  function countImages(node) {
+    let n = node.images.length;
+    for (const d of node.dirs.values()) n += countImages(d);
+    return n;
+  }
+
+  function renderGrid(images) {
+    const grid = document.createElement("div");
+    grid.className = "grid";
+    images.forEach((img, i) => {
+      const card = document.createElement("wa-card");
+      card.className = "grid-item";
+      card.setAttribute("appearance", "outlined");
+      card.style.cursor = "pointer";
+      card.innerHTML = `
+        <div slot="media" class="grid-item__media">
+          <img src="${encodeURI(img.relativeToSite)}" alt="${escapeHtml(img.name)}" loading="lazy" />
+        </div>
+        <span class="grid-item__name" title="${escapeHtml(img.name)}">${escapeHtml(img.name)}</span>`;
+      card.addEventListener("click", () => openImage(img));
+      grid.appendChild(card);
+    });
+    els.content.appendChild(grid);
+  }
+
+  function renderList(images) {
+    const table = document.createElement("div");
+    table.className = "list";
+
+    const head = document.createElement("div");
+    head.className = "list__row list__head";
+    head.innerHTML = `
+      <span class="col-name">Name</span>
+      <span class="col-type">Type</span>
+      <span class="col-size">Size</span>
+      <span class="col-dims">Dimensions</span>`;
+    table.appendChild(head);
+
+    images.forEach((img, i) => {
+      const ext = img.name.includes(".") ? img.name.split(".").pop().toUpperCase() : "—";
+      const row = document.createElement("div");
+      row.className = "list__row";
+      row.tabIndex = 0;
+      row.innerHTML = `
+        <span class="col-name">
+          <img class="list__thumb" src="${encodeURI(img.relativeToSite)}" alt="" loading="lazy" />
+          <span class="list__name" title="${escapeHtml(img.name)}">${escapeHtml(img.name)}</span>
+        </span>
+        <span class="col-type">${escapeHtml(ext)}</span>
+        <span class="col-size">${img.size != null ? `<wa-format-bytes value="${img.size}"></wa-format-bytes>` : "—"}</span>
+        <span class="col-dims" data-dims>…</span>`;
+
+      // Dimensions aren't in the API response — read them off the thumbnail once it loads.
+      const thumb = row.querySelector(".list__thumb");
+      const dims = row.querySelector("[data-dims]");
+      thumb.addEventListener("load", () => { dims.textContent = `${thumb.naturalWidth} × ${thumb.naturalHeight}`; });
+      thumb.addEventListener("error", () => { dims.textContent = "—"; });
+
+      row.addEventListener("click", () => openImage(img));
+      row.addEventListener("keydown", (e) => {
+        if (e.key === "Enter" || e.key === " ") { e.preventDefault(); openImage(img); }
+      });
+      table.appendChild(row);
+    });
+
+    els.content.appendChild(table);
+  }
+
+  function renderCarousel(images, startIndex = 0) {
+    const wrap = document.createElement("div");
+    wrap.className = "carousel-wrap";
+
+    // Main carousel — one large slide at a time.
+    const main = document.createElement("wa-carousel");
+    main.setAttribute("navigation", "");
+    main.setAttribute("loop", "");
+    main.className = "carousel-main";
+    images.forEach((img) => {
+      const item = document.createElement("wa-carousel-item");
+      item.innerHTML = `<img src="${encodeURI(img.relativeToSite)}" alt="${escapeHtml(img.name)}" title="Open image in a new tab" />`;
+      item.querySelector("img").addEventListener("click", () => openImage(img));
+      main.appendChild(item);
+    });
+
+    // Thumbnail strip below.
+    const thumbs = document.createElement("div");
+    thumbs.className = "carousel-thumbs";
+    const thumbEls = images.map((img, i) => {
+      const t = document.createElement("button");
+      t.className = "carousel-thumb";
+      t.type = "button";
+      t.innerHTML = `<img src="${encodeURI(img.relativeToSite)}" alt="${escapeHtml(img.name)}" loading="lazy" />`;
+      t.addEventListener("click", () => main.goToSlide(i));
+      thumbs.appendChild(t);
+      return t;
+    });
+
+    const setActive = (index) => {
+      thumbEls.forEach((t, i) => t.classList.toggle("active", i === index));
+      const active = thumbEls[index];
+      if (active) active.scrollIntoView({ block: "nearest", inline: "center", behavior: "smooth" });
+    };
+
+    main.addEventListener("wa-slide-change", (e) => {
+      const index = e.detail?.index ?? 0;
+      setActive(index);
+    });
+
+    wrap.appendChild(main);
+    wrap.appendChild(thumbs);
+    els.content.appendChild(wrap);
+
+    // Jump to the requested slide once the component is ready.
+    customElements.whenDefined("wa-carousel").then(() => {
+      requestAnimationFrame(() => {
+        if (startIndex > 0) main.goToSlide(startIndex, "auto");
+        setActive(startIndex);
+      });
+    });
+  }
+
+  /** Open the raw image directly in a new browser tab. */
+  function openImage(img) {
+    window.open(encodeURI(img.relativeToSite), "_blank", "noopener");
+  }
+
+  // =========================================================================
+  // Navigation
+  // =========================================================================
+
+  function navigateTo(path) {
+    state.currentPath = path;
+    render();
+  }
+
+  // =========================================================================
+  // Utilities
+  // =========================================================================
+
+  function escapeHtml(str) {
+    return String(str).replace(/[&<>"']/g, (c) => (
+      { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]
+    ));
+  }
+
+  // =========================================================================
+  // Init
+  // =========================================================================
+
+  async function init(forceRefresh = false) {
+    hide(els.error);
+    hide(els.content);
+    show(els.loading);
+
+    state.rootPath = resolveRootPath();
+
+    let entries, truncated;
+    try {
+      const cached = forceRefresh ? null : readCache();
+      if (cached) {
+        ({ entries, truncated } = cached);
+      } else {
+        ({ entries, truncated } = await fetchTree());
+        writeCache(entries, truncated);
+      }
+    } catch (err) {
+      // Fall back to any cached copy if the live fetch fails.
+      const cached = readCache();
+      if (cached) {
+        ({ entries, truncated } = cached);
+      } else {
+        renderError(err.message, { retry: true });
+        return;
+      }
+    }
+
+    state.truncated = truncated;
+    state.tree = buildModel(entries, state.rootPath);
+
+    loadInitialViewState();
+    if (!findNode(state.currentPath)) state.currentPath = state.rootPath; // stale URL guard
+
+    els.modeToggle.value = state.mode;
+    render();
+  }
+
+  // --- Wire up events -------------------------------------------------------
+  els.modeToggle.addEventListener("change", (e) => {
+    if (e.target.value === state.mode) return;
+    state.mode = e.target.value;
+    render();
+  });
+
+  init();
+  </script>
 </body>
-
 </html>
