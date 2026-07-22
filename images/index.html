@@ -26,18 +26,23 @@
     /* Make the [hidden] attribute win over the display rules below. */
     [hidden] { display: none !important; }
 
+    html, body { height: 100%; }
+
     body {
       margin: 0;
       font-family: var(--wa-font-family-body, system-ui, sans-serif);
       background: var(--wa-color-surface-default, #fff);
       color: var(--wa-color-text-normal, #1a1a1a);
+      /* Full-viewport app shell: header (fixed) + main (fills the rest). */
+      height: 100dvh;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
     }
 
     /* ---------------------------------------------------------- Header */
     .app-header {
-      position: sticky;
-      top: 0;
-      z-index: 10;
+      flex: 0 0 auto;
       padding: 0.75rem 1.25rem;
       background: var(--wa-color-surface-default, #fff);
       border-bottom: 1px solid var(--wa-color-neutral-border-normal, #e0e0e0);
@@ -52,7 +57,27 @@
     #mode-toggle { flex-shrink: 0; }
 
     /* ------------------------------------------------------------ Main */
-    #main { padding: 1.25rem; max-width: 1400px; margin: 0 auto; }
+    #main {
+      flex: 1 1 auto;
+      min-height: 0;               /* allow the scroll area to shrink */
+      overflow-y: auto;
+      padding: 1.25rem;
+    }
+
+    #loading, #error, #content { max-width: 1400px; margin-inline: auto; }
+
+    /* Carousel mode: lock scrolling and let the carousel fill the viewport. */
+    body.carousel-active #main { overflow: hidden; }
+    body.carousel-active #content {
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+    }
+    body.carousel-active .carousel-wrap { flex: 1 1 auto; min-height: 0; }
+    body.carousel-active .carousel-main { flex: 1 1 auto; min-height: 0; }
+    body.carousel-active .carousel-thumbs { flex: 0 0 auto; }
+    body.carousel-active .carousel-slide { height: 100%; }
+    body.carousel-active .carousel-slide img { max-height: 100%; }
 
     .state {
       display: flex;
@@ -178,24 +203,22 @@
     .carousel-wrap { display: flex; flex-direction: column; gap: 1rem; }
 
     .carousel-main {
-      --aspect-ratio: 16 / 9;
-      max-height: 70vh;
       border-radius: var(--thumb-radius);
       background: var(--wa-color-neutral-fill-quiet, #f4f4f4);
     }
 
-    .carousel-main::part(base) { height: 100%; }
-
-    .carousel-main wa-carousel-item {
+    /* The image lives inside this wrapper (not slotted directly), so the
+       carousel component's own ::slotted(img) sizing can't override ours. */
+    .carousel-slide {
       display: flex;
       align-items: center;
       justify-content: center;
-      height: 100%;
+      width: 100%;
     }
 
-    .carousel-main img {
+    .carousel-slide img {
       max-width: 100%;
-      max-height: 100%;
+      max-height: 70vh;
       width: auto;
       height: auto;      /* natural size — never scaled up past the original */
       object-fit: contain;
@@ -528,6 +551,7 @@
 
     els.content.innerHTML = "";
     els.content.className = `mode-${state.mode}`;
+    document.body.classList.toggle("carousel-active", state.mode === "carousel");
 
     if (state.truncated) {
       const warn = document.createElement("wa-callout");
@@ -663,7 +687,7 @@
     main.className = "carousel-main";
     images.forEach((img) => {
       const item = document.createElement("wa-carousel-item");
-      item.innerHTML = `<img src="${encodeURI(img.relativeToSite)}" alt="${escapeHtml(img.name)}" title="Open image in a new tab" />`;
+      item.innerHTML = `<div class="carousel-slide"><img src="${encodeURI(img.relativeToSite)}" alt="${escapeHtml(img.name)}" title="Open image in a new tab" /></div>`;
       item.querySelector("img").addEventListener("click", () => openImage(img));
       main.appendChild(item);
     });
@@ -691,6 +715,18 @@
       const index = e.detail?.index ?? 0;
       setActive(index);
     });
+
+    // Scrollwheel navigates the carousel — one slide per gesture.
+    let wheelLock = false;
+    main.addEventListener("wheel", (e) => {
+      e.preventDefault();
+      if (wheelLock) return;
+      const delta = Math.abs(e.deltaY) >= Math.abs(e.deltaX) ? e.deltaY : e.deltaX;
+      if (!delta) return;
+      if (delta > 0) main.next(); else main.previous();
+      wheelLock = true;
+      setTimeout(() => { wheelLock = false; }, 220);
+    }, { passive: false });
 
     wrap.appendChild(main);
     wrap.appendChild(thumbs);
